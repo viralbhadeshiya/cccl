@@ -27,9 +27,7 @@
 #endif // no system header
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace static_map_detail
+namespace detail::static_map_detail
 {
 
 template <unsigned int k, unsigned int v>
@@ -111,8 +109,6 @@ struct static_map
   }
 };
 
-} // end namespace static_map_detail
-
 template <unsigned int default_value,
           unsigned int key0   = 0,
           unsigned int value0 = default_value,
@@ -161,7 +157,6 @@ template <typename StaticMap>
 _CCCL_HOST_DEVICE unsigned int lookup(unsigned int key)
 {
   return StaticMap::get(key);
-}
 
 } // end namespace detail
 THRUST_NAMESPACE_END

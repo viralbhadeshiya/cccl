@@ -67,10 +67,7 @@ THRUST_NAMESPACE_END
 #  include <thrust/system/cuda/detail/reduce.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-
-namespace __find_if
+namespace cuda_cub::__find_if
 {
 
 template <typename TupleType>
@@ -93,7 +90,6 @@ struct functor
     }
   }
 };
-} // namespace __find_if
 
 template <class Derived, class InputIt, class Size, class Predicate>
 InputIt _CCCL_HOST_DEVICE
@@ -142,29 +138,25 @@ find_if_n(execution_policy<Derived>& policy, InputIt first, Size num_items, Pred
 
   // nothing was found if we reach here...
   return first + num_items;
-}
 
-template <class Derived, class InputIt, class Predicate>
-InputIt _CCCL_HOST_DEVICE find_if(execution_policy<Derived>& policy, InputIt first, InputIt last, Predicate predicate)
-{
-  return cuda_cub::find_if_n(policy, first, ::cuda::std::distance(first, last), predicate);
-}
+  template <class Derived, class InputIt, class Predicate>
+  InputIt _CCCL_HOST_DEVICE find_if(execution_policy<Derived> & policy, InputIt first, InputIt last, Predicate predicate)
+  {
+    return cuda_cub::find_if_n(policy, first, ::cuda::std::distance(first, last), predicate);
 
-template <class Derived, class InputIt, class Predicate>
-InputIt _CCCL_HOST_DEVICE
-find_if_not(execution_policy<Derived>& policy, InputIt first, InputIt last, Predicate predicate)
-{
-  return cuda_cub::find_if(policy, first, last, ::cuda::std::not_fn(predicate));
-}
+    template <class Derived, class InputIt, class Predicate>
+    InputIt _CCCL_HOST_DEVICE find_if_not(
+      execution_policy<Derived> & policy, InputIt first, InputIt last, Predicate predicate)
+    {
+      return cuda_cub::find_if(policy, first, last, ::cuda::std::not_fn(predicate));
 
-template <class Derived, class InputIt, class T>
-InputIt _CCCL_HOST_DEVICE find(execution_policy<Derived>& policy, InputIt first, InputIt last, T const& value)
-{
-  using thrust::placeholders::_1;
+      template <class Derived, class InputIt, class T>
+      InputIt _CCCL_HOST_DEVICE find(execution_policy<Derived> & policy, InputIt first, InputIt last, T const& value)
+      {
+        using thrust::placeholders::_1;
 
-  return cuda_cub::find_if(policy, first, last, _1 == value);
-}
+        return cuda_cub::find_if(policy, first, last, _1 == value);
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+      } // namespace cuda_cub
+      THRUST_NAMESPACE_END
 #endif

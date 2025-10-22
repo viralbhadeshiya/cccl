@@ -60,10 +60,7 @@
 #  include <cuda/std/cstdint>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-
-namespace __merge_sort
+namespace cuda_cub::__merge_sort
 {
 
 template <class KeysIt, class ItemsIt, class Size, class CompareOp>
@@ -167,7 +164,6 @@ THRUST_RUNTIME_FUNCTION void merge_sort(
   status = cuda_cub::synchronize_optional(policy);
   cuda_cub::throw_on_error(status, "merge_sort: failed to synchronize");
 }
-} // namespace __merge_sort
 
 namespace __radix_sort
 {
@@ -295,7 +291,6 @@ THRUST_RUNTIME_FUNCTION void radix_sort(execution_policy<Derived>& policy, Key* 
     }
   }
 }
-} // namespace __radix_sort
 
 //---------------------------------------------------------------------
 // Smart sort picks at compile-time whether to dispatch radix or merge sort
@@ -384,7 +379,6 @@ THRUST_RUNTIME_FUNCTION void smart_sort(
 
   cuda_cub::throw_on_error(cuda_cub::synchronize_optional(policy), "smart_sort: failed to synchronize");
 }
-} // namespace __smart_sort
 
 //-------------------------
 // Thrust API entry points
@@ -398,72 +392,65 @@ void _CCCL_HOST_DEVICE sort(execution_policy<Derived>& policy, ItemsIt first, It
                        __smart_sort::smart_sort<thrust::detail::false_type, thrust::detail::false_type>(
                          policy, first, last, null_, compare_op);),
                       (thrust::sort(cvt_to_seq(derived_cast(policy)), first, last, compare_op);));
-}
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class ItemsIt, class CompareOp>
-void _CCCL_HOST_DEVICE stable_sort(execution_policy<Derived>& policy, ItemsIt first, ItemsIt last, CompareOp compare_op)
-{
-  THRUST_CDP_DISPATCH((using item_t = thrust::detail::it_value_t<ItemsIt>; item_t* null_ = nullptr;
-                       __smart_sort::smart_sort<thrust::detail::false_type, thrust::detail::true_type>(
-                         policy, first, last, null_, compare_op);),
-                      (thrust::stable_sort(cvt_to_seq(derived_cast(policy)), first, last, compare_op);));
-}
+  _CCCL_EXEC_CHECK_DISABLE
+  template <class Derived, class ItemsIt, class CompareOp>
+  void _CCCL_HOST_DEVICE stable_sort(
+    execution_policy<Derived> & policy, ItemsIt first, ItemsIt last, CompareOp compare_op)
+  {
+    THRUST_CDP_DISPATCH((using item_t = thrust::detail::it_value_t<ItemsIt>; item_t* null_ = nullptr;
+                         __smart_sort::smart_sort<thrust::detail::false_type, thrust::detail::true_type>(
+                           policy, first, last, null_, compare_op);),
+                        (thrust::stable_sort(cvt_to_seq(derived_cast(policy)), first, last, compare_op);));
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class KeysIt, class ValuesIt, class CompareOp>
-void _CCCL_HOST_DEVICE sort_by_key(
-  execution_policy<Derived>& policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values, CompareOp compare_op)
-{
-  THRUST_CDP_DISPATCH(
-    (__smart_sort::smart_sort<thrust::detail::true_type, thrust::detail::false_type>(
-       policy, keys_first, keys_last, values, compare_op);),
-    (thrust::sort_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values, compare_op);));
-}
+    _CCCL_EXEC_CHECK_DISABLE
+    template <class Derived, class KeysIt, class ValuesIt, class CompareOp>
+    void _CCCL_HOST_DEVICE sort_by_key(
+      execution_policy<Derived> & policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values, CompareOp compare_op)
+    {
+      THRUST_CDP_DISPATCH(
+        (__smart_sort::smart_sort<thrust::detail::true_type, thrust::detail::false_type>(
+           policy, keys_first, keys_last, values, compare_op);),
+        (thrust::sort_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values, compare_op);));
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class KeysIt, class ValuesIt, class CompareOp>
-void _CCCL_HOST_DEVICE stable_sort_by_key(
-  execution_policy<Derived>& policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values, CompareOp compare_op)
-{
-  THRUST_CDP_DISPATCH(
-    (__smart_sort::smart_sort<thrust::detail::true_type, thrust::detail::true_type>(
-       policy, keys_first, keys_last, values, compare_op);),
-    (thrust::stable_sort_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values, compare_op);));
-}
+      _CCCL_EXEC_CHECK_DISABLE
+      template <class Derived, class KeysIt, class ValuesIt, class CompareOp>
+      void _CCCL_HOST_DEVICE stable_sort_by_key(
+        execution_policy<Derived> & policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values, CompareOp compare_op)
+      {
+        THRUST_CDP_DISPATCH(
+          (__smart_sort::smart_sort<thrust::detail::true_type, thrust::detail::true_type>(
+             policy, keys_first, keys_last, values, compare_op);),
+          (thrust::stable_sort_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values, compare_op);));
 
-// API with default comparator
+        // API with default comparator
 
-template <class Derived, class ItemsIt>
-void _CCCL_HOST_DEVICE sort(execution_policy<Derived>& policy, ItemsIt first, ItemsIt last)
-{
-  using item_type = thrust::detail::it_value_t<ItemsIt>;
-  cuda_cub::sort(policy, first, last, ::cuda::std::less<item_type>());
-}
+        template <class Derived, class ItemsIt>
+        void _CCCL_HOST_DEVICE sort(execution_policy<Derived> & policy, ItemsIt first, ItemsIt last)
+        {
+          using item_type = thrust::detail::it_value_t<ItemsIt>;
+          cuda_cub::sort(policy, first, last, ::cuda::std::less<item_type>());
 
-template <class Derived, class ItemsIt>
-void _CCCL_HOST_DEVICE stable_sort(execution_policy<Derived>& policy, ItemsIt first, ItemsIt last)
-{
-  using item_type = thrust::detail::it_value_t<ItemsIt>;
-  cuda_cub::stable_sort(policy, first, last, ::cuda::std::less<item_type>());
-}
+          template <class Derived, class ItemsIt>
+          void _CCCL_HOST_DEVICE stable_sort(execution_policy<Derived> & policy, ItemsIt first, ItemsIt last)
+          {
+            using item_type = thrust::detail::it_value_t<ItemsIt>;
+            cuda_cub::stable_sort(policy, first, last, ::cuda::std::less<item_type>());
 
-template <class Derived, class KeysIt, class ValuesIt>
-void _CCCL_HOST_DEVICE
-sort_by_key(execution_policy<Derived>& policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values)
-{
-  using key_type = thrust::detail::it_value_t<KeysIt>;
-  cuda_cub::sort_by_key(policy, keys_first, keys_last, values, ::cuda::std::less<key_type>());
-}
+            template <class Derived, class KeysIt, class ValuesIt>
+            void _CCCL_HOST_DEVICE sort_by_key(
+              execution_policy<Derived> & policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values)
+            {
+              using key_type = thrust::detail::it_value_t<KeysIt>;
+              cuda_cub::sort_by_key(policy, keys_first, keys_last, values, ::cuda::std::less<key_type>());
 
-template <class Derived, class KeysIt, class ValuesIt>
-void _CCCL_HOST_DEVICE
-stable_sort_by_key(execution_policy<Derived>& policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values)
-{
-  using key_type = thrust::detail::it_value_t<KeysIt>;
-  cuda_cub::stable_sort_by_key(policy, keys_first, keys_last, values, ::cuda::std::less<key_type>());
-}
+              template <class Derived, class KeysIt, class ValuesIt>
+              void _CCCL_HOST_DEVICE stable_sort_by_key(
+                execution_policy<Derived> & policy, KeysIt keys_first, KeysIt keys_last, ValuesIt values)
+              {
+                using key_type = thrust::detail::it_value_t<KeysIt>;
+                cuda_cub::stable_sort_by_key(policy, keys_first, keys_last, values, ::cuda::std::less<key_type>());
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+              } // namespace cuda_cub
+              THRUST_NAMESPACE_END
 #endif

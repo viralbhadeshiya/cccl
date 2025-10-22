@@ -57,9 +57,7 @@
 #  include <cuda/std/cstdint>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-namespace detail
+namespace cuda_cub::detail
 {
 
 _CCCL_EXEC_CHECK_DISABLE
@@ -279,8 +277,6 @@ _CCCL_HOST_DEVICE ValuesOutIt exclusive_scan_by_key_n(
   return result + num_items;
 }
 
-} // namespace detail
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -308,106 +304,113 @@ ValOutputIt _CCCL_HOST_DEVICE inclusive_scan_by_key(
        cvt_to_seq(derived_cast(policy)), key_first, key_last, value_first, value_result, binary_pred, scan_op);));
 
   return ret;
-}
 
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class BinaryPred>
-ValOutputIt _CCCL_HOST_DEVICE inclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result,
-  BinaryPred binary_pred)
-{
-  return cuda_cub::inclusive_scan_by_key(
-    policy, key_first, key_last, value_first, value_result, binary_pred, ::cuda::std::plus<>());
-}
+  template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class BinaryPred>
+  ValOutputIt _CCCL_HOST_DEVICE inclusive_scan_by_key(
+    execution_policy<Derived> & policy,
+    KeyInputIt key_first,
+    KeyInputIt key_last,
+    ValInputIt value_first,
+    ValOutputIt value_result,
+    BinaryPred binary_pred)
+  {
+    return cuda_cub::inclusive_scan_by_key(
+      policy, key_first, key_last, value_first, value_result, binary_pred, ::cuda::std::plus<>());
 
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt>
-ValOutputIt _CCCL_HOST_DEVICE inclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result)
-{
-  return cuda_cub::inclusive_scan_by_key(
-    policy, key_first, key_last, value_first, value_result, ::cuda::std::equal_to<>());
-}
+    template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt>
+    ValOutputIt _CCCL_HOST_DEVICE inclusive_scan_by_key(
+      execution_policy<Derived> & policy,
+      KeyInputIt key_first,
+      KeyInputIt key_last,
+      ValInputIt value_first,
+      ValOutputIt value_result)
+    {
+      return cuda_cub::inclusive_scan_by_key(
+        policy, key_first, key_last, value_first, value_result, ::cuda::std::equal_to<>());
 
-//---------------------------
-//   Exclusive scan
-//---------------------------
+      //---------------------------
+      //   Exclusive scan
+      //---------------------------
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class Init, class BinaryPred, class ScanOp>
-ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result,
-  Init init,
-  BinaryPred binary_pred,
-  ScanOp scan_op)
-{
-  ValOutputIt ret = value_result;
-  THRUST_CDP_DISPATCH(
-    (ret = thrust::cuda_cub::detail::exclusive_scan_by_key_n(
-       policy,
-       key_first,
-       value_first,
-       value_result,
-       ::cuda::std::distance(key_first, key_last),
-       init,
-       binary_pred,
-       scan_op);),
-    (ret = thrust::exclusive_scan_by_key(
-       cvt_to_seq(derived_cast(policy)), key_first, key_last, value_first, value_result, init, binary_pred, scan_op);));
-  return ret;
-}
+      _CCCL_EXEC_CHECK_DISABLE
+      template <class Derived,
+                class KeyInputIt,
+                class ValInputIt,
+                class ValOutputIt,
+                class Init,
+                class BinaryPred,
+                class ScanOp>
+      ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
+        execution_policy<Derived> & policy,
+        KeyInputIt key_first,
+        KeyInputIt key_last,
+        ValInputIt value_first,
+        ValOutputIt value_result,
+        Init init,
+        BinaryPred binary_pred,
+        ScanOp scan_op)
+      {
+        ValOutputIt ret = value_result;
+        THRUST_CDP_DISPATCH(
+          (ret = thrust::cuda_cub::detail::exclusive_scan_by_key_n(
+             policy,
+             key_first,
+             value_first,
+             value_result,
+             ::cuda::std::distance(key_first, key_last),
+             init,
+             binary_pred,
+             scan_op);),
+          (ret = thrust::exclusive_scan_by_key(
+             cvt_to_seq(derived_cast(policy)),
+             key_first,
+             key_last,
+             value_first,
+             value_result,
+             init,
+             binary_pred,
+             scan_op);));
+        return ret;
 
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class Init, class BinaryPred>
-ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result,
-  Init init,
-  BinaryPred binary_pred)
-{
-  return cuda_cub::exclusive_scan_by_key(
-    policy, key_first, key_last, value_first, value_result, init, binary_pred, ::cuda::std::plus<>());
-}
+        template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class Init, class BinaryPred>
+        ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
+          execution_policy<Derived> & policy,
+          KeyInputIt key_first,
+          KeyInputIt key_last,
+          ValInputIt value_first,
+          ValOutputIt value_result,
+          Init init,
+          BinaryPred binary_pred)
+        {
+          return cuda_cub::exclusive_scan_by_key(
+            policy, key_first, key_last, value_first, value_result, init, binary_pred, ::cuda::std::plus<>());
 
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class Init>
-ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result,
-  Init init)
-{
-  return cuda_cub::exclusive_scan_by_key(
-    policy, key_first, key_last, value_first, value_result, init, ::cuda::std::equal_to<>());
-}
+          template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt, class Init>
+          ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
+            execution_policy<Derived> & policy,
+            KeyInputIt key_first,
+            KeyInputIt key_last,
+            ValInputIt value_first,
+            ValOutputIt value_result,
+            Init init)
+          {
+            return cuda_cub::exclusive_scan_by_key(
+              policy, key_first, key_last, value_first, value_result, init, ::cuda::std::equal_to<>());
 
-template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt>
-ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt key_first,
-  KeyInputIt key_last,
-  ValInputIt value_first,
-  ValOutputIt value_result)
-{
-  using value_type = thrust::detail::it_value_t<ValInputIt>;
-  return cuda_cub::exclusive_scan_by_key(policy, key_first, key_last, value_first, value_result, value_type{});
-}
+            template <class Derived, class KeyInputIt, class ValInputIt, class ValOutputIt>
+            ValOutputIt _CCCL_HOST_DEVICE exclusive_scan_by_key(
+              execution_policy<Derived> & policy,
+              KeyInputIt key_first,
+              KeyInputIt key_last,
+              ValInputIt value_first,
+              ValOutputIt value_result)
+            {
+              using value_type = thrust::detail::it_value_t<ValInputIt>;
+              return cuda_cub::exclusive_scan_by_key(
+                policy, key_first, key_last, value_first, value_result, value_type{});
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+            } // namespace cuda_cub
+            THRUST_NAMESPACE_END
 
 #  include <thrust/scan.h>
 

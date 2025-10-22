@@ -54,9 +54,7 @@ _CCCL_DIAG_POP
 #  endif // _CCCL_HAS_NVFP8()
 #endif // THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
 
-namespace c2h
-{
-namespace detail
+namespace c2h::detail
 {
 template <class T>
 class value_wrapper_t
@@ -77,7 +75,6 @@ public:
     return m_val;
   }
 };
-} // namespace detail
 
 struct seed_t : detail::value_wrapper_t<unsigned long long int>
 {
@@ -111,7 +108,6 @@ void gen_values_cyclic(modulo_t mod, ::cuda::std::span<T> data);
 template <typename T>
 std::size_t gen_uniform_offsets(
   seed_t seed, cuda::std::span<T> segment_offsets, T total_elements, T min_segment_size, T max_segment_size);
-} // namespace detail
 
 template <template <typename> class... Ps>
 void gen(seed_t seed,
@@ -126,66 +122,62 @@ void gen(seed_t seed,
     max,
     data.size(),
     sizeof(custom_type_t<Ps...>));
-}
 
-template <typename T>
-void gen(seed_t seed,
-         device_vector<T>& data,
-         T min = ::cuda::std::numeric_limits<T>::lowest(),
-         T max = ::cuda::std::numeric_limits<T>::max())
-{
-  detail::gen_values_between(seed, {THRUST_NS_QUALIFIER::raw_pointer_cast(data.data()), data.size()}, min, max);
-}
+  template <typename T>
+  void gen(seed_t seed,
+           device_vector<T> & data,
+           T min = ::cuda::std::numeric_limits<T>::lowest(),
+           T max = ::cuda::std::numeric_limits<T>::max())
+  {
+    detail::gen_values_between(seed, {THRUST_NS_QUALIFIER::raw_pointer_cast(data.data()), data.size()}, min, max);
 
-template <typename T>
-void gen(modulo_t mod, device_vector<T>& data)
-{
-  detail::gen_values_cyclic(mod, ::cuda::std::span<T>{THRUST_NS_QUALIFIER::raw_pointer_cast(data.data()), data.size()});
-}
+    template <typename T>
+    void gen(modulo_t mod, device_vector<T> & data)
+    {
+      detail::gen_values_cyclic(mod,
+                                ::cuda::std::span<T>{THRUST_NS_QUALIFIER::raw_pointer_cast(data.data()), data.size()});
 
-/**
- * @brief Generates an array of offsets with uniformly distributed segment sizes in the range
- * between [min_segment_size, max_segment_size]. The last offset in the array corresponds to
- * `total_element`. At most `total_element+2` offsets (or `total_elements+1` segments) and, because
- * the very last offset must corresponds to `total_element`, the last segment may comprise more than
- * `max_segment_size` items.
- */
-template <typename T>
-device_vector<T> gen_uniform_offsets(seed_t seed, T total_elements, T min_segment_size, T max_segment_size)
-{
-  device_vector<T> segment_offsets(total_elements + 2);
-  const auto new_size = detail::gen_uniform_offsets(
-    seed,
-    {THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
-    total_elements,
-    min_segment_size,
-    max_segment_size);
-  segment_offsets.resize(new_size);
-  return segment_offsets;
-}
+      /**
+       * @brief Generates an array of offsets with uniformly distributed segment sizes in the range
+       * between [min_segment_size, max_segment_size]. The last offset in the array corresponds to
+       * `total_element`. At most `total_element+2` offsets (or `total_elements+1` segments) and, because
+       * the very last offset must corresponds to `total_element`, the last segment may comprise more than
+       * `max_segment_size` items.
+       */
+      template <typename T>
+      device_vector<T> gen_uniform_offsets(seed_t seed, T total_elements, T min_segment_size, T max_segment_size)
+      {
+        device_vector<T> segment_offsets(total_elements + 2);
+        const auto new_size = detail::gen_uniform_offsets(
+          seed,
+          {THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
+          total_elements,
+          min_segment_size,
+          max_segment_size);
+        segment_offsets.resize(new_size);
+        return segment_offsets;
 
-/**
- * @brief Generates key-segment ranges from an offsets-array like the one given by
- * `gen_uniform_offset`.
- */
-template <typename OffsetT, typename KeyT>
-void init_key_segments(const device_vector<OffsetT>& segment_offsets, device_vector<KeyT>& keys_out)
-{
-  detail::init_key_segments(
-    ::cuda::std::span<const OffsetT>{
-      THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
-    THRUST_NS_QUALIFIER::raw_pointer_cast(keys_out.data()),
-    sizeof(KeyT));
-}
+        /**
+         * @brief Generates key-segment ranges from an offsets-array like the one given by
+         * `gen_uniform_offset`.
+         */
+        template <typename OffsetT, typename KeyT>
+        void init_key_segments(const device_vector<OffsetT>& segment_offsets, device_vector<KeyT>& keys_out)
+        {
+          detail::init_key_segments(
+            ::cuda::std::span<const OffsetT>{
+              THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
+            THRUST_NS_QUALIFIER::raw_pointer_cast(keys_out.data()),
+            sizeof(KeyT));
 
-template <typename OffsetT, template <typename> class... Ps>
-void init_key_segments(const device_vector<OffsetT>& segment_offsets, device_vector<custom_type_t<Ps...>>& keys_out)
-{
-  detail::init_key_segments(
-    ::cuda::std::span<const OffsetT>{
-      THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
-    static_cast<custom_type_state_t*>(THRUST_NS_QUALIFIER::raw_pointer_cast(keys_out.data())),
-    sizeof(custom_type_t<Ps...>));
-}
+          template <typename OffsetT, template <typename> class... Ps>
+          void init_key_segments(const device_vector<OffsetT>& segment_offsets,
+                                 device_vector<custom_type_t<Ps...>>& keys_out)
+          {
+            detail::init_key_segments(
+              ::cuda::std::span<const OffsetT>{
+                THRUST_NS_QUALIFIER::raw_pointer_cast(segment_offsets.data()), segment_offsets.size()},
+              static_cast<custom_type_state_t*>(THRUST_NS_QUALIFIER::raw_pointer_cast(keys_out.data())),
+              sizeof(custom_type_t<Ps...>));
 
-} // namespace c2h
+          } // namespace c2h

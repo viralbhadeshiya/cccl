@@ -39,9 +39,7 @@
 
 #include <cuda_runtime_api.h>
 
-namespace c2h
-{
-namespace detail
+namespace c2h::detail
 {
 
 struct memory_info
@@ -142,7 +140,6 @@ inline cudaError_t checked_cuda_malloc(void** ptr, std::size_t bytes)
 
   return cudaMalloc(ptr, bytes);
 }
-} // namespace detail
 
 using checked_cuda_memory_resource = THRUST_NS_QUALIFIER::system::cuda::detail::
   cuda_memory_resource<detail::checked_cuda_malloc, cudaFree, THRUST_NS_QUALIFIER::cuda::pointer<void>>;
@@ -205,4 +202,4 @@ struct checked_host_memory_resource final : public THRUST_NS_QUALIFIER::mr::new_
 template <typename T>
 using checked_host_allocator = THRUST_NS_QUALIFIER::mr::stateless_resource_allocator<T, checked_host_memory_resource>;
 
-} // namespace c2h
+} // namespace c2h::detail

@@ -61,9 +61,7 @@ THRUST_NAMESPACE_END
 #  include <thrust/system/cuda/detail/find.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-namespace detail
+namespace cuda_cub::detail
 {
 template <class ValueType, class InputIt1, class InputIt2, class BinaryOp>
 struct transform_pair_of_input_iterators_t
@@ -184,7 +182,6 @@ struct transform_pair_of_input_iterators_t
     return input1 < rhs.input1;
   }
 }; // struct transform_pair_of_input_iterators_t
-} // namespace detail
 
 template <class Derived, class InputIt1, class InputIt2, class BinaryPred>
 pair<InputIt1, InputIt2> _CCCL_HOST_DEVICE
@@ -208,16 +205,14 @@ mismatch(execution_policy<Derived>& policy, InputIt1 first1, InputIt1 last1, Inp
   const auto dist         = ::cuda::std::distance(first, mismatch_pos);
   return thrust::make_pair(first1 + dist, first2 + dist);
 #  endif
-}
 
-template <class Derived, class InputIt1, class InputIt2>
-pair<InputIt1, InputIt2> _CCCL_HOST_DEVICE
-mismatch(execution_policy<Derived>& policy, InputIt1 first1, InputIt1 last1, InputIt2 first2)
-{
-  using InputType1 = thrust::detail::it_value_t<InputIt1>;
-  return cuda_cub::mismatch(policy, first1, last1, first2, ::cuda::std::equal_to<InputType1>());
-}
+  template <class Derived, class InputIt1, class InputIt2>
+  pair<InputIt1, InputIt2> _CCCL_HOST_DEVICE mismatch(
+    execution_policy<Derived> & policy, InputIt1 first1, InputIt1 last1, InputIt2 first2)
+  {
+    using InputType1 = thrust::detail::it_value_t<InputIt1>;
+    return cuda_cub::mismatch(policy, first1, last1, first2, ::cuda::std::equal_to<InputType1>());
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+  } // namespace cuda_cub
+  THRUST_NAMESPACE_END
 #endif

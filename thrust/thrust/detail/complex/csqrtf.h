@@ -57,9 +57,7 @@
 #include <cuda/std/limits>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+namespace detail::complex
 {
 
 using thrust::complex;
@@ -161,9 +159,7 @@ _CCCL_HOST_DEVICE inline complex<float> csqrtf(const complex<float>& z)
   }
 }
 
-} // namespace complex
-
-} // namespace detail
+} // namespace detail::complex
 
 template <>
 _CCCL_HOST_DEVICE inline complex<float> sqrt(const complex<float>& z)

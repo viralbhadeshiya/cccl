@@ -28,10 +28,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace random
-{
-
-namespace detail
+namespace random::detail
 {
 
 template <typename T, T a, T c, T m, bool = (m == 0)>
@@ -94,8 +91,6 @@ _CCCL_HOST_DEVICE T mod(T x)
   return f(x);
 } // end static_mod
 
-} // namespace detail
-
-} // namespace random
+} // namespace random::detail
 
 THRUST_NAMESPACE_END

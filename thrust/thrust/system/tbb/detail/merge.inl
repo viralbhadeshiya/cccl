@@ -36,13 +36,7 @@
 #include <tbb/parallel_for.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace merge_detail
+namespace system::tbb::detail::merge_detail
 {
 
 template <typename InputIterator1, typename InputIterator2, typename OutputIterator, typename StrictWeakOrdering>
@@ -127,8 +121,6 @@ struct body
     thrust::merge(thrust::seq, r.first1, r.last1, r.first2, r.last2, r.result, r.comp);
   }
 };
-
-} // end namespace merge_detail
 
 namespace merge_by_key_detail
 {
@@ -249,8 +241,6 @@ struct body
   }
 };
 
-} // end namespace merge_by_key_detail
-
 template <typename DerivedPolicy,
           typename InputIterator1,
           typename InputIterator2,
@@ -275,53 +265,49 @@ merge(execution_policy<DerivedPolicy>&,
   ::cuda::std::advance(result, ::cuda::std::distance(first1, last1) + ::cuda::std::distance(first2, last2));
 
   return result;
-} // end merge()
 
-template <typename DerivedPolicy,
-          typename InputIterator1,
-          typename InputIterator2,
-          typename InputIterator3,
-          typename InputIterator4,
-          typename OutputIterator1,
-          typename OutputIterator2,
-          typename StrictWeakOrdering>
-thrust::pair<OutputIterator1, OutputIterator2> merge_by_key(
-  execution_policy<DerivedPolicy>&,
-  InputIterator1 keys_first1,
-  InputIterator1 keys_last1,
-  InputIterator2 keys_first2,
-  InputIterator2 keys_last2,
-  InputIterator3 values_first3,
-  InputIterator4 values_first4,
-  OutputIterator1 keys_result,
-  OutputIterator2 values_result,
-  StrictWeakOrdering comp)
-{
-  using Range = typename merge_by_key_detail::range<
-    InputIterator1,
-    InputIterator2,
-    InputIterator3,
-    InputIterator4,
-    OutputIterator1,
-    OutputIterator2,
-    StrictWeakOrdering>;
-  using Body = merge_by_key_detail::body;
+  template <typename DerivedPolicy,
+            typename InputIterator1,
+            typename InputIterator2,
+            typename InputIterator3,
+            typename InputIterator4,
+            typename OutputIterator1,
+            typename OutputIterator2,
+            typename StrictWeakOrdering>
+  thrust::pair<OutputIterator1, OutputIterator2> merge_by_key(
+    execution_policy<DerivedPolicy>&,
+    InputIterator1 keys_first1,
+    InputIterator1 keys_last1,
+    InputIterator2 keys_first2,
+    InputIterator2 keys_last2,
+    InputIterator3 values_first3,
+    InputIterator4 values_first4,
+    OutputIterator1 keys_result,
+    OutputIterator2 values_result,
+    StrictWeakOrdering comp)
+  {
+    using Range = typename merge_by_key_detail::range<
+      InputIterator1,
+      InputIterator2,
+      InputIterator3,
+      InputIterator4,
+      OutputIterator1,
+      OutputIterator2,
+      StrictWeakOrdering>;
+    using Body = merge_by_key_detail::body;
 
-  Range range(
-    keys_first1, keys_last1, keys_first2, keys_last2, values_first3, values_first4, keys_result, values_result, comp);
-  Body body;
+    Range range(
+      keys_first1, keys_last1, keys_first2, keys_last2, values_first3, values_first4, keys_result, values_result, comp);
+    Body body;
 
-  ::tbb::parallel_for(range, body);
+    ::tbb::parallel_for(range, body);
 
-  ::cuda::std::advance(keys_result,
-                       ::cuda::std::distance(keys_first1, keys_last1) + ::cuda::std::distance(keys_first2, keys_last2));
-  ::cuda::std::advance(values_result,
-                       ::cuda::std::distance(keys_first1, keys_last1) + ::cuda::std::distance(keys_first2, keys_last2));
+    ::cuda::std::advance(
+      keys_result, ::cuda::std::distance(keys_first1, keys_last1) + ::cuda::std::distance(keys_first2, keys_last2));
+    ::cuda::std::advance(
+      values_result, ::cuda::std::distance(keys_first1, keys_last1) + ::cuda::std::distance(keys_first2, keys_last2));
 
-  return thrust::make_pair(keys_result, values_result);
-}
+    return thrust::make_pair(keys_result, values_result);
 
-} // end namespace detail
-} // end namespace tbb
-} // end namespace system
-THRUST_NAMESPACE_END
+  } // end namespace system
+  THRUST_NAMESPACE_END

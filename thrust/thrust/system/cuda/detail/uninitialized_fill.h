@@ -47,9 +47,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace cuda_cub
-{
-namespace __uninitialized_fill
+namespace cuda_cub::__uninitialized_fill
 {
 template <class Iterator, class T>
 struct functor
@@ -66,7 +64,6 @@ struct functor
     ::new (static_cast<void*>(&out)) value_type(value);
   }
 };
-} // namespace __uninitialized_fill
 
 template <class Derived, class Iterator, class Size, class T>
 Iterator _CCCL_HOST_DEVICE
@@ -87,15 +84,14 @@ uninitialized_fill_n(execution_policy<Derived>& policy, Iterator first, Size cou
     cuda_cub::parallel_for(policy, __uninitialized_fill::functor<Iterator, T>{first, x}, count);
   }
   return first + count;
-}
 
-template <class Derived, class Iterator, class T>
-void _CCCL_HOST_DEVICE uninitialized_fill(execution_policy<Derived>& policy, Iterator first, Iterator last, T const& x)
-{
-  cuda_cub::uninitialized_fill_n(policy, first, ::cuda::std::distance(first, last), x);
-}
+  template <class Derived, class Iterator, class T>
+  void _CCCL_HOST_DEVICE uninitialized_fill(
+    execution_policy<Derived> & policy, Iterator first, Iterator last, T const& x)
+  {
+    cuda_cub::uninitialized_fill_n(policy, first, ::cuda::std::distance(first, last), x);
 
-} // namespace cuda_cub
+  } // namespace cuda_cub
 
-THRUST_NAMESPACE_END
+  THRUST_NAMESPACE_END
 #endif

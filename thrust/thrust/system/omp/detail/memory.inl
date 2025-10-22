@@ -32,11 +32,7 @@
 #include <cuda/std/limits>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
-namespace detail
+namespace system::omp::detail
 {
 
 // XXX circular #inclusion problems cause the compiler to believe that cpp::malloc
@@ -59,8 +55,6 @@ void free_workaround(Tag t, pointer<void> ptr)
   free(t, ptr.get());
 } // end free_workaround()
 
-} // namespace detail
-
 inline pointer<void> malloc(std::size_t n)
 {
   // XXX this is how we'd like to implement this function,
@@ -69,25 +63,21 @@ inline pointer<void> malloc(std::size_t n)
   // return pointer<void>(thrust::system::cpp::malloc(n))
   //
   return detail::malloc_workaround(cpp::tag(), n);
-} // end malloc()
 
-template <typename T>
-pointer<T> malloc(std::size_t n)
-{
-  pointer<void> raw_ptr = thrust::system::omp::malloc(sizeof(T) * n);
-  return pointer<T>(reinterpret_cast<T*>(raw_ptr.get()));
-} // end malloc()
+  template <typename T>
+  pointer<T> malloc(std::size_t n)
+  {
+    pointer<void> raw_ptr = thrust::system::omp::malloc(sizeof(T) * n);
+    return pointer<T>(reinterpret_cast<T*>(raw_ptr.get()));
 
-inline void free(pointer<void> ptr)
-{
-  // XXX this is how we'd like to implement this function,
-  //     if not for circular #inclusion problems:
-  //
-  // thrust::system::cpp::free(ptr)
-  //
-  detail::free_workaround(cpp::tag(), ptr);
-} // end free()
+    inline void free(pointer<void> ptr)
+    {
+      // XXX this is how we'd like to implement this function,
+      //     if not for circular #inclusion problems:
+      //
+      // thrust::system::cpp::free(ptr)
+      //
+      detail::free_workaround(cpp::tag(), ptr);
 
-} // namespace omp
-} // namespace system
-THRUST_NAMESPACE_END
+    } // namespace system
+    THRUST_NAMESPACE_END

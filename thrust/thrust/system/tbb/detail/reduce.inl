@@ -35,13 +35,7 @@
 #include <tbb/parallel_reduce.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace reduce_detail
+namespace system::tbb::detail::reduce_detail
 {
 
 template <typename RandomAccessIterator, typename OutputType, typename BinaryFunction>
@@ -108,8 +102,6 @@ struct body
   }
 }; // end body
 
-} // namespace reduce_detail
-
 template <typename DerivedPolicy, typename InputIterator, typename OutputType, typename BinaryFunction>
 OutputType reduce(
   execution_policy<DerivedPolicy>&, InputIterator begin, InputIterator end, OutputType init, BinaryFunction binary_op)
@@ -129,9 +121,6 @@ OutputType reduce(
     ::tbb::parallel_reduce(::tbb::blocked_range<Size>(0, n), reduce_body);
     return binary_op(init, reduce_body.sum);
   }
-}
 
-} // end namespace detail
-} // end namespace tbb
 } // end namespace system
 THRUST_NAMESPACE_END

@@ -26,9 +26,7 @@
 #include <cuda/std/limits>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+namespace detail::complex
 {
 _CCCL_HOST_DEVICE inline complex<float> cprojf(const complex<float>& z)
 {
@@ -56,9 +54,7 @@ _CCCL_HOST_DEVICE inline complex<double> cproj(const complex<double>& z)
   }
 }
 
-} // namespace complex
-
-} // namespace detail
+} // namespace detail::complex
 
 template <typename T>
 _CCCL_HOST_DEVICE inline thrust::complex<T> proj(const thrust::complex<T>& z)

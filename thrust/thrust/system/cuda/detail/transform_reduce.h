@@ -58,10 +58,7 @@
 #  include <cuda/std/cstdint>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-
-namespace detail
+namespace cuda_cub::detail
 {
 
 template <typename Derived, typename InputIt, typename Size, typename UnaryOp, typename T, typename BinaryOp>
@@ -121,8 +118,6 @@ THRUST_RUNTIME_FUNCTION T transform_reduce_n_impl(
   return thrust::cuda_cub::get_value(policy, thrust::detail::aligned_reinterpret_cast<T*>(tmp.data().get()));
 }
 
-} // namespace detail
-
 _CCCL_EXEC_CHECK_DISABLE
 template <class Derived, class InputIt, class TransformOp, class T, class ReduceOp>
 T _CCCL_HOST_DEVICE transform_reduce(
@@ -136,7 +131,6 @@ T _CCCL_HOST_DEVICE transform_reduce(
     (init = thrust::transform_reduce(
        cvt_to_seq(derived_cast(policy)), first, first + num_items, transform_op, init, reduce_op);));
   return init;
-}
 
 } // namespace cuda_cub
 THRUST_NAMESPACE_END

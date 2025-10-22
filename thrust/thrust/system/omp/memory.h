@@ -37,9 +37,7 @@
 #include <ostream>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
+namespace system::omp
 {
 
 /*! Allocates an area of memory available to Thrust's <tt>omp</tt> system.
@@ -91,8 +89,7 @@ using universal_allocator = thrust::mr::stateless_resource_allocator<T, thrust::
 template <typename T>
 using universal_host_pinned_allocator =
   thrust::mr::stateless_resource_allocator<T, thrust::system::omp::universal_host_pinned_memory_resource>;
-} // namespace omp
-} // namespace system
+} // namespace system::omp
 
 /*! \namespace thrust::omp
  *  \brief \p thrust::omp is a top-level alias for thrust::system::omp.

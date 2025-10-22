@@ -95,9 +95,7 @@
 #include <cuda/std/cmath>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+namespace detail::complex
 {
 
 using thrust::complex;
@@ -176,9 +174,7 @@ _CCCL_HOST_DEVICE inline complex<double> ctan(complex<double> z)
   return (complex<double>(z.imag(), -z.real()));
 }
 
-} // namespace complex
-
-} // namespace detail
+} // namespace detail::complex
 
 template <typename ValueType>
 _CCCL_HOST_DEVICE inline complex<ValueType> tan(const complex<ValueType>& z)

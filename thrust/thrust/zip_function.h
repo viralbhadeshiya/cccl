@@ -34,9 +34,7 @@ THRUST_NAMESPACE_BEGIN
  *  \{
  */
 
-namespace detail
-{
-namespace zip_detail
+namespace detail::zip_detail
 {
 
 // Add workaround for decltype(auto) on C++11-only compilers:
@@ -54,8 +52,7 @@ _CCCL_HOST_DEVICE decltype(auto) apply(Function&& func, Tuple&& args)
   return apply_impl(THRUST_FWD(func), THRUST_FWD(args), make_index_sequence<tuple_size>{});
 }
 
-} // namespace zip_detail
-} // namespace detail
+} // namespace detail::zip_detail
 
 /*! \p zip_function is a function object that allows the easy use of N-ary
  *  function objects with \p zip_iterators without redefining them to take a

@@ -56,9 +56,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace cuda_cub
-{
-namespace __transform
+namespace cuda_cub::__transform
 {
 template <class InputIt, class OutputIt, class StencilIt, class TransformOp, class Predicate>
 struct unary_transform_f
@@ -227,7 +225,6 @@ struct raw_reference_cast_args
     return f(raw_reference_cast(::cuda::std::forward<Ts>(args))...);
   }
 };
-} // namespace __transform
 
 //  one input data stream
 
@@ -240,190 +237,194 @@ transform(execution_policy<Derived>& policy, InputIt first, InputIt last, Output
               policy, ::cuda::std::make_tuple(first), result, ::cuda::std::distance(first, last), transform_op);),
     (return ::cuda::std::transform(
               first, last, result, __transform::raw_reference_cast_args<TransformOp>{transform_op});));
-}
 
-template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_n(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  ::cuda::std::iter_difference_t<InputIt> num_items,
-  OutputIt result,
-  TransformOp transform_op)
-{
-  THRUST_CDP_DISPATCH(
-    (return __transform::cub_transform_many(policy, ::cuda::std::make_tuple(first), result, num_items, transform_op);),
-    (return ::cuda::std::transform(
-              first, first + num_items, result, __transform::raw_reference_cast_args<TransformOp>{transform_op});));
-}
+  template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp>
+  _CCCL_API _CCCL_FORCEINLINE OutputIt transform_n(
+    execution_policy<Derived> & policy,
+    InputIt first,
+    ::cuda::std::iter_difference_t<InputIt> num_items,
+    OutputIt result,
+    TransformOp transform_op)
+  {
+    THRUST_CDP_DISPATCH(
+      (return __transform::cub_transform_many(policy, ::cuda::std::make_tuple(first), result, num_items, transform_op);),
+      (return ::cuda::std::transform(
+                first, first + num_items, result, __transform::raw_reference_cast_args<TransformOp>{transform_op});));
 
-template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp, typename Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  InputIt last,
-  OutputIt result,
-  TransformOp transform_op,
-  Predicate predicate)
-{
-  THRUST_CDP_DISPATCH(
-    (return __transform::cub_transform_many(
-              policy,
-              ::cuda::std::make_tuple(first),
-              result,
-              ::cuda::std::distance(first, last),
-              transform_op,
-              predicate);),
-    (while (first != last) {
-      if (predicate(raw_reference_cast(*first)))
+    template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp, typename Predicate>
+    _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
+      execution_policy<Derived> & policy,
+      InputIt first,
+      InputIt last,
+      OutputIt result,
+      TransformOp transform_op,
+      Predicate predicate)
+    {
+      THRUST_CDP_DISPATCH(
+        (return __transform::cub_transform_many(
+                  policy,
+                  ::cuda::std::make_tuple(first),
+                  result,
+                  ::cuda::std::distance(first, last),
+                  transform_op,
+                  predicate);),
+        (while (first != last) {
+          if (predicate(raw_reference_cast(*first)))
+          {
+            *result = transform_op(raw_reference_cast(*first));
+          }
+          ++first;
+          ++result;
+        } return result;));
+
+      template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp, typename Predicate>
+      _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
+        execution_policy<Derived> & policy,
+        InputIt first,
+        ::cuda::std::iter_difference_t<InputIt> num_items,
+        OutputIt result,
+        TransformOp transform_op,
+        Predicate predicate)
       {
-        *result = transform_op(raw_reference_cast(*first));
-      }
-      ++first;
-      ++result;
-    } return result;));
-}
+        THRUST_CDP_DISPATCH(
+          (return __transform::cub_transform_many(
+                    policy, ::cuda::std::make_tuple(first), result, num_items, transform_op, predicate);),
+          (for (decltype(num_items) i = 0; i < num_items; i++) {
+            if (predicate(raw_reference_cast(*first)))
+            {
+              *result = transform_op(raw_reference_cast(*first));
+            }
+            ++first;
+            ++result;
+          } return result;));
 
-template <typename Derived, typename InputIt, typename OutputIt, typename TransformOp, typename Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  ::cuda::std::iter_difference_t<InputIt> num_items,
-  OutputIt result,
-  TransformOp transform_op,
-  Predicate predicate)
-{
-  THRUST_CDP_DISPATCH((return __transform::cub_transform_many(
-                                policy, ::cuda::std::make_tuple(first), result, num_items, transform_op, predicate);),
-                      (for (decltype(num_items) i = 0; i < num_items; i++) {
-                        if (predicate(raw_reference_cast(*first)))
-                        {
-                          *result = transform_op(raw_reference_cast(*first));
-                        }
-                        ++first;
-                        ++result;
-                      } return result;));
-}
+        //  one input data stream + stencil
 
-//  one input data stream + stencil
+        template <class Derived, class InputIt, class OutputIt, class StencilInputIt, class TransformOp, class Predicate>
+        _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
+          execution_policy<Derived> & policy,
+          InputIt first,
+          InputIt last,
+          StencilInputIt stencil,
+          OutputIt result,
+          TransformOp transform_op,
+          Predicate predicate)
+        {
+          return __transform::unary_if_with_stencil(
+            policy, first, result, ::cuda::std::distance(first, last), stencil, transform_op, predicate);
 
-template <class Derived, class InputIt, class OutputIt, class StencilInputIt, class TransformOp, class Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  InputIt last,
-  StencilInputIt stencil,
-  OutputIt result,
-  TransformOp transform_op,
-  Predicate predicate)
-{
-  return __transform::unary_if_with_stencil(
-    policy, first, result, ::cuda::std::distance(first, last), stencil, transform_op, predicate);
-}
+          template <typename Derived,
+                    typename InputIt,
+                    typename StencilInputIt,
+                    typename OutputIt,
+                    typename TransformOp,
+                    typename Predicate>
+          _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
+            execution_policy<Derived> & policy,
+            InputIt first,
+            ::cuda::std::iter_difference_t<InputIt> num_items,
+            StencilInputIt stencil,
+            OutputIt result,
+            TransformOp transform_op,
+            Predicate predicate)
+          {
+            return __transform::unary_if_with_stencil(
+              policy, first, result, num_items, stencil, transform_op, predicate);
 
-template <typename Derived,
-          typename InputIt,
-          typename StencilInputIt,
-          typename OutputIt,
-          typename TransformOp,
-          typename Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  ::cuda::std::iter_difference_t<InputIt> num_items,
-  StencilInputIt stencil,
-  OutputIt result,
-  TransformOp transform_op,
-  Predicate predicate)
-{
-  return __transform::unary_if_with_stencil(policy, first, result, num_items, stencil, transform_op, predicate);
-}
+            // two input data streams
 
-// two input data streams
+            template <typename Derived, typename InputIt1, typename InputIt2, typename OutputIt, typename BinaryTransformOp>
+            _CCCL_API _CCCL_FORCEINLINE OutputIt transform(
+              execution_policy<Derived> & policy,
+              InputIt1 first1,
+              InputIt1 last1,
+              InputIt2 first2,
+              OutputIt result,
+              BinaryTransformOp transform_op)
+            {
+              THRUST_CDP_DISPATCH(
+                (return __transform::cub_transform_many(
+                          policy,
+                          ::cuda::std::make_tuple(first1, first2),
+                          result,
+                          ::cuda::std::distance(first1, last1),
+                          transform_op);),
+                (return ::cuda::std::transform(
+                          first1,
+                          last1,
+                          first2,
+                          result,
+                          __transform::raw_reference_cast_args<BinaryTransformOp>{transform_op});));
 
-template <typename Derived, typename InputIt1, typename InputIt2, typename OutputIt, typename BinaryTransformOp>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform(
-  execution_policy<Derived>& policy,
-  InputIt1 first1,
-  InputIt1 last1,
-  InputIt2 first2,
-  OutputIt result,
-  BinaryTransformOp transform_op)
-{
-  THRUST_CDP_DISPATCH(
-    (return __transform::cub_transform_many(
-              policy,
-              ::cuda::std::make_tuple(first1, first2),
-              result,
-              ::cuda::std::distance(first1, last1),
-              transform_op);),
-    (return ::cuda::std::transform(
-              first1, last1, first2, result, __transform::raw_reference_cast_args<BinaryTransformOp>{transform_op});));
-}
+              template <typename Derived, typename InputIt1, typename InputIt2, typename OutputIt, typename BinaryTransformOp>
+              _CCCL_API _CCCL_FORCEINLINE OutputIt transform_n(
+                execution_policy<Derived> & policy,
+                InputIt1 first1,
+                ::cuda::std::iter_difference_t<InputIt1> num_items,
+                InputIt2 first2,
+                OutputIt result,
+                BinaryTransformOp transform_op)
+              {
+                THRUST_CDP_DISPATCH(
+                  (return __transform::cub_transform_many(
+                            policy, ::cuda::std::make_tuple(first1, first2), result, num_items, transform_op);),
+                  (return ::cuda::std::transform(
+                            first1,
+                            first1 + num_items,
+                            first2,
+                            result,
+                            __transform::raw_reference_cast_args<BinaryTransformOp>{transform_op});));
 
-template <typename Derived, typename InputIt1, typename InputIt2, typename OutputIt, typename BinaryTransformOp>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_n(
-  execution_policy<Derived>& policy,
-  InputIt1 first1,
-  ::cuda::std::iter_difference_t<InputIt1> num_items,
-  InputIt2 first2,
-  OutputIt result,
-  BinaryTransformOp transform_op)
-{
-  THRUST_CDP_DISPATCH(
-    (return __transform::cub_transform_many(
-              policy, ::cuda::std::make_tuple(first1, first2), result, num_items, transform_op);),
-    (return ::cuda::std::transform(first1,
-                                   first1 + num_items,
-                                   first2,
-                                   result,
-                                   __transform::raw_reference_cast_args<BinaryTransformOp>{transform_op});));
-}
+                // two input data streams + stencil
 
-// two input data streams + stencil
+                template <typename Derived,
+                          typename InputIt1,
+                          typename InputIt2,
+                          typename StencilInputIt,
+                          typename OutputIt,
+                          typename BinaryTransformOp,
+                          typename Predicate>
+                _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
+                  execution_policy<Derived> & policy,
+                  InputIt1 first1,
+                  InputIt1 last1,
+                  InputIt2 first2,
+                  StencilInputIt stencil,
+                  OutputIt result,
+                  BinaryTransformOp transform_op,
+                  Predicate predicate)
+                {
+                  return __transform::binary_if_with_stencil(
+                    policy,
+                    first1,
+                    first2,
+                    result,
+                    ::cuda::std::distance(first1, last1),
+                    stencil,
+                    transform_op,
+                    predicate);
 
-template <typename Derived,
-          typename InputIt1,
-          typename InputIt2,
-          typename StencilInputIt,
-          typename OutputIt,
-          typename BinaryTransformOp,
-          typename Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if(
-  execution_policy<Derived>& policy,
-  InputIt1 first1,
-  InputIt1 last1,
-  InputIt2 first2,
-  StencilInputIt stencil,
-  OutputIt result,
-  BinaryTransformOp transform_op,
-  Predicate predicate)
-{
-  return __transform::binary_if_with_stencil(
-    policy, first1, first2, result, ::cuda::std::distance(first1, last1), stencil, transform_op, predicate);
-}
+                  template <typename Derived,
+                            typename InputIt1,
+                            typename InputIt2,
+                            typename StencilInputIt,
+                            typename OutputIt,
+                            typename BinaryTransformOp,
+                            typename Predicate>
+                  _CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
+                    execution_policy<Derived> & policy,
+                    InputIt1 first1,
+                    ::cuda::std::iter_difference_t<InputIt1> num_items,
+                    InputIt2 first2,
+                    StencilInputIt stencil,
+                    OutputIt result,
+                    BinaryTransformOp transform_op,
+                    Predicate predicate)
+                  {
+                    return __transform::binary_if_with_stencil(
+                      policy, first1, first2, result, num_items, stencil, transform_op, predicate);
 
-template <typename Derived,
-          typename InputIt1,
-          typename InputIt2,
-          typename StencilInputIt,
-          typename OutputIt,
-          typename BinaryTransformOp,
-          typename Predicate>
-_CCCL_API _CCCL_FORCEINLINE OutputIt transform_if_n(
-  execution_policy<Derived>& policy,
-  InputIt1 first1,
-  ::cuda::std::iter_difference_t<InputIt1> num_items,
-  InputIt2 first2,
-  StencilInputIt stencil,
-  OutputIt result,
-  BinaryTransformOp transform_op,
-  Predicate predicate)
-{
-  return __transform::binary_if_with_stencil(
-    policy, first1, first2, result, num_items, stencil, transform_op, predicate);
-}
+                  } // namespace cuda_cub
 
-} // namespace cuda_cub
-
-THRUST_NAMESPACE_END
+                  THRUST_NAMESPACE_END
 #endif

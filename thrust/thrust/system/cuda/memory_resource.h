@@ -39,9 +39,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace system
-{
-namespace cuda
+namespace system::cuda
 {
 
 //! \cond
@@ -109,8 +107,7 @@ using universal_memory_resource = detail::managed_memory_resource;
  */
 using universal_host_pinned_memory_resource = detail::pinned_memory_resource;
 
-} // namespace cuda
-} // namespace system
+} // namespace system::cuda
 
 namespace cuda
 {

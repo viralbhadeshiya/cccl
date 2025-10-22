@@ -36,16 +36,13 @@
 #  include <nv/target>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-namespace detail
+namespace cuda_cub::detail
 {
 template <typename T, typename U>
 CCCL_DETAIL_KERNEL_ATTRIBUTES void assign_value_kernel(T* dst, const U* src)
 {
   *dst = *src;
 }
-} // namespace detail
 
 template <typename DerivedPolicy, typename Pointer1, typename Pointer2>
 _CCCL_HOST_DEVICE void assign_value(execution_policy<DerivedPolicy>& exec, Pointer1 dst, Pointer2 src)
@@ -84,41 +81,38 @@ _CCCL_HOST_DEVICE void assign_value(execution_policy<DerivedPolicy>& exec, Point
                (HostPath{exec, dst, src}();),
                // on device, simply assign
                *thrust::raw_pointer_cast(dst) = *thrust::raw_pointer_cast(src););
-}
 
-namespace detail
-{
-struct cross_system_assign_host_path
-{
-  // device -> host copy executed from host
-  template <typename System1, typename DerivedPolicy2, typename Pointer1, typename Pointer2>
-  _CCCL_HOST void operator()(System1&, execution_policy<DerivedPolicy2>& system2, Pointer1 dst, Pointer2 src)
+  namespace detail
   {
-    thrust::detail::it_value_t<Pointer2> copy_dst;
-    const cudaError status = trivial_copy_from_device(&copy_dst, raw_pointer_cast(src), 1, stream(system2));
-    *dst                   = copy_dst; // may convert type
-    throw_on_error(status, "__copy:: D->H: failed");
-  }
-
-  // host -> device copy executed from host
-  template <typename DerivedPolicy1, typename System2, typename Pointer1, typename Pointer2>
-  _CCCL_HOST void operator()(execution_policy<DerivedPolicy1>& system1, System2&, Pointer1 dst, Pointer2 src)
+  struct cross_system_assign_host_path
   {
-    thrust::detail::it_value_t<Pointer1> copy_src = *src; // may convert type
-    const cudaError status = trivial_copy_to_device(raw_pointer_cast(dst), &copy_src, 1, stream(system1));
-    throw_on_error(status, "__copy:: H->D: failed");
-  }
-};
-} // namespace detail
+    // device -> host copy executed from host
+    template <typename System1, typename DerivedPolicy2, typename Pointer1, typename Pointer2>
+    _CCCL_HOST void operator()(System1&, execution_policy<DerivedPolicy2>& system2, Pointer1 dst, Pointer2 src)
+    {
+      thrust::detail::it_value_t<Pointer2> copy_dst;
+      const cudaError status = trivial_copy_from_device(&copy_dst, raw_pointer_cast(src), 1, stream(system2));
+      *dst                   = copy_dst; // may convert type
+      throw_on_error(status, "__copy:: D->H: failed");
+    }
 
-template <typename System1, typename System2, typename Pointer1, typename Pointer2>
-_CCCL_HOST_DEVICE void assign_value(cross_system<System1, System2>& systems, Pointer1 dst, Pointer2 src)
-{
-  NV_IF_TARGET(NV_IS_HOST,
-               (detail::cross_system_assign_host_path{}(
-                  thrust::detail::derived_cast(systems.sys1), thrust::detail::derived_cast(systems.sys2), dst, src);),
-               (*thrust::raw_pointer_cast(dst) = *thrust::raw_pointer_cast(src);));
-}
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+    // host -> device copy executed from host
+    template <typename DerivedPolicy1, typename System2, typename Pointer1, typename Pointer2>
+    _CCCL_HOST void operator()(execution_policy<DerivedPolicy1>& system1, System2&, Pointer1 dst, Pointer2 src)
+    {
+      thrust::detail::it_value_t<Pointer1> copy_src = *src; // may convert type
+      const cudaError status = trivial_copy_to_device(raw_pointer_cast(dst), &copy_src, 1, stream(system1));
+      throw_on_error(status, "__copy:: H->D: failed");
+    }
+  };
+
+  template <typename System1, typename System2, typename Pointer1, typename Pointer2>
+  _CCCL_HOST_DEVICE void assign_value(cross_system<System1, System2>& systems, Pointer1 dst, Pointer2 src)
+  {
+    NV_IF_TARGET(NV_IS_HOST,
+                 (detail::cross_system_assign_host_path{}(
+                    thrust::detail::derived_cast(systems.sys1), thrust::detail::derived_cast(systems.sys2), dst, src);),
+                 (*thrust::raw_pointer_cast(dst) = *thrust::raw_pointer_cast(src);));
+  } // namespace cuda_cub
+  THRUST_NAMESPACE_END
 #endif

@@ -167,17 +167,11 @@ struct EnabledBorrowingEndMember
     return &globalBuff[0];
   }
 };
-namespace cuda
-{
-namespace std
-{
-namespace ranges
+namespace cuda::std::ranges
 {
 template <>
 inline constexpr bool enable_borrowed_range<EnabledBorrowingEndMember> = true;
-}
-} // namespace std
-} // namespace cuda
+} // namespace cuda::std::ranges
 struct EndMemberFunction
 {
   int x;
@@ -319,17 +313,11 @@ struct EndFunctionEnabledBorrowing
     return &globalBuff[2];
   }
 };
-namespace cuda
-{
-namespace std
-{
-namespace ranges
+namespace cuda::std::ranges
 {
 template <>
 inline constexpr bool enable_borrowed_range<EndFunctionEnabledBorrowing> = true;
-}
-} // namespace std
-} // namespace cuda
+} // namespace cuda::std::ranges
 
 struct EndFunctionReturnsEmptyPtr
 {

@@ -60,10 +60,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace cuda_cub
-{
-
-namespace __set_operations
+namespace cuda_cub::__set_operations
 {
 
 template <bool UpperBound, class IntT, class Size, class It, class T, class Comp>
@@ -1228,7 +1225,6 @@ THRUST_RUNTIME_FUNCTION pair<KeysOutputIt, ValuesOutputIt> set_operations(
 
   return thrust::make_pair(keys_output + output_count, values_output + output_count);
 }
-} // namespace __set_operations
 
 //-------------------------
 // Thrust API entry points
@@ -1263,473 +1259,493 @@ OutputIt _CCCL_HOST_DEVICE set_difference(
     (result = thrust::set_difference(
        cvt_to_seq(derived_cast(policy)), items1_first, items1_last, items2_first, items2_last, result, compare);));
   return result;
-}
 
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
-OutputIt _CCCL_HOST_DEVICE set_difference(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result)
-{
-  using value_type = thrust::detail::it_value_t<ItemsIt1>;
-  return cuda_cub::set_difference(
-    policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
-}
+  template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
+  OutputIt _CCCL_HOST_DEVICE set_difference(
+    execution_policy<Derived> & policy,
+    ItemsIt1 items1_first,
+    ItemsIt1 items1_last,
+    ItemsIt2 items2_first,
+    ItemsIt2 items2_last,
+    OutputIt result)
+  {
+    using value_type = thrust::detail::it_value_t<ItemsIt1>;
+    return cuda_cub::set_difference(
+      policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
 
-/*****************************/
+    /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
-OutputIt _CCCL_HOST_DEVICE set_intersection(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result,
-  CompareOp compare)
-{
-  THRUST_CDP_DISPATCH(
-    (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
-     auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
-       policy,
-       items1_first,
-       items1_last,
-       items2_first,
-       items2_last,
-       null_,
-       null_,
-       result,
-       null_,
-       compare,
-       __set_operations::serial_set_intersection());
-     result = tmp.first;),
-    (result = thrust::set_intersection(
-       cvt_to_seq(derived_cast(policy)), items1_first, items1_last, items2_first, items2_last, result, compare);));
-  return result;
-}
+    _CCCL_EXEC_CHECK_DISABLE
+    template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
+    OutputIt _CCCL_HOST_DEVICE set_intersection(
+      execution_policy<Derived> & policy,
+      ItemsIt1 items1_first,
+      ItemsIt1 items1_last,
+      ItemsIt2 items2_first,
+      ItemsIt2 items2_last,
+      OutputIt result,
+      CompareOp compare)
+    {
+      THRUST_CDP_DISPATCH(
+        (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
+         auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
+           policy,
+           items1_first,
+           items1_last,
+           items2_first,
+           items2_last,
+           null_,
+           null_,
+           result,
+           null_,
+           compare,
+           __set_operations::serial_set_intersection());
+         result = tmp.first;),
+        (result = thrust::set_intersection(
+           cvt_to_seq(derived_cast(policy)), items1_first, items1_last, items2_first, items2_last, result, compare);));
+      return result;
 
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
-OutputIt _CCCL_HOST_DEVICE set_intersection(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result)
-{
-  using value_type = thrust::detail::it_value_t<ItemsIt1>;
-  return cuda_cub::set_intersection(
-    policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
-}
+      template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
+      OutputIt _CCCL_HOST_DEVICE set_intersection(
+        execution_policy<Derived> & policy,
+        ItemsIt1 items1_first,
+        ItemsIt1 items1_last,
+        ItemsIt2 items2_first,
+        ItemsIt2 items2_last,
+        OutputIt result)
+      {
+        using value_type = thrust::detail::it_value_t<ItemsIt1>;
+        return cuda_cub::set_intersection(
+          policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
 
-/*****************************/
+        /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
-OutputIt _CCCL_HOST_DEVICE set_symmetric_difference(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result,
-  CompareOp compare)
-{
-  THRUST_CDP_DISPATCH(
-    (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
-     auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
-       policy,
-       items1_first,
-       items1_last,
-       items2_first,
-       items2_last,
-       null_,
-       null_,
-       result,
-       null_,
-       compare,
-       __set_operations::serial_set_symmetric_difference());
-     result = tmp.first;),
-    (result = thrust::set_symmetric_difference(
-       cvt_to_seq(derived_cast(policy)), items1_first, items1_last, items2_first, items2_last, result, compare);));
-  return result;
-}
+        _CCCL_EXEC_CHECK_DISABLE
+        template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
+        OutputIt _CCCL_HOST_DEVICE set_symmetric_difference(
+          execution_policy<Derived> & policy,
+          ItemsIt1 items1_first,
+          ItemsIt1 items1_last,
+          ItemsIt2 items2_first,
+          ItemsIt2 items2_last,
+          OutputIt result,
+          CompareOp compare)
+        {
+          THRUST_CDP_DISPATCH(
+            (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
+             auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
+               policy,
+               items1_first,
+               items1_last,
+               items2_first,
+               items2_last,
+               null_,
+               null_,
+               result,
+               null_,
+               compare,
+               __set_operations::serial_set_symmetric_difference());
+             result = tmp.first;),
+            (result = thrust::set_symmetric_difference(
+               cvt_to_seq(derived_cast(policy)),
+               items1_first,
+               items1_last,
+               items2_first,
+               items2_last,
+               result,
+               compare);));
+          return result;
 
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
-OutputIt _CCCL_HOST_DEVICE set_symmetric_difference(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result)
-{
-  using value_type = thrust::detail::it_value_t<ItemsIt1>;
-  return cuda_cub::set_symmetric_difference(
-    policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
-}
+          template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
+          OutputIt _CCCL_HOST_DEVICE set_symmetric_difference(
+            execution_policy<Derived> & policy,
+            ItemsIt1 items1_first,
+            ItemsIt1 items1_last,
+            ItemsIt2 items2_first,
+            ItemsIt2 items2_last,
+            OutputIt result)
+          {
+            using value_type = thrust::detail::it_value_t<ItemsIt1>;
+            return cuda_cub::set_symmetric_difference(
+              policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
 
-/*****************************/
+            /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
-OutputIt _CCCL_HOST_DEVICE set_union(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result,
-  CompareOp compare)
-{
-  THRUST_CDP_DISPATCH(
-    (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
-     auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
-       policy,
-       items1_first,
-       items1_last,
-       items2_first,
-       items2_last,
-       null_,
-       null_,
-       result,
-       null_,
-       compare,
-       __set_operations::serial_set_union());
-     result = tmp.first;),
-    (result = thrust::set_union(
-       cvt_to_seq(derived_cast(policy)), items1_first, items1_last, items2_first, items2_last, result, compare);));
-  return result;
-}
+            _CCCL_EXEC_CHECK_DISABLE
+            template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt, class CompareOp>
+            OutputIt _CCCL_HOST_DEVICE set_union(
+              execution_policy<Derived> & policy,
+              ItemsIt1 items1_first,
+              ItemsIt1 items1_last,
+              ItemsIt2 items2_first,
+              ItemsIt2 items2_last,
+              OutputIt result,
+              CompareOp compare)
+            {
+              THRUST_CDP_DISPATCH(
+                (using items1_t = thrust::detail::it_value_t<ItemsIt1>; items1_t* null_ = nullptr;
+                 auto tmp = __set_operations::set_operations<thrust::detail::false_type>(
+                   policy,
+                   items1_first,
+                   items1_last,
+                   items2_first,
+                   items2_last,
+                   null_,
+                   null_,
+                   result,
+                   null_,
+                   compare,
+                   __set_operations::serial_set_union());
+                 result = tmp.first;),
+                (result = thrust::set_union(
+                   cvt_to_seq(derived_cast(policy)),
+                   items1_first,
+                   items1_last,
+                   items2_first,
+                   items2_last,
+                   result,
+                   compare);));
+              return result;
 
-template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
-OutputIt _CCCL_HOST_DEVICE set_union(
-  execution_policy<Derived>& policy,
-  ItemsIt1 items1_first,
-  ItemsIt1 items1_last,
-  ItemsIt2 items2_first,
-  ItemsIt2 items2_last,
-  OutputIt result)
-{
-  using value_type = thrust::detail::it_value_t<ItemsIt1>;
-  return cuda_cub::set_union(
-    policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
-}
+              template <class Derived, class ItemsIt1, class ItemsIt2, class OutputIt>
+              OutputIt _CCCL_HOST_DEVICE set_union(
+                execution_policy<Derived> & policy,
+                ItemsIt1 items1_first,
+                ItemsIt1 items1_last,
+                ItemsIt2 items2_first,
+                ItemsIt2 items2_last,
+                OutputIt result)
+              {
+                using value_type = thrust::detail::it_value_t<ItemsIt1>;
+                return cuda_cub::set_union(
+                  policy, items1_first, items1_last, items2_first, items2_last, result, ::cuda::std::less<value_type>());
 
-/*****************************/
-/*****************************/
-/*****     *_by_key      *****/
-/*****************************/
-/*****************************/
+                /*****************************/
+                /*****************************/
+                /*****     *_by_key      *****/
+                /*****************************/
+                /*****************************/
 
-/*****************************/
+                /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived,
-          class KeysIt1,
-          class KeysIt2,
-          class ItemsIt1,
-          class ItemsIt2,
-          class KeysOutputIt,
-          class ItemsOutputIt,
-          class CompareOp>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_difference_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result,
-  CompareOp compare_op)
-{
-  auto ret = thrust::make_pair(keys_result, items_result);
-  THRUST_CDP_DISPATCH(
-    (ret = __set_operations::set_operations<thrust::detail::true_type>(
-       policy,
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op,
-       __set_operations::serial_set_difference());),
-    (ret = thrust::set_difference_by_key(
-       cvt_to_seq(derived_cast(policy)),
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op);));
-  return ret;
-}
+                _CCCL_EXEC_CHECK_DISABLE
+                template <class Derived,
+                          class KeysIt1,
+                          class KeysIt2,
+                          class ItemsIt1,
+                          class ItemsIt2,
+                          class KeysOutputIt,
+                          class ItemsOutputIt,
+                          class CompareOp>
+                pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_difference_by_key(
+                  execution_policy<Derived> & policy,
+                  KeysIt1 keys1_first,
+                  KeysIt1 keys1_last,
+                  KeysIt2 keys2_first,
+                  KeysIt2 keys2_last,
+                  ItemsIt1 items1_first,
+                  ItemsIt2 items2_first,
+                  KeysOutputIt keys_result,
+                  ItemsOutputIt items_result,
+                  CompareOp compare_op)
+                {
+                  auto ret = thrust::make_pair(keys_result, items_result);
+                  THRUST_CDP_DISPATCH(
+                    (ret = __set_operations::set_operations<thrust::detail::true_type>(
+                       policy,
+                       keys1_first,
+                       keys1_last,
+                       keys2_first,
+                       keys2_last,
+                       items1_first,
+                       items2_first,
+                       keys_result,
+                       items_result,
+                       compare_op,
+                       __set_operations::serial_set_difference());),
+                    (ret = thrust::set_difference_by_key(
+                       cvt_to_seq(derived_cast(policy)),
+                       keys1_first,
+                       keys1_last,
+                       keys2_first,
+                       keys2_last,
+                       items1_first,
+                       items2_first,
+                       keys_result,
+                       items_result,
+                       compare_op);));
+                  return ret;
 
-template <class Derived, class KeysIt1, class KeysIt2, class ItemsIt1, class ItemsIt2, class KeysOutputIt, class ItemsOutputIt>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_difference_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result)
-{
-  using value_type = thrust::detail::it_value_t<KeysIt1>;
-  return cuda_cub::set_difference_by_key(
-    policy,
-    keys1_first,
-    keys1_last,
-    keys2_first,
-    keys2_last,
-    items1_first,
-    items2_first,
-    keys_result,
-    items_result,
-    ::cuda::std::less<value_type>());
-}
+                  template <class Derived,
+                            class KeysIt1,
+                            class KeysIt2,
+                            class ItemsIt1,
+                            class ItemsIt2,
+                            class KeysOutputIt,
+                            class ItemsOutputIt>
+                  pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_difference_by_key(
+                    execution_policy<Derived> & policy,
+                    KeysIt1 keys1_first,
+                    KeysIt1 keys1_last,
+                    KeysIt2 keys2_first,
+                    KeysIt2 keys2_last,
+                    ItemsIt1 items1_first,
+                    ItemsIt2 items2_first,
+                    KeysOutputIt keys_result,
+                    ItemsOutputIt items_result)
+                  {
+                    using value_type = thrust::detail::it_value_t<KeysIt1>;
+                    return cuda_cub::set_difference_by_key(
+                      policy,
+                      keys1_first,
+                      keys1_last,
+                      keys2_first,
+                      keys2_last,
+                      items1_first,
+                      items2_first,
+                      keys_result,
+                      items_result,
+                      ::cuda::std::less<value_type>());
 
-/*****************************/
+                    /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived,
-          class KeysIt1,
-          class KeysIt2,
-          class ItemsIt1,
-          class ItemsIt2,
-          class KeysOutputIt,
-          class ItemsOutputIt,
-          class CompareOp>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_intersection_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result,
-  CompareOp compare_op)
-{
-  auto ret = thrust::make_pair(keys_result, items_result);
-  THRUST_CDP_DISPATCH(
-    (ret = __set_operations::set_operations<thrust::detail::true_type>(
-       policy,
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items1_first,
-       keys_result,
-       items_result,
-       compare_op,
-       __set_operations::serial_set_intersection());),
-    (ret = thrust::set_intersection_by_key(
-       cvt_to_seq(derived_cast(policy)),
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       keys_result,
-       items_result,
-       compare_op);));
-  return ret;
-}
+                    _CCCL_EXEC_CHECK_DISABLE
+                    template <class Derived,
+                              class KeysIt1,
+                              class KeysIt2,
+                              class ItemsIt1,
+                              class ItemsIt2,
+                              class KeysOutputIt,
+                              class ItemsOutputIt,
+                              class CompareOp>
+                    pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_intersection_by_key(
+                      execution_policy<Derived> & policy,
+                      KeysIt1 keys1_first,
+                      KeysIt1 keys1_last,
+                      KeysIt2 keys2_first,
+                      KeysIt2 keys2_last,
+                      ItemsIt1 items1_first,
+                      KeysOutputIt keys_result,
+                      ItemsOutputIt items_result,
+                      CompareOp compare_op)
+                    {
+                      auto ret = thrust::make_pair(keys_result, items_result);
+                      THRUST_CDP_DISPATCH(
+                        (ret = __set_operations::set_operations<thrust::detail::true_type>(
+                           policy,
+                           keys1_first,
+                           keys1_last,
+                           keys2_first,
+                           keys2_last,
+                           items1_first,
+                           items1_first,
+                           keys_result,
+                           items_result,
+                           compare_op,
+                           __set_operations::serial_set_intersection());),
+                        (ret = thrust::set_intersection_by_key(
+                           cvt_to_seq(derived_cast(policy)),
+                           keys1_first,
+                           keys1_last,
+                           keys2_first,
+                           keys2_last,
+                           items1_first,
+                           keys_result,
+                           items_result,
+                           compare_op);));
+                      return ret;
 
-template <class Derived, class KeysIt1, class KeysIt2, class ItemsIt1, class ItemsIt2, class KeysOutputIt, class ItemsOutputIt>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_intersection_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result)
-{
-  using value_type = thrust::detail::it_value_t<KeysIt1>;
-  return cuda_cub::set_intersection_by_key(
-    policy,
-    keys1_first,
-    keys1_last,
-    keys2_first,
-    keys2_last,
-    items1_first,
-    keys_result,
-    items_result,
-    ::cuda::std::less<value_type>());
-}
+                      template <class Derived,
+                                class KeysIt1,
+                                class KeysIt2,
+                                class ItemsIt1,
+                                class ItemsIt2,
+                                class KeysOutputIt,
+                                class ItemsOutputIt>
+                      pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_intersection_by_key(
+                        execution_policy<Derived> & policy,
+                        KeysIt1 keys1_first,
+                        KeysIt1 keys1_last,
+                        KeysIt2 keys2_first,
+                        KeysIt2 keys2_last,
+                        ItemsIt1 items1_first,
+                        KeysOutputIt keys_result,
+                        ItemsOutputIt items_result)
+                      {
+                        using value_type = thrust::detail::it_value_t<KeysIt1>;
+                        return cuda_cub::set_intersection_by_key(
+                          policy,
+                          keys1_first,
+                          keys1_last,
+                          keys2_first,
+                          keys2_last,
+                          items1_first,
+                          keys_result,
+                          items_result,
+                          ::cuda::std::less<value_type>());
 
-/*****************************/
+                        /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived,
-          class KeysIt1,
-          class KeysIt2,
-          class ItemsIt1,
-          class ItemsIt2,
-          class KeysOutputIt,
-          class ItemsOutputIt,
-          class CompareOp>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_symmetric_difference_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result,
-  CompareOp compare_op)
-{
-  auto ret = thrust::make_pair(keys_result, items_result);
-  THRUST_CDP_DISPATCH(
-    (ret = __set_operations::set_operations<thrust::detail::true_type>(
-       policy,
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op,
-       __set_operations::serial_set_symmetric_difference());),
-    (ret = thrust::set_symmetric_difference_by_key(
-       cvt_to_seq(derived_cast(policy)),
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op);));
-  return ret;
-}
+                        _CCCL_EXEC_CHECK_DISABLE
+                        template <class Derived,
+                                  class KeysIt1,
+                                  class KeysIt2,
+                                  class ItemsIt1,
+                                  class ItemsIt2,
+                                  class KeysOutputIt,
+                                  class ItemsOutputIt,
+                                  class CompareOp>
+                        pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_symmetric_difference_by_key(
+                          execution_policy<Derived> & policy,
+                          KeysIt1 keys1_first,
+                          KeysIt1 keys1_last,
+                          KeysIt2 keys2_first,
+                          KeysIt2 keys2_last,
+                          ItemsIt1 items1_first,
+                          ItemsIt2 items2_first,
+                          KeysOutputIt keys_result,
+                          ItemsOutputIt items_result,
+                          CompareOp compare_op)
+                        {
+                          auto ret = thrust::make_pair(keys_result, items_result);
+                          THRUST_CDP_DISPATCH(
+                            (ret = __set_operations::set_operations<thrust::detail::true_type>(
+                               policy,
+                               keys1_first,
+                               keys1_last,
+                               keys2_first,
+                               keys2_last,
+                               items1_first,
+                               items2_first,
+                               keys_result,
+                               items_result,
+                               compare_op,
+                               __set_operations::serial_set_symmetric_difference());),
+                            (ret = thrust::set_symmetric_difference_by_key(
+                               cvt_to_seq(derived_cast(policy)),
+                               keys1_first,
+                               keys1_last,
+                               keys2_first,
+                               keys2_last,
+                               items1_first,
+                               items2_first,
+                               keys_result,
+                               items_result,
+                               compare_op);));
+                          return ret;
 
-template <class Derived, class KeysIt1, class KeysIt2, class ItemsIt1, class ItemsIt2, class KeysOutputIt, class ItemsOutputIt>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_symmetric_difference_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result)
-{
-  using value_type = thrust::detail::it_value_t<KeysIt1>;
-  return cuda_cub::set_symmetric_difference_by_key(
-    policy,
-    keys1_first,
-    keys1_last,
-    keys2_first,
-    keys2_last,
-    items1_first,
-    items2_first,
-    keys_result,
-    items_result,
-    ::cuda::std::less<value_type>());
-}
+                          template <class Derived,
+                                    class KeysIt1,
+                                    class KeysIt2,
+                                    class ItemsIt1,
+                                    class ItemsIt2,
+                                    class KeysOutputIt,
+                                    class ItemsOutputIt>
+                          pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_symmetric_difference_by_key(
+                            execution_policy<Derived> & policy,
+                            KeysIt1 keys1_first,
+                            KeysIt1 keys1_last,
+                            KeysIt2 keys2_first,
+                            KeysIt2 keys2_last,
+                            ItemsIt1 items1_first,
+                            ItemsIt2 items2_first,
+                            KeysOutputIt keys_result,
+                            ItemsOutputIt items_result)
+                          {
+                            using value_type = thrust::detail::it_value_t<KeysIt1>;
+                            return cuda_cub::set_symmetric_difference_by_key(
+                              policy,
+                              keys1_first,
+                              keys1_last,
+                              keys2_first,
+                              keys2_last,
+                              items1_first,
+                              items2_first,
+                              keys_result,
+                              items_result,
+                              ::cuda::std::less<value_type>());
 
-/*****************************/
+                            /*****************************/
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived,
-          class KeysIt1,
-          class KeysIt2,
-          class ItemsIt1,
-          class ItemsIt2,
-          class KeysOutputIt,
-          class ItemsOutputIt,
-          class CompareOp>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_union_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result,
-  CompareOp compare_op)
-{
-  auto ret = thrust::make_pair(keys_result, items_result);
-  THRUST_CDP_DISPATCH(
-    (ret = __set_operations::set_operations<thrust::detail::true_type>(
-       policy,
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op,
-       __set_operations::serial_set_union());),
-    (ret = thrust::set_union_by_key(
-       cvt_to_seq(derived_cast(policy)),
-       keys1_first,
-       keys1_last,
-       keys2_first,
-       keys2_last,
-       items1_first,
-       items2_first,
-       keys_result,
-       items_result,
-       compare_op);));
-  return ret;
-}
+                            _CCCL_EXEC_CHECK_DISABLE
+                            template <class Derived,
+                                      class KeysIt1,
+                                      class KeysIt2,
+                                      class ItemsIt1,
+                                      class ItemsIt2,
+                                      class KeysOutputIt,
+                                      class ItemsOutputIt,
+                                      class CompareOp>
+                            pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_union_by_key(
+                              execution_policy<Derived> & policy,
+                              KeysIt1 keys1_first,
+                              KeysIt1 keys1_last,
+                              KeysIt2 keys2_first,
+                              KeysIt2 keys2_last,
+                              ItemsIt1 items1_first,
+                              ItemsIt2 items2_first,
+                              KeysOutputIt keys_result,
+                              ItemsOutputIt items_result,
+                              CompareOp compare_op)
+                            {
+                              auto ret = thrust::make_pair(keys_result, items_result);
+                              THRUST_CDP_DISPATCH(
+                                (ret = __set_operations::set_operations<thrust::detail::true_type>(
+                                   policy,
+                                   keys1_first,
+                                   keys1_last,
+                                   keys2_first,
+                                   keys2_last,
+                                   items1_first,
+                                   items2_first,
+                                   keys_result,
+                                   items_result,
+                                   compare_op,
+                                   __set_operations::serial_set_union());),
+                                (ret = thrust::set_union_by_key(
+                                   cvt_to_seq(derived_cast(policy)),
+                                   keys1_first,
+                                   keys1_last,
+                                   keys2_first,
+                                   keys2_last,
+                                   items1_first,
+                                   items2_first,
+                                   keys_result,
+                                   items_result,
+                                   compare_op);));
+                              return ret;
 
-template <class Derived, class KeysIt1, class KeysIt2, class ItemsIt1, class ItemsIt2, class KeysOutputIt, class ItemsOutputIt>
-pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_union_by_key(
-  execution_policy<Derived>& policy,
-  KeysIt1 keys1_first,
-  KeysIt1 keys1_last,
-  KeysIt2 keys2_first,
-  KeysIt2 keys2_last,
-  ItemsIt1 items1_first,
-  ItemsIt2 items2_first,
-  KeysOutputIt keys_result,
-  ItemsOutputIt items_result)
-{
-  using value_type = thrust::detail::it_value_t<KeysIt1>;
-  return cuda_cub::set_union_by_key(
-    policy,
-    keys1_first,
-    keys1_last,
-    keys2_first,
-    keys2_last,
-    items1_first,
-    items2_first,
-    keys_result,
-    items_result,
-    ::cuda::std::less<value_type>());
-}
+                              template <class Derived,
+                                        class KeysIt1,
+                                        class KeysIt2,
+                                        class ItemsIt1,
+                                        class ItemsIt2,
+                                        class KeysOutputIt,
+                                        class ItemsOutputIt>
+                              pair<KeysOutputIt, ItemsOutputIt> _CCCL_HOST_DEVICE set_union_by_key(
+                                execution_policy<Derived> & policy,
+                                KeysIt1 keys1_first,
+                                KeysIt1 keys1_last,
+                                KeysIt2 keys2_first,
+                                KeysIt2 keys2_last,
+                                ItemsIt1 items1_first,
+                                ItemsIt2 items2_first,
+                                KeysOutputIt keys_result,
+                                ItemsOutputIt items_result)
+                              {
+                                using value_type = thrust::detail::it_value_t<KeysIt1>;
+                                return cuda_cub::set_union_by_key(
+                                  policy,
+                                  keys1_first,
+                                  keys1_last,
+                                  keys2_first,
+                                  keys2_last,
+                                  items1_first,
+                                  items2_first,
+                                  keys_result,
+                                  items_result,
+                                  ::cuda::std::less<value_type>());
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+                              } // namespace cuda_cub
+                              THRUST_NAMESPACE_END
 #endif

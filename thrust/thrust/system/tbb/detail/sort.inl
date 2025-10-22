@@ -36,13 +36,7 @@
 #include <tbb/parallel_invoke.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace sort_detail
+namespace system::tbb::detail::sort_detail
 {
 
 // TODO tune this based on data type and comp
@@ -130,8 +124,6 @@ void merge_sort(execution_policy<DerivedPolicy>& exec,
     thrust::merge(exec, first1, mid1, mid1, last1, first2, comp);
   }
 }
-
-} // end namespace sort_detail
 
 namespace sort_by_key_detail
 {
@@ -254,8 +246,6 @@ void merge_sort_by_key(
   }
 }
 
-} // namespace sort_by_key_detail
-
 template <typename DerivedPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
 void stable_sort(
   execution_policy<DerivedPolicy>& exec, RandomAccessIterator first, RandomAccessIterator last, StrictWeakOrdering comp)
@@ -265,31 +255,27 @@ void stable_sort(
   thrust::detail::temporary_array<key_type, DerivedPolicy> temp(exec, first, last);
 
   sort_detail::merge_sort(exec, first, last, temp.begin(), comp, true);
-}
 
-template <typename DerivedPolicy,
-          typename RandomAccessIterator1,
-          typename RandomAccessIterator2,
-          typename StrictWeakOrdering>
-void stable_sort_by_key(
-  execution_policy<DerivedPolicy>& exec,
-  RandomAccessIterator1 first1,
-  RandomAccessIterator1 last1,
-  RandomAccessIterator2 first2,
-  StrictWeakOrdering comp)
-{
-  using key_type = thrust::detail::it_value_t<RandomAccessIterator1>;
-  using val_type = thrust::detail::it_value_t<RandomAccessIterator2>;
+  template <typename DerivedPolicy,
+            typename RandomAccessIterator1,
+            typename RandomAccessIterator2,
+            typename StrictWeakOrdering>
+  void stable_sort_by_key(
+    execution_policy<DerivedPolicy> & exec,
+    RandomAccessIterator1 first1,
+    RandomAccessIterator1 last1,
+    RandomAccessIterator2 first2,
+    StrictWeakOrdering comp)
+  {
+    using key_type = thrust::detail::it_value_t<RandomAccessIterator1>;
+    using val_type = thrust::detail::it_value_t<RandomAccessIterator2>;
 
-  RandomAccessIterator2 last2 = first2 + ::cuda::std::distance(first1, last1);
+    RandomAccessIterator2 last2 = first2 + ::cuda::std::distance(first1, last1);
 
-  thrust::detail::temporary_array<key_type, DerivedPolicy> temp1(exec, first1, last1);
-  thrust::detail::temporary_array<val_type, DerivedPolicy> temp2(exec, first2, last2);
+    thrust::detail::temporary_array<key_type, DerivedPolicy> temp1(exec, first1, last1);
+    thrust::detail::temporary_array<val_type, DerivedPolicy> temp2(exec, first2, last2);
 
-  sort_by_key_detail::merge_sort_by_key(exec, first1, last1, first2, temp1.begin(), temp2.begin(), comp, true);
-}
+    sort_by_key_detail::merge_sort_by_key(exec, first1, last1, first2, temp1.begin(), temp2.begin(), comp, true);
 
-} // end namespace detail
-} // end namespace tbb
-} // end namespace system
-THRUST_NAMESPACE_END
+  } // end namespace system
+  THRUST_NAMESPACE_END

@@ -77,10 +77,7 @@ _CCCL_HOST_DEVICE thrust::pair<OutputIterator1, OutputIterator2> unique_by_key_c
   OutputIterator1 keys_result,
   OutputIterator2 values_result);
 
-namespace cuda_cub
-{
-
-namespace detail
+namespace cuda_cub::detail
 {
 
 template <typename Derived,
@@ -239,8 +236,6 @@ THRUST_RUNTIME_FUNCTION pair<KeyOutputIt, ValOutputIt> unique_by_key(
   return result_end;
 }
 
-} // namespace detail
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -261,48 +256,45 @@ pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE unique_by_key_copy(
     (ret = thrust::unique_by_key_copy(
        cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values_first, keys_result, values_result, binary_pred);));
   return ret;
-}
 
-template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt>
-pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE unique_by_key_copy(
-  execution_policy<Derived>& policy,
-  KeyInputIt keys_first,
-  KeyInputIt keys_last,
-  ValInputIt values_first,
-  KeyOutputIt keys_result,
-  ValOutputIt values_result)
-{
-  using key_type = thrust::detail::it_value_t<KeyInputIt>;
-  return cuda_cub::unique_by_key_copy(
-    policy, keys_first, keys_last, values_first, keys_result, values_result, ::cuda::std::equal_to<key_type>());
-}
+  template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt>
+  pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE unique_by_key_copy(
+    execution_policy<Derived> & policy,
+    KeyInputIt keys_first,
+    KeyInputIt keys_last,
+    ValInputIt values_first,
+    KeyOutputIt keys_result,
+    ValOutputIt values_result)
+  {
+    using key_type = thrust::detail::it_value_t<KeyInputIt>;
+    return cuda_cub::unique_by_key_copy(
+      policy, keys_first, keys_last, values_first, keys_result, values_result, ::cuda::std::equal_to<key_type>());
 
-template <class Derived, class KeyInputIt, class ValInputIt, class BinaryPred>
-pair<KeyInputIt, ValInputIt> _CCCL_HOST_DEVICE unique_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt keys_first,
-  KeyInputIt keys_last,
-  ValInputIt values_first,
-  BinaryPred binary_pred)
-{
-  auto ret = thrust::make_pair(keys_first, values_first);
-  THRUST_CDP_DISPATCH(
-    (ret = cuda_cub::unique_by_key_copy(
-       policy, keys_first, keys_last, values_first, keys_first, values_first, binary_pred);),
-    (ret = thrust::unique_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values_first, binary_pred);));
-  return ret;
-}
+    template <class Derived, class KeyInputIt, class ValInputIt, class BinaryPred>
+    pair<KeyInputIt, ValInputIt> _CCCL_HOST_DEVICE unique_by_key(
+      execution_policy<Derived> & policy,
+      KeyInputIt keys_first,
+      KeyInputIt keys_last,
+      ValInputIt values_first,
+      BinaryPred binary_pred)
+    {
+      auto ret = thrust::make_pair(keys_first, values_first);
+      THRUST_CDP_DISPATCH(
+        (ret = cuda_cub::unique_by_key_copy(
+           policy, keys_first, keys_last, values_first, keys_first, values_first, binary_pred);),
+        (ret =
+           thrust::unique_by_key(cvt_to_seq(derived_cast(policy)), keys_first, keys_last, values_first, binary_pred);));
+      return ret;
 
-template <class Derived, class KeyInputIt, class ValInputIt>
-pair<KeyInputIt, ValInputIt> _CCCL_HOST_DEVICE
-unique_by_key(execution_policy<Derived>& policy, KeyInputIt keys_first, KeyInputIt keys_last, ValInputIt values_first)
-{
-  using key_type = thrust::detail::it_value_t<KeyInputIt>;
-  return cuda_cub::unique_by_key(policy, keys_first, keys_last, values_first, ::cuda::std::equal_to<key_type>());
-}
+      template <class Derived, class KeyInputIt, class ValInputIt>
+      pair<KeyInputIt, ValInputIt> _CCCL_HOST_DEVICE unique_by_key(
+        execution_policy<Derived> & policy, KeyInputIt keys_first, KeyInputIt keys_last, ValInputIt values_first)
+      {
+        using key_type = thrust::detail::it_value_t<KeyInputIt>;
+        return cuda_cub::unique_by_key(policy, keys_first, keys_last, values_first, ::cuda::std::equal_to<key_type>());
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+      } // namespace cuda_cub
+      THRUST_NAMESPACE_END
 
 #  include <thrust/memory.h>
 #  include <thrust/unique.h>

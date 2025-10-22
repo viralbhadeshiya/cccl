@@ -38,13 +38,7 @@
 #include <tbb/parallel_scan.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace scan_detail
+namespace system::tbb::detail::scan_detail
 {
 
 template <typename InputIterator, typename OutputIterator, typename BinaryFunction, typename ValueType, bool HasInit>
@@ -231,8 +225,6 @@ struct exclusive_body
   }
 };
 
-} // namespace scan_detail
-
 template <typename InputIterator, typename OutputIterator, typename BinaryFunction>
 OutputIterator
 inclusive_scan(tag, InputIterator first, InputIterator last, OutputIterator result, BinaryFunction binary_op)
@@ -255,58 +247,58 @@ inclusive_scan(tag, InputIterator first, InputIterator last, OutputIterator resu
   ::cuda::std::advance(result, n);
 
   return result;
-}
 
-template <typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
-OutputIterator inclusive_scan(
-  tag, InputIterator first, InputIterator last, OutputIterator result, InitialValueType init, BinaryFunction binary_op)
-{
-  using namespace thrust::detail;
-
-  // Use the input iterator's value type and the initial value type per wg21.link/p2322
-  using ValueType =
-    typename ::cuda::std::__accumulator_t<BinaryFunction, thrust::detail::it_value_t<InputIterator>, InitialValueType>;
-
-  using Size = thrust::detail::it_difference_t<InputIterator>;
-  Size n     = ::cuda::std::distance(first, last);
-
-  if (n != 0)
+  template <typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
+  OutputIterator inclusive_scan(
+    tag, InputIterator first, InputIterator last, OutputIterator result, InitialValueType init, BinaryFunction binary_op)
   {
-    using Body = typename scan_detail::inclusive_body<InputIterator, OutputIterator, BinaryFunction, ValueType, true>;
-    Body scan_body(first, result, binary_op, init);
-    ::tbb::parallel_scan(::tbb::blocked_range<Size>(0, n), scan_body);
-  }
+    using namespace thrust::detail;
 
-  ::cuda::std::advance(result, n);
+    // Use the input iterator's value type and the initial value type per wg21.link/p2322
+    using ValueType =
+      typename ::cuda::std::__accumulator_t<BinaryFunction, thrust::detail::it_value_t<InputIterator>, InitialValueType>;
 
-  return result;
-}
+    using Size = thrust::detail::it_difference_t<InputIterator>;
+    Size n     = ::cuda::std::distance(first, last);
 
-template <typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
-OutputIterator exclusive_scan(
-  tag, InputIterator first, InputIterator last, OutputIterator result, InitialValueType init, BinaryFunction binary_op)
-{
-  using namespace thrust::detail;
+    if (n != 0)
+    {
+      using Body = typename scan_detail::inclusive_body<InputIterator, OutputIterator, BinaryFunction, ValueType, true>;
+      Body scan_body(first, result, binary_op, init);
+      ::tbb::parallel_scan(::tbb::blocked_range<Size>(0, n), scan_body);
+    }
 
-  // Use the initial value type per https://wg21.link/P0571
-  using ValueType = InitialValueType;
+    ::cuda::std::advance(result, n);
 
-  using Size = thrust::detail::it_difference_t<InputIterator>;
-  Size n     = ::cuda::std::distance(first, last);
+    return result;
 
-  if (n != 0)
-  {
-    using Body = typename scan_detail::exclusive_body<InputIterator, OutputIterator, BinaryFunction, ValueType>;
-    Body scan_body(first, result, binary_op, init);
-    ::tbb::parallel_scan(::tbb::blocked_range<Size>(0, n), scan_body);
-  }
+    template <typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
+    OutputIterator exclusive_scan(
+      tag,
+      InputIterator first,
+      InputIterator last,
+      OutputIterator result,
+      InitialValueType init,
+      BinaryFunction binary_op)
+    {
+      using namespace thrust::detail;
 
-  ::cuda::std::advance(result, n);
+      // Use the initial value type per https://wg21.link/P0571
+      using ValueType = InitialValueType;
 
-  return result;
-}
+      using Size = thrust::detail::it_difference_t<InputIterator>;
+      Size n     = ::cuda::std::distance(first, last);
 
-} // end namespace detail
-} // end namespace tbb
-} // end namespace system
-THRUST_NAMESPACE_END
+      if (n != 0)
+      {
+        using Body = typename scan_detail::exclusive_body<InputIterator, OutputIterator, BinaryFunction, ValueType>;
+        Body scan_body(first, result, binary_op, init);
+        ::tbb::parallel_scan(::tbb::blocked_range<Size>(0, n), scan_body);
+      }
+
+      ::cuda::std::advance(result, n);
+
+      return result;
+
+    } // end namespace system
+    THRUST_NAMESPACE_END

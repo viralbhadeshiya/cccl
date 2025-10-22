@@ -34,13 +34,7 @@
 #include <tbb/parallel_for.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace for_each_detail
+namespace system::tbb::detail::for_each_detail
 {
 
 template <typename RandomAccessIterator, typename Size, typename UnaryFunction>
@@ -67,8 +61,6 @@ body<RandomAccessIterator, Size, UnaryFunction> make_body(RandomAccessIterator f
   return body<RandomAccessIterator, Size, UnaryFunction>(first, f);
 } // end make_body()
 
-} // namespace for_each_detail
-
 template <typename DerivedPolicy, typename RandomAccessIterator, typename Size, typename UnaryFunction>
 RandomAccessIterator for_each_n(execution_policy<DerivedPolicy>&, RandomAccessIterator first, Size n, UnaryFunction f)
 {
@@ -76,16 +68,12 @@ RandomAccessIterator for_each_n(execution_policy<DerivedPolicy>&, RandomAccessIt
 
   // return the end of the range
   return first + n;
-} // end for_each_n
 
-template <typename DerivedPolicy, typename RandomAccessIterator, typename UnaryFunction>
-RandomAccessIterator
-for_each(execution_policy<DerivedPolicy>& s, RandomAccessIterator first, RandomAccessIterator last, UnaryFunction f)
-{
-  return tbb::detail::for_each_n(s, first, ::cuda::std::distance(first, last), f);
-} // end for_each()
+  template <typename DerivedPolicy, typename RandomAccessIterator, typename UnaryFunction>
+  RandomAccessIterator for_each(
+    execution_policy<DerivedPolicy> & s, RandomAccessIterator first, RandomAccessIterator last, UnaryFunction f)
+  {
+    return tbb::detail::for_each_n(s, first, ::cuda::std::distance(first, last), f);
 
-} // end namespace detail
-} // end namespace tbb
-} // end namespace system
-THRUST_NAMESPACE_END
+  } // end namespace system
+  THRUST_NAMESPACE_END

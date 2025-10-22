@@ -43,9 +43,7 @@
 
 CUB_NAMESPACE_BEGIN
 
-namespace detail
-{
-namespace reduce
+namespace detail::reduce
 {
 template <typename PolicyT, typename = void>
 struct ReducePolicyWrapper : PolicyT
@@ -303,8 +301,6 @@ struct policy_hub
   using MaxPolicy = Policy1000;
 };
 
-} // namespace reduce
-
 namespace rfa
 {
 
@@ -438,7 +434,6 @@ struct policy_hub
 
   using MaxPolicy = Policy900;
 };
-} // namespace rfa
 
 namespace fixed_size_segmented_reduce
 {
@@ -487,7 +482,6 @@ struct policy_hub
 
   using MaxPolicy = Policy500;
 };
-} // namespace fixed_size_segmented_reduce
 } // namespace detail
 
 CUB_NAMESPACE_END

@@ -34,10 +34,7 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace system
-{
-
-namespace cuda
+namespace system::cuda
 {
 
 // To construct an error_code after a CUDA Runtime error:
@@ -116,8 +113,6 @@ enum errc_t
 
 } // end namespace errc
 
-} // namespace cuda
-
 /*! \return A reference to an object of a type derived from class \p thrust::error_category.
  *  \note The object's \p equivalent virtual functions shall behave as specified
  *        for the class \p thrust::error_category. The object's \p name virtual function shall
@@ -148,7 +143,7 @@ inline error_code make_error_code(cuda::errc::errc_t e);
  */
 inline error_condition make_error_condition(cuda::errc::errc_t e);
 
-} // namespace system
+} // namespace system::cuda
 
 namespace cuda_cub
 {

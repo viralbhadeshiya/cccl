@@ -51,9 +51,7 @@
 #include <thrust/detail/complex/math_private.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+namespace detail::complex
 {
 
 using thrust::complex;
@@ -198,26 +196,22 @@ _CCCL_HOST_DEVICE inline complex<double> clog(const complex<double>& z)
 
 } // namespace complex
 
-} // namespace detail
-
 template <typename ValueType>
 _CCCL_HOST_DEVICE inline complex<ValueType> log(const complex<ValueType>& z)
 {
   return complex<ValueType>(std::log(thrust::abs(z)), thrust::arg(z));
-}
 
-template <>
-_CCCL_HOST_DEVICE inline complex<double> log(const complex<double>& z)
-{
-  return detail::complex::clog(z);
-}
+  template <>
+  _CCCL_HOST_DEVICE inline complex<double> log(const complex<double>& z)
+  {
+    return detail::complex::clog(z);
 
-template <typename ValueType>
-_CCCL_HOST_DEVICE inline complex<ValueType> log10(const complex<ValueType>& z)
-{
-  // Using the explicit literal prevents compile time warnings in
-  // devices that don't support doubles
-  return thrust::log(z) / ValueType(2.30258509299404568402);
-}
+    template <typename ValueType>
+    _CCCL_HOST_DEVICE inline complex<ValueType> log10(const complex<ValueType>& z)
+    {
+      // Using the explicit literal prevents compile time warnings in
+      // devices that don't support doubles
+      return thrust::log(z) / ValueType(2.30258509299404568402);
+    }
 
-THRUST_NAMESPACE_END
+    THRUST_NAMESPACE_END

@@ -45,12 +45,9 @@ namespace cuda::experimental
 namespace __detail
 {
 }
-namespace execution
-{
-namespace __detail
+namespace execution::__detail
 {
 using namespace cuda::experimental::__detail; // NOLINT(misc-unused-using-decls)
-} // namespace __detail
 
 // NOLINTBEGIN(misc-unused-using-decls)
 using ::cuda::std::execution::__forwarding_query;
@@ -240,7 +237,6 @@ struct __get_tag
 
 template <class _Sndr, class _Tag = __visit_result_t<__get_tag&, _Sndr, int&>>
 extern __fn_ptr_t<_Tag> __tag_of_v;
-} // namespace __detail
 
 _CCCL_TEMPLATE(class _Sndr)
 _CCCL_REQUIRES(__is_sender<_Sndr>)
@@ -266,8 +262,6 @@ template <class _Ty>
 inline constexpr __disposition __signature_disposition<set_error_t(_Ty)> = __disposition::__error;
 template <>
 inline constexpr __disposition __signature_disposition<set_stopped_t()> = __disposition::__stopped;
-
-} // namespace __detail
 
 struct inline_scheduler;
 

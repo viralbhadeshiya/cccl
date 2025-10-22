@@ -66,10 +66,7 @@ _CCCL_HOST_DEVICE OutputIterator adjacent_difference(
   OutputIterator result,
   BinaryFunction binary_op);
 
-namespace cuda_cub
-{
-
-namespace __adjacent_difference
+namespace cuda_cub::__adjacent_difference
 {
 
 template <cub::MayAlias AliasOpt, class InputIt, class OutputIt, class BinaryOp>
@@ -185,8 +182,6 @@ adjacent_difference(execution_policy<Derived>& policy, InputIt first, InputIt la
   return result + num_items;
 }
 
-} // namespace __adjacent_difference
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -200,18 +195,16 @@ adjacent_difference(execution_policy<Derived>& policy, InputIt first, InputIt la
     (result = __adjacent_difference::adjacent_difference(policy, first, last, result, binary_op);),
     (result = thrust::adjacent_difference(cvt_to_seq(derived_cast(policy)), first, last, result, binary_op);));
   return result;
-}
 
-template <class Derived, class InputIt, class OutputIt>
-OutputIt _CCCL_HOST_DEVICE
-adjacent_difference(execution_policy<Derived>& policy, InputIt first, InputIt last, OutputIt result)
-{
-  using input_type = thrust::detail::it_value_t<InputIt>;
-  return cuda_cub::adjacent_difference(policy, first, last, result, ::cuda::std::minus<input_type>());
-}
+  template <class Derived, class InputIt, class OutputIt>
+  OutputIt _CCCL_HOST_DEVICE adjacent_difference(
+    execution_policy<Derived> & policy, InputIt first, InputIt last, OutputIt result)
+  {
+    using input_type = thrust::detail::it_value_t<InputIt>;
+    return cuda_cub::adjacent_difference(policy, first, last, result, ::cuda::std::minus<input_type>());
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+  } // namespace cuda_cub
+  THRUST_NAMESPACE_END
 
 //
 #  include <thrust/adjacent_difference.h>

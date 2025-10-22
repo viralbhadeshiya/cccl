@@ -38,9 +38,7 @@
 #  include <nv/target>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-namespace detail
+namespace cuda_cub::detail
 {
 template <typename Pointer1, typename Pointer2>
 CCCL_DETAIL_KERNEL_ATTRIBUTES void iter_swap_kernel(Pointer1 a, Pointer2 b)
@@ -48,7 +46,6 @@ CCCL_DETAIL_KERNEL_ATTRIBUTES void iter_swap_kernel(Pointer1 a, Pointer2 b)
   using ::cuda::std::swap;
   swap(*raw_pointer_cast(a), *raw_pointer_cast(b));
 }
-} // namespace detail
 
 template <typename DerivedPolicy, typename Pointer1, typename Pointer2>
 inline _CCCL_HOST_DEVICE void iter_swap(thrust::cuda::execution_policy<DerivedPolicy>& exec, Pointer1 a, Pointer2 b)
@@ -72,8 +69,6 @@ inline _CCCL_HOST_DEVICE void iter_swap(thrust::cuda::execution_policy<DerivedPo
                (host_path{}(exec, a, b);),
                (using ::cuda::std::swap; //
                 swap(*thrust::raw_pointer_cast(a), *thrust::raw_pointer_cast(b));));
-
-} // end iter_swap()
 
 } // namespace cuda_cub
 THRUST_NAMESPACE_END

@@ -42,13 +42,10 @@
 
 namespace cuda::experimental
 {
-namespace execution
-{
-namespace __detail
+namespace execution::__detail
 {
 template <class _Env, class _Query>
 using __statically_queryable_with_t = decltype(::cuda::std::remove_cvref_t<_Env>::query(std::declval<_Query>()));
-} // namespace __detail
 
 template <class _Env, class _Query>
 _CCCL_CONCEPT __statically_queryable_with =
@@ -111,7 +108,6 @@ struct _CCCL_TYPE_VISIBILITY_DEFAULT __env_ref_fn
     return __fwd_env_<_Env const&>{__env.__env_};
   }
 };
-} // namespace __detail
 
 template <class _Env>
 using __env_ref_t _CCCL_NODEBUG_ALIAS = __call_result_t<__detail::__env_ref_fn, _Env>;
@@ -168,7 +164,6 @@ struct _CCCL_TYPE_VISIBILITY_DEFAULT __fwd_env_fn
     }
   }
 };
-} // namespace __detail
 
 template <class _Env>
 using __fwd_env_t _CCCL_NODEBUG_ALIAS = __call_result_t<__detail::__fwd_env_fn, _Env>;
@@ -308,7 +303,6 @@ struct __join_env_fn
     return {static_cast<_First&&>(__first), __fwd_env(static_cast<_Second&&>(__second))};
   }
 };
-} // namespace __detail
 
 _CCCL_GLOBAL_CONSTANT __detail::__join_env_fn __join_env{};
 

@@ -39,9 +39,7 @@
 #include <cuda/std/limits>
 
 THRUST_NAMESPACE_BEGIN
-namespace random
-{
-namespace detail
+namespace random::detail
 {
 
 // this version samples the normal distribution directly
@@ -155,6 +153,5 @@ struct normal_distribution_base
 #endif
 };
 
-} // namespace detail
-} // namespace random
+} // namespace random::detail
 THRUST_NAMESPACE_END

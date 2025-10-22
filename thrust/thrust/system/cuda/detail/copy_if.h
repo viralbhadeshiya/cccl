@@ -82,10 +82,7 @@ _CCCL_HOST_DEVICE OutputIterator copy_if(
   OutputIterator result,
   Predicate pred);
 
-namespace cuda_cub
-{
-
-namespace detail
+namespace cuda_cub::detail
 {
 
 template <cub::SelectImpl SelectionOpt,
@@ -219,8 +216,6 @@ THRUST_RUNTIME_FUNCTION OutputIt copy_if(
   return output;
 }
 
-} // namespace detail
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -232,24 +227,23 @@ OutputIterator _CCCL_HOST_DEVICE copy_if(
   THRUST_CDP_DISPATCH((return detail::copy_if<cub::SelectImpl::Select>(
                                 policy, first, last, static_cast<cub::NullType*>(nullptr), result, pred);),
                       (return thrust::copy_if(cvt_to_seq(derived_cast(policy)), first, last, result, pred);));
-}
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class InputIterator, class StencilIterator, class OutputIterator, class Predicate>
-OutputIterator _CCCL_HOST_DEVICE copy_if(
-  execution_policy<Derived>& policy,
-  InputIterator first,
-  InputIterator last,
-  StencilIterator stencil,
-  OutputIterator result,
-  Predicate pred)
-{
-  THRUST_CDP_DISPATCH((return detail::copy_if<cub::SelectImpl::Select>(policy, first, last, stencil, result, pred);),
-                      (return thrust::copy_if(cvt_to_seq(derived_cast(policy)), first, last, stencil, result, pred);));
-}
+  _CCCL_EXEC_CHECK_DISABLE
+  template <class Derived, class InputIterator, class StencilIterator, class OutputIterator, class Predicate>
+  OutputIterator _CCCL_HOST_DEVICE copy_if(
+    execution_policy<Derived> & policy,
+    InputIterator first,
+    InputIterator last,
+    StencilIterator stencil,
+    OutputIterator result,
+    Predicate pred)
+  {
+    THRUST_CDP_DISPATCH(
+      (return detail::copy_if<cub::SelectImpl::Select>(policy, first, last, stencil, result, pred);),
+      (return thrust::copy_if(cvt_to_seq(derived_cast(policy)), first, last, stencil, result, pred);));
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+  } // namespace cuda_cub
+  THRUST_NAMESPACE_END
 
 #  include <thrust/copy.h>
 #endif

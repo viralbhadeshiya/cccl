@@ -70,10 +70,7 @@
 
 CUB_NAMESPACE_BEGIN
 
-namespace detail
-{
-
-namespace rfa
+namespace detail::rfa
 {
 
 template <typename Invocable, typename InputT>
@@ -112,8 +109,6 @@ struct deterministic_sum_t
     return lhs + rhs;
   }
 };
-
-} // namespace rfa
 
 /******************************************************************************
  * Single-problem dispatch
@@ -527,5 +522,5 @@ struct DispatchReduceDeterministic
     return error;
   }
 };
-} // namespace detail
+} // namespace detail::rfa
 CUB_NAMESPACE_END

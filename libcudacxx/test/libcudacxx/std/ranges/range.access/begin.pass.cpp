@@ -176,17 +176,11 @@ struct EnabledBorrowingBeginMember
     return &globalBuff[0];
   }
 };
-namespace cuda
-{
-namespace std
-{
-namespace ranges
+namespace cuda::std::ranges
 {
 template <>
 inline constexpr bool enable_borrowed_range<EnabledBorrowingBeginMember> = true;
-}
-} // namespace std
-} // namespace cuda
+} // namespace cuda::std::ranges
 
 struct BeginMemberFunction
 {
@@ -291,17 +285,11 @@ struct BeginFunctionEnabledBorrowing
   }
 };
 
-namespace cuda
-{
-namespace std
-{
-namespace ranges
+namespace cuda::std::ranges
 {
 template <>
 inline constexpr bool enable_borrowed_range<BeginFunctionEnabledBorrowing> = true;
-}
-} // namespace std
-} // namespace cuda
+} // namespace cuda::std::ranges
 
 struct BeginFunctionReturnsEmptyPtr
 {

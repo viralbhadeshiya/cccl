@@ -40,13 +40,7 @@
 #include <thrust/system/omp/detail/default_decomposition.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
-namespace detail
-{
-namespace sort_detail
+namespace system::omp::detail::sort_detail
 {
 
 template <typename DerivedPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
@@ -90,8 +84,6 @@ void inplace_merge_by_key(
   thrust::merge_by_key(
     thrust::seq, lhs1.begin(), lhs1.end(), rhs1.begin(), rhs1.end(), lhs2.begin(), rhs2.begin(), first1, first2, comp);
 }
-
-} // namespace sort_detail
 
 template <typename DerivedPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
 void stable_sort(
@@ -165,101 +157,98 @@ void stable_sort(
     }
   }
 #endif // THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE
-}
 
-template <typename DerivedPolicy,
-          typename RandomAccessIterator1,
-          typename RandomAccessIterator2,
-          typename StrictWeakOrdering>
-void stable_sort_by_key(
-  execution_policy<DerivedPolicy>& exec,
-  RandomAccessIterator1 keys_first,
-  RandomAccessIterator1 keys_last,
-  RandomAccessIterator2 values_first,
-  StrictWeakOrdering comp)
-{
-  // we're attempting to launch an omp kernel, assert we're compiling with omp support
-  // ========================================================================
-  // X Note to the user: If you've found this line due to a compiler error, X
-  // X you need to enable OpenMP support in your compiler.                  X
-  // ========================================================================
-  static_assert(thrust::detail::depend_on_instantiation<RandomAccessIterator1,
-                                                        (THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE == THRUST_TRUE)>::value,
-                "OpenMP compiler support is not enabled");
+  template <typename DerivedPolicy,
+            typename RandomAccessIterator1,
+            typename RandomAccessIterator2,
+            typename StrictWeakOrdering>
+  void stable_sort_by_key(
+    execution_policy<DerivedPolicy> & exec,
+    RandomAccessIterator1 keys_first,
+    RandomAccessIterator1 keys_last,
+    RandomAccessIterator2 values_first,
+    StrictWeakOrdering comp)
+  {
+    // we're attempting to launch an omp kernel, assert we're compiling with omp support
+    // ========================================================================
+    // X Note to the user: If you've found this line due to a compiler error, X
+    // X you need to enable OpenMP support in your compiler.                  X
+    // ========================================================================
+    static_assert(
+      thrust::detail::depend_on_instantiation<RandomAccessIterator1,
+                                              (THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE == THRUST_TRUE)>::value,
+      "OpenMP compiler support is not enabled");
 
-  // Avoid issues on compilers that don't provide `omp_get_num_threads()`.
+    // Avoid issues on compilers that don't provide `omp_get_num_threads()`.
 #if (THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE == THRUST_TRUE)
-  using IndexType = thrust::detail::it_difference_t<RandomAccessIterator1>;
+    using IndexType = thrust::detail::it_difference_t<RandomAccessIterator1>;
 
-  if (keys_first == keys_last)
-  {
-    return;
-  }
-
-  THRUST_PRAGMA_OMP(parallel)
-  {
-    thrust::system::detail::internal::uniform_decomposition<IndexType> decomp(
-      keys_last - keys_first, 1, omp_get_num_threads());
-
-    // process id
-    IndexType p_i = omp_get_thread_num();
-
-    // every thread sorts its own tile
-    if (p_i < decomp.size())
+    if (keys_first == keys_last)
     {
-      thrust::stable_sort_by_key(
-        thrust::seq,
-        keys_first + decomp[p_i].begin(),
-        keys_first + decomp[p_i].end(),
-        values_first + decomp[p_i].begin(),
-        comp);
+      return;
     }
 
-    THRUST_PRAGMA_OMP(barrier)
-
-    // #5020: For some reason, MSVC may yield an error unless we include this meaningless semicolon here
-    ;
-
-    IndexType nseg = decomp.size();
-    IndexType h    = 2;
-
-    // keep track of which sub-range we're processing
-    IndexType a = p_i, b = p_i, c = p_i + 1;
-
-    while (nseg > 1)
+    THRUST_PRAGMA_OMP(parallel)
     {
-      if (c >= decomp.size())
-      {
-        c = decomp.size() - 1;
-      }
+      thrust::system::detail::internal::uniform_decomposition<IndexType> decomp(
+        keys_last - keys_first, 1, omp_get_num_threads());
 
-      if ((p_i % h) == 0 && c > b)
+      // process id
+      IndexType p_i = omp_get_thread_num();
+
+      // every thread sorts its own tile
+      if (p_i < decomp.size())
       {
-        sort_detail::inplace_merge_by_key(
-          exec,
-          keys_first + decomp[a].begin(),
-          keys_first + decomp[b].end(),
-          keys_first + decomp[c].end(),
-          values_first + decomp[a].begin(),
+        thrust::stable_sort_by_key(
+          thrust::seq,
+          keys_first + decomp[p_i].begin(),
+          keys_first + decomp[p_i].end(),
+          values_first + decomp[p_i].begin(),
           comp);
-
-        b = c;
-        c += h;
       }
-
-      nseg = (nseg + 1) / 2;
-      h *= 2;
 
       THRUST_PRAGMA_OMP(barrier)
 
       // #5020: For some reason, MSVC may yield an error unless we include this meaningless semicolon here
       ;
-    }
-  }
-#endif // THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE
-}
 
-} // end namespace detail
-} // end namespace omp
-} // end namespace system
-THRUST_NAMESPACE_END
+      IndexType nseg = decomp.size();
+      IndexType h    = 2;
+
+      // keep track of which sub-range we're processing
+      IndexType a = p_i, b = p_i, c = p_i + 1;
+
+      while (nseg > 1)
+      {
+        if (c >= decomp.size())
+        {
+          c = decomp.size() - 1;
+        }
+
+        if ((p_i % h) == 0 && c > b)
+        {
+          sort_detail::inplace_merge_by_key(
+            exec,
+            keys_first + decomp[a].begin(),
+            keys_first + decomp[b].end(),
+            keys_first + decomp[c].end(),
+            values_first + decomp[a].begin(),
+            comp);
+
+          b = c;
+          c += h;
+        }
+
+        nseg = (nseg + 1) / 2;
+        h *= 2;
+
+        THRUST_PRAGMA_OMP(barrier)
+
+        // #5020: For some reason, MSVC may yield an error unless we include this meaningless semicolon here
+        ;
+      }
+    }
+#endif // THRUST_DEVICE_COMPILER_IS_OMP_CAPABLE
+
+  } // end namespace system
+  THRUST_NAMESPACE_END

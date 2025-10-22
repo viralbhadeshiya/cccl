@@ -58,10 +58,7 @@
 #  include <cuda/std/cstdint>
 
 THRUST_NAMESPACE_BEGIN
-namespace cuda_cub
-{
-
-namespace detail
+namespace cuda_cub::detail
 {
 
 template <typename Derived, typename InputIt, typename StencilIt, typename OutputIt, typename Predicate, typename OffsetT>
@@ -254,8 +251,6 @@ THRUST_RUNTIME_FUNCTION InputIt inplace_partition(
   return first + num_selected;
 }
 
-} // namespace detail
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -277,129 +272,122 @@ pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE partition_copy(
     (ret = thrust::partition_copy(
        cvt_to_seq(derived_cast(policy)), first, last, stencil, selected_result, rejected_result, predicate);));
   return ret;
-}
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class InputIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
-pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE partition_copy(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  InputIt last,
-  SelectedOutIt selected_result,
-  RejectedOutIt rejected_result,
-  Predicate predicate)
-{
-  auto ret = thrust::make_pair(selected_result, rejected_result);
-  THRUST_CDP_DISPATCH(
-    (ret = detail::stable_partition_copy(
-       policy, first, last, static_cast<cub::NullType*>(nullptr), selected_result, rejected_result, predicate);),
-    (ret = thrust::partition_copy(
-       cvt_to_seq(derived_cast(policy)), first, last, selected_result, rejected_result, predicate);));
-  return ret;
-}
+  _CCCL_EXEC_CHECK_DISABLE
+  template <class Derived, class InputIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
+  pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE partition_copy(
+    execution_policy<Derived> & policy,
+    InputIt first,
+    InputIt last,
+    SelectedOutIt selected_result,
+    RejectedOutIt rejected_result,
+    Predicate predicate)
+  {
+    auto ret = thrust::make_pair(selected_result, rejected_result);
+    THRUST_CDP_DISPATCH(
+      (ret = detail::stable_partition_copy(
+         policy, first, last, static_cast<cub::NullType*>(nullptr), selected_result, rejected_result, predicate);),
+      (ret = thrust::partition_copy(
+         cvt_to_seq(derived_cast(policy)), first, last, selected_result, rejected_result, predicate);));
+    return ret;
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class InputIt, class StencilIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
-pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE stable_partition_copy(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  InputIt last,
-  StencilIt stencil,
-  SelectedOutIt selected_result,
-  RejectedOutIt rejected_result,
-  Predicate predicate)
-{
-  auto ret = thrust::make_pair(selected_result, rejected_result);
-  THRUST_CDP_DISPATCH(
-    (ret = detail::stable_partition_copy(policy, first, last, stencil, selected_result, rejected_result, predicate);),
-    (ret = thrust::stable_partition_copy(
-       cvt_to_seq(derived_cast(policy)), first, last, stencil, selected_result, rejected_result, predicate);));
-  return ret;
-}
+    _CCCL_EXEC_CHECK_DISABLE
+    template <class Derived, class InputIt, class StencilIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
+    pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE stable_partition_copy(
+      execution_policy<Derived> & policy,
+      InputIt first,
+      InputIt last,
+      StencilIt stencil,
+      SelectedOutIt selected_result,
+      RejectedOutIt rejected_result,
+      Predicate predicate)
+    {
+      auto ret = thrust::make_pair(selected_result, rejected_result);
+      THRUST_CDP_DISPATCH(
+        (ret =
+           detail::stable_partition_copy(policy, first, last, stencil, selected_result, rejected_result, predicate);),
+        (ret = thrust::stable_partition_copy(
+           cvt_to_seq(derived_cast(policy)), first, last, stencil, selected_result, rejected_result, predicate);));
+      return ret;
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class InputIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
-pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE stable_partition_copy(
-  execution_policy<Derived>& policy,
-  InputIt first,
-  InputIt last,
-  SelectedOutIt selected_result,
-  RejectedOutIt rejected_result,
-  Predicate predicate)
-{
-  auto ret = thrust::make_pair(selected_result, rejected_result);
-  THRUST_CDP_DISPATCH(
-    (ret = detail::stable_partition_copy(
-       policy, first, last, static_cast<cub::NullType*>(nullptr), selected_result, rejected_result, predicate);),
-    (ret = thrust::stable_partition_copy(
-       cvt_to_seq(derived_cast(policy)), first, last, selected_result, rejected_result, predicate);));
-  return ret;
-}
+      _CCCL_EXEC_CHECK_DISABLE
+      template <class Derived, class InputIt, class SelectedOutIt, class RejectedOutIt, class Predicate>
+      pair<SelectedOutIt, RejectedOutIt> _CCCL_HOST_DEVICE stable_partition_copy(
+        execution_policy<Derived> & policy,
+        InputIt first,
+        InputIt last,
+        SelectedOutIt selected_result,
+        RejectedOutIt rejected_result,
+        Predicate predicate)
+      {
+        auto ret = thrust::make_pair(selected_result, rejected_result);
+        THRUST_CDP_DISPATCH(
+          (ret = detail::stable_partition_copy(
+             policy, first, last, static_cast<cub::NullType*>(nullptr), selected_result, rejected_result, predicate);),
+          (ret = thrust::stable_partition_copy(
+             cvt_to_seq(derived_cast(policy)), first, last, selected_result, rejected_result, predicate);));
+        return ret;
 
-/// inplace
+        /// inplace
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class Iterator, class StencilIt, class Predicate>
-Iterator _CCCL_HOST_DEVICE
-partition(execution_policy<Derived>& policy, Iterator first, Iterator last, StencilIt stencil, Predicate predicate)
-{
-  THRUST_CDP_DISPATCH((last = detail::inplace_partition(policy, first, last, stencil, predicate);),
-                      (last = thrust::partition(cvt_to_seq(derived_cast(policy)), first, last, stencil, predicate);));
-  return last;
-}
+        _CCCL_EXEC_CHECK_DISABLE
+        template <class Derived, class Iterator, class StencilIt, class Predicate>
+        Iterator _CCCL_HOST_DEVICE partition(
+          execution_policy<Derived> & policy, Iterator first, Iterator last, StencilIt stencil, Predicate predicate)
+        {
+          THRUST_CDP_DISPATCH(
+            (last = detail::inplace_partition(policy, first, last, stencil, predicate);),
+            (last = thrust::partition(cvt_to_seq(derived_cast(policy)), first, last, stencil, predicate);));
+          return last;
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class Iterator, class Predicate>
-Iterator _CCCL_HOST_DEVICE
-partition(execution_policy<Derived>& policy, Iterator first, Iterator last, Predicate predicate)
-{
-  THRUST_CDP_DISPATCH(
-    (last = detail::inplace_partition(policy, first, last, static_cast<cub::NullType*>(nullptr), predicate);),
-    (last = thrust::partition(cvt_to_seq(derived_cast(policy)), first, last, predicate);));
-  return last;
-}
+          _CCCL_EXEC_CHECK_DISABLE
+          template <class Derived, class Iterator, class Predicate>
+          Iterator _CCCL_HOST_DEVICE partition(
+            execution_policy<Derived> & policy, Iterator first, Iterator last, Predicate predicate)
+          {
+            THRUST_CDP_DISPATCH(
+              (last = detail::inplace_partition(policy, first, last, static_cast<cub::NullType*>(nullptr), predicate);),
+              (last = thrust::partition(cvt_to_seq(derived_cast(policy)), first, last, predicate);));
+            return last;
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class Iterator, class StencilIt, class Predicate>
-Iterator _CCCL_HOST_DEVICE stable_partition(
-  execution_policy<Derived>& policy, Iterator first, Iterator last, StencilIt stencil, Predicate predicate)
-{
-  auto ret = last;
-  THRUST_CDP_DISPATCH(
-    (ret = detail::inplace_partition(policy, first, last, stencil, predicate);
+            _CCCL_EXEC_CHECK_DISABLE
+            template <class Derived, class Iterator, class StencilIt, class Predicate>
+            Iterator _CCCL_HOST_DEVICE stable_partition(
+              execution_policy<Derived> & policy, Iterator first, Iterator last, StencilIt stencil, Predicate predicate)
+            {
+              auto ret = last;
+              THRUST_CDP_DISPATCH(
+                (ret = detail::inplace_partition(policy, first, last, stencil, predicate);
 
-     /* partition returns rejected values in reverse order
-       so reverse the rejected elements to make it stable */
-     cuda_cub::reverse(policy, ret, last);),
-    (ret = thrust::stable_partition(cvt_to_seq(derived_cast(policy)), first, last, stencil, predicate);));
-  return ret;
-}
+                 /* partition returns rejected values in reverse order
+                   so reverse the rejected elements to make it stable */
+                 cuda_cub::reverse(policy, ret, last);),
+                (ret = thrust::stable_partition(cvt_to_seq(derived_cast(policy)), first, last, stencil, predicate);));
+              return ret;
 
-_CCCL_EXEC_CHECK_DISABLE
-template <class Derived, class Iterator, class Predicate>
-Iterator _CCCL_HOST_DEVICE
-stable_partition(execution_policy<Derived>& policy, Iterator first, Iterator last, Predicate predicate)
-{
-  auto ret = last;
-  THRUST_CDP_DISPATCH(
-    (ret = detail::inplace_partition(policy, first, last, static_cast<cub::NullType*>(nullptr), predicate);
+              _CCCL_EXEC_CHECK_DISABLE
+              template <class Derived, class Iterator, class Predicate>
+              Iterator _CCCL_HOST_DEVICE stable_partition(
+                execution_policy<Derived> & policy, Iterator first, Iterator last, Predicate predicate)
+              {
+                auto ret = last;
+                THRUST_CDP_DISPATCH(
+                  (ret = detail::inplace_partition(policy, first, last, static_cast<cub::NullType*>(nullptr), predicate);
 
-     /* partition returns rejected values in reverse order
-      so reverse the rejected elements to make it stable */
-     cuda_cub::reverse(policy, ret, last);),
-    (ret = thrust::stable_partition(cvt_to_seq(derived_cast(policy)), first, last, predicate);));
-  return ret;
-}
+                   /* partition returns rejected values in reverse order
+                    so reverse the rejected elements to make it stable */
+                   cuda_cub::reverse(policy, ret, last);),
+                  (ret = thrust::stable_partition(cvt_to_seq(derived_cast(policy)), first, last, predicate);));
+                return ret;
 
-template <class Derived, class ItemsIt, class Predicate>
-bool _CCCL_HOST_DEVICE
-is_partitioned(execution_policy<Derived>& policy, ItemsIt first, ItemsIt last, Predicate predicate)
-{
-  ItemsIt boundary = cuda_cub::find_if_not(policy, first, last, predicate);
-  ItemsIt end      = cuda_cub::find_if(policy, boundary, last, predicate);
-  return end == last;
-}
+                template <class Derived, class ItemsIt, class Predicate>
+                bool _CCCL_HOST_DEVICE is_partitioned(
+                  execution_policy<Derived> & policy, ItemsIt first, ItemsIt last, Predicate predicate)
+                {
+                  ItemsIt boundary = cuda_cub::find_if_not(policy, first, last, predicate);
+                  ItemsIt end      = cuda_cub::find_if(policy, boundary, last, predicate);
+                  return end == last;
 
-} // namespace cuda_cub
-THRUST_NAMESPACE_END
+                } // namespace cuda_cub
+                THRUST_NAMESPACE_END
 #endif

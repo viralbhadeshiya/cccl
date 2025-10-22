@@ -80,10 +80,7 @@ void _CCCL_HOST_DEVICE reduce_into(
   T init,
   BinaryFunction binary_op);
 
-namespace cuda_cub
-{
-
-namespace __reduce
+namespace cuda_cub::__reduce
 {
 
 template <bool>
@@ -606,7 +603,6 @@ struct DrainAgent
     grid_queue.FillAndResetDrain(num_items);
   }
 }; // struct DrainAgent;
-} // namespace __reduce
 
 namespace detail
 {
@@ -701,8 +697,6 @@ THRUST_RUNTIME_FUNCTION void reduce_n_into_impl(
   cuda_cub::throw_on_error(status, "reduce failed to synchronize");
 }
 
-} // namespace detail
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -716,68 +710,62 @@ reduce_n(execution_policy<Derived>& policy, InputIt first, Size num_items, T ini
     (init = thrust::cuda_cub::detail::reduce_n_impl(policy, first, num_items, init, binary_op);),
     (init = thrust::reduce(cvt_to_seq(derived_cast(policy)), first, first + num_items, init, binary_op);));
   return init;
-}
 
-_CCCL_EXEC_CHECK_DISABLE
-template <typename Derived, typename InputIt, typename Size, typename OutputIt, typename T, typename BinaryOp>
-_CCCL_HOST_DEVICE void reduce_n_into(
-  execution_policy<Derived>& policy, InputIt first, Size num_items, OutputIt output, T init, BinaryOp binary_op)
-{
-  THRUST_CDP_DISPATCH(
-    (thrust::cuda_cub::detail::reduce_n_into_impl(policy, first, num_items, output, init, binary_op);),
-    (thrust::reduce_into(cvt_to_seq(derived_cast(policy)), first, first + num_items, output, init, binary_op);));
-}
+  _CCCL_EXEC_CHECK_DISABLE
+  template <typename Derived, typename InputIt, typename Size, typename OutputIt, typename T, typename BinaryOp>
+  _CCCL_HOST_DEVICE void reduce_n_into(
+    execution_policy<Derived> & policy, InputIt first, Size num_items, OutputIt output, T init, BinaryOp binary_op)
+  {
+    THRUST_CDP_DISPATCH(
+      (thrust::cuda_cub::detail::reduce_n_into_impl(policy, first, num_items, output, init, binary_op);),
+      (thrust::reduce_into(cvt_to_seq(derived_cast(policy)), first, first + num_items, output, init, binary_op);));
 
-template <class Derived, class InputIt, class T, class BinaryOp>
-_CCCL_HOST_DEVICE T reduce(execution_policy<Derived>& policy, InputIt first, InputIt last, T init, BinaryOp binary_op)
-{
-  using size_type = thrust::detail::it_difference_t<InputIt>;
-  // FIXME: Check for RA iterator.
-  size_type num_items = static_cast<size_type>(::cuda::std::distance(first, last));
-  return cuda_cub::reduce_n(policy, first, num_items, init, binary_op);
-}
+    template <class Derived, class InputIt, class T, class BinaryOp>
+    _CCCL_HOST_DEVICE T reduce(
+      execution_policy<Derived> & policy, InputIt first, InputIt last, T init, BinaryOp binary_op)
+    {
+      using size_type = thrust::detail::it_difference_t<InputIt>;
+      // FIXME: Check for RA iterator.
+      size_type num_items = static_cast<size_type>(::cuda::std::distance(first, last));
+      return cuda_cub::reduce_n(policy, first, num_items, init, binary_op);
 
-template <class Derived, class InputIt, class T>
-_CCCL_HOST_DEVICE T reduce(execution_policy<Derived>& policy, InputIt first, InputIt last, T init)
-{
-  return cuda_cub::reduce(policy, first, last, init, ::cuda::std::plus<T>());
-}
+      template <class Derived, class InputIt, class T>
+      _CCCL_HOST_DEVICE T reduce(execution_policy<Derived> & policy, InputIt first, InputIt last, T init)
+      {
+        return cuda_cub::reduce(policy, first, last, init, ::cuda::std::plus<T>());
 
-template <class Derived, class InputIt>
-_CCCL_HOST_DEVICE thrust::detail::it_value_t<InputIt>
-reduce(execution_policy<Derived>& policy, InputIt first, InputIt last)
-{
-  using value_type = thrust::detail::it_value_t<InputIt>;
-  return cuda_cub::reduce(policy, first, last, value_type(0));
-}
+        template <class Derived, class InputIt>
+        _CCCL_HOST_DEVICE thrust::detail::it_value_t<InputIt> reduce(
+          execution_policy<Derived> & policy, InputIt first, InputIt last)
+        {
+          using value_type = thrust::detail::it_value_t<InputIt>;
+          return cuda_cub::reduce(policy, first, last, value_type(0));
 
-template <class Derived, class InputIt, class OutputIt, class T, class BinaryOp>
-_CCCL_HOST_DEVICE void
-reduce_into(execution_policy<Derived>& policy, InputIt first, InputIt last, OutputIt output, T init, BinaryOp binary_op)
-{
-  using size_type = thrust::detail::it_difference_t<InputIt>;
-  // FIXME: Check for RA iterator.
-  size_type num_items = static_cast<size_type>(::cuda::std::distance(first, last));
-  cuda_cub::reduce_n_into(policy, first, num_items, output, init, binary_op);
-}
+          template <class Derived, class InputIt, class OutputIt, class T, class BinaryOp>
+          _CCCL_HOST_DEVICE void reduce_into(
+            execution_policy<Derived> & policy, InputIt first, InputIt last, OutputIt output, T init, BinaryOp binary_op)
+          {
+            using size_type = thrust::detail::it_difference_t<InputIt>;
+            // FIXME: Check for RA iterator.
+            size_type num_items = static_cast<size_type>(::cuda::std::distance(first, last));
+            cuda_cub::reduce_n_into(policy, first, num_items, output, init, binary_op);
 
-template <class Derived, class InputIt, class OutputIt, class T>
-_CCCL_HOST_DEVICE void
-reduce_into(execution_policy<Derived>& policy, InputIt first, InputIt last, OutputIt output, T init)
-{
-  cuda_cub::reduce_into(policy, first, last, output, init, ::cuda::std::plus<T>());
-}
+            template <class Derived, class InputIt, class OutputIt, class T>
+            _CCCL_HOST_DEVICE void reduce_into(
+              execution_policy<Derived> & policy, InputIt first, InputIt last, OutputIt output, T init)
+            {
+              cuda_cub::reduce_into(policy, first, last, output, init, ::cuda::std::plus<T>());
 
-template <class Derived, class InputIt, class OutputIt>
-_CCCL_HOST_DEVICE void reduce_into(execution_policy<Derived>& policy, InputIt first, InputIt last, OutputIt output)
-{
-  using value_type = thrust::detail::it_value_t<InputIt>;
-  return cuda_cub::reduce_into(policy, first, last, output, value_type(0));
-}
+              template <class Derived, class InputIt, class OutputIt>
+              _CCCL_HOST_DEVICE void reduce_into(
+                execution_policy<Derived> & policy, InputIt first, InputIt last, OutputIt output)
+              {
+                using value_type = thrust::detail::it_value_t<InputIt>;
+                return cuda_cub::reduce_into(policy, first, last, output, value_type(0));
 
-} // namespace cuda_cub
+              } // namespace cuda_cub
 
-THRUST_NAMESPACE_END
+              THRUST_NAMESPACE_END
 
 #  include <thrust/memory.h>
 #  include <thrust/reduce.h>

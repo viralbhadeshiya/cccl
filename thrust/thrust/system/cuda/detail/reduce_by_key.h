@@ -81,10 +81,7 @@ _CCCL_HOST_DEVICE thrust::pair<OutputIterator1, OutputIterator2> reduce_by_key(
   OutputIterator2 values_output,
   BinaryPredicate binary_pred);
 
-namespace cuda_cub
-{
-
-namespace __reduce_by_key
+namespace cuda_cub::__reduce_by_key
 {
 
 template <bool>
@@ -913,8 +910,6 @@ THRUST_RUNTIME_FUNCTION pair<KeysOutputIt, ValuesOutputIt> reduce_by_key(
   return result;
 }
 
-} // namespace __reduce_by_key
-
 //-------------------------
 // Thrust API entry points
 //-------------------------
@@ -951,49 +946,46 @@ pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE reduce_by_key(
        binary_pred,
        binary_op);));
   return ret;
-}
 
-template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt, class BinaryPred>
-pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE reduce_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt keys_first,
-  KeyInputIt keys_last,
-  ValInputIt values_first,
-  KeyOutputIt keys_output,
-  ValOutputIt values_output,
-  BinaryPred binary_pred)
-{
-  using value_type = ::cuda::std::_If<thrust::detail::is_output_iterator<ValOutputIt>,
-                                      thrust::detail::it_value_t<ValInputIt>,
-                                      thrust::detail::it_value_t<ValOutputIt>>;
-  return cuda_cub::reduce_by_key(
-    policy,
-    keys_first,
-    keys_last,
-    values_first,
-    keys_output,
-    values_output,
-    binary_pred,
-    ::cuda::std::plus<value_type>());
-}
+  template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt, class BinaryPred>
+  pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE reduce_by_key(
+    execution_policy<Derived> & policy,
+    KeyInputIt keys_first,
+    KeyInputIt keys_last,
+    ValInputIt values_first,
+    KeyOutputIt keys_output,
+    ValOutputIt values_output,
+    BinaryPred binary_pred)
+  {
+    using value_type = ::cuda::std::_If<thrust::detail::is_output_iterator<ValOutputIt>,
+                                        thrust::detail::it_value_t<ValInputIt>,
+                                        thrust::detail::it_value_t<ValOutputIt>>;
+    return cuda_cub::reduce_by_key(
+      policy,
+      keys_first,
+      keys_last,
+      values_first,
+      keys_output,
+      values_output,
+      binary_pred,
+      ::cuda::std::plus<value_type>());
 
-template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt>
-pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE reduce_by_key(
-  execution_policy<Derived>& policy,
-  KeyInputIt keys_first,
-  KeyInputIt keys_last,
-  ValInputIt values_first,
-  KeyOutputIt keys_output,
-  ValOutputIt values_output)
-{
-  using KeyT = thrust::detail::it_value_t<KeyInputIt>;
-  return cuda_cub::reduce_by_key(
-    policy, keys_first, keys_last, values_first, keys_output, values_output, ::cuda::std::equal_to<KeyT>());
-}
+    template <class Derived, class KeyInputIt, class ValInputIt, class KeyOutputIt, class ValOutputIt>
+    pair<KeyOutputIt, ValOutputIt> _CCCL_HOST_DEVICE reduce_by_key(
+      execution_policy<Derived> & policy,
+      KeyInputIt keys_first,
+      KeyInputIt keys_last,
+      ValInputIt values_first,
+      KeyOutputIt keys_output,
+      ValOutputIt values_output)
+    {
+      using KeyT = thrust::detail::it_value_t<KeyInputIt>;
+      return cuda_cub::reduce_by_key(
+        policy, keys_first, keys_last, values_first, keys_output, values_output, ::cuda::std::equal_to<KeyT>());
 
-} // namespace cuda_cub
+    } // namespace cuda_cub
 
-THRUST_NAMESPACE_END
+    THRUST_NAMESPACE_END
 
 #  include <thrust/memory.h>
 #  include <thrust/reduce.h>

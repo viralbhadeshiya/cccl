@@ -34,13 +34,7 @@
 #include <tbb/parallel_scan.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
-{
-namespace copy_if_detail
+namespace system::tbb::detail::copy_if_detail
 {
 
 template <typename InputIterator1, typename InputIterator2, typename OutputIterator, typename Predicate, typename Size>
@@ -109,8 +103,6 @@ struct body
   }
 }; // end body
 
-} // namespace copy_if_detail
-
 template <typename InputIterator1, typename InputIterator2, typename OutputIterator, typename Predicate>
 OutputIterator
 copy_if(tag, InputIterator1 first, InputIterator1 last, InputIterator2 stencil, OutputIterator result, Predicate pred)
@@ -128,9 +120,6 @@ copy_if(tag, InputIterator1 first, InputIterator1 last, InputIterator2 stencil, 
   }
 
   return result;
-} // end copy_if()
 
-} // namespace detail
-} // namespace tbb
 } // namespace system
 THRUST_NAMESPACE_END

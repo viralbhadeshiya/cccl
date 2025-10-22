@@ -71,9 +71,7 @@ enum class CopyAlg
   Copy
 };
 
-namespace detail
-{
-namespace batch_memcpy
+namespace detail::batch_memcpy
 {
 // Type used to specialize the kernel templates for indexing the buffers processed within a single kernel invocation
 using per_invocation_buffer_offset_t = ::cuda::std::uint32_t;
@@ -285,7 +283,6 @@ __launch_bounds__(int(ChainedPolicyT::ActivePolicy::AgentSmallBufferPolicyT::BLO
     blev_block_scan_state)
     .ConsumeTile(blockIdx.x);
 }
-} // namespace batch_memcpy
 
 /**
  * @tparam InputBufferIt **[inferred]** Random-access input iterator type providing the pointers
@@ -714,6 +711,6 @@ struct DispatchBatchMemcpy
   }
 };
 
-} // namespace detail
+} // namespace detail::batch_memcpy
 
 CUB_NAMESPACE_END
