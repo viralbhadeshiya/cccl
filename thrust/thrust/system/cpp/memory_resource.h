@@ -34,16 +34,17 @@
 #include <thrust/system/cpp/pointer.h>
 
 THRUST_NAMESPACE_BEGIN
-
+namespace system::cpp
+{
 
 //! \cond
-namespace system::cpp::detail
+namespace detail
 {
 using native_resource = thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::cpp::pointer<void>>;
 
 using universal_native_resource =
   thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::cpp::universal_pointer<void>>;
-} // namespace system::cpp::detail
+} // namespace detail
 //! \endcond
 
 /*! \addtogroup memory_resources Memory Resources
@@ -66,6 +67,6 @@ using universal_host_pinned_memory_resource = universal_memory_resource;
 /*! \} // memory_resources
  */
 
-
+} // namespace system::cpp
 
 THRUST_NAMESPACE_END
