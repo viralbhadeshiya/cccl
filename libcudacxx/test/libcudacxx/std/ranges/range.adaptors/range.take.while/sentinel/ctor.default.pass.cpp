@@ -16,7 +16,7 @@ struct Sent
 {
   bool b; // deliberately uninitialised
 
-  __host__ __device__ friend constexpr bool operator==(int*, const Sent& s)
+  __host__ __device__; friend constexpr bool operator==(int*, const Sent& s)
   {
     return s.b;
   }
@@ -38,7 +38,7 @@ struct Sent
 
 struct Range : cuda::std::ranges::view_base
 {
-  __host__ __device__ int* begin() const
+  __host__ __device__; int* begin() const
   {
     return nullptr;
   }
@@ -48,7 +48,7 @@ struct Range : cuda::std::ranges::view_base
   }
 };
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   {
     using R        = cuda::std::ranges::take_while_view<Range, bool (*)(int)>;

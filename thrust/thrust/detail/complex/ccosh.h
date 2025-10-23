@@ -54,9 +54,8 @@
 #include <thrust/detail/complex/math_private.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 /*
@@ -198,9 +197,9 @@ _CCCL_HOST_DEVICE inline thrust::complex<double> ccos(const thrust::complex<doub
   return (ccosh(thrust::complex<double>(-z.imag(), z.real())));
 }
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 template <typename ValueType>
 _CCCL_HOST_DEVICE inline complex<ValueType> cos(const complex<ValueType>& z)

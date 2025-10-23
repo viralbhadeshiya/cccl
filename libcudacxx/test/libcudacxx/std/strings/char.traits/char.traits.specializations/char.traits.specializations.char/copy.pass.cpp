@@ -10,7 +10,7 @@
 #include <cuda/std/__string_>
 #include <cuda/std/cassert>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   char s1[]  = {1, 2, 3};
   char s2[3] = {0};

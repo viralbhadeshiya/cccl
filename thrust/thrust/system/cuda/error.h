@@ -37,8 +37,7 @@ THRUST_NAMESPACE_BEGIN
 namespace system
 {
 
-namespace cuda
-{
+
 
 // To construct an error_code after a CUDA Runtime error:
 //
@@ -47,7 +46,7 @@ namespace cuda
 // XXX N3000 prefers enum class errc { ... }
 /*! Namespace for CUDA Runtime errors.
  */
-namespace errc
+namespace cuda::errc
 {
 
 /*! \p errc_t enumerates the kinds of CUDA Runtime errors.
@@ -116,7 +115,7 @@ enum errc_t
 
 } // end namespace errc
 
-} // namespace cuda
+
 
 /*! \return A reference to an object of a type derived from class \p thrust::error_category.
  *  \note The object's \p equivalent virtual functions shall behave as specified

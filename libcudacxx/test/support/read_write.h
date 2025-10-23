@@ -12,25 +12,25 @@
 struct value_type_indirection
 {
   using value_type = int;
-  __host__ __device__ value_type& operator*() const;
+  __host__ __device__; value_type& operator*() const;
 };
 
 struct element_type_indirection
 {
   using element_type = long;
-  __host__ __device__ element_type& operator*() const;
+  __host__ __device__; element_type& operator*() const;
 };
 
 struct proxy_indirection
 {
   using value_type = int;
-  __host__ __device__ value_type operator*() const;
+  __host__ __device__; value_type operator*() const;
 };
 
 struct read_only_indirection
 {
   using value_type = int const;
-  __host__ __device__ value_type& operator*() const;
+  __host__ __device__; value_type& operator*() const;
 };
 
 // doubles as missing_iter_reference_t

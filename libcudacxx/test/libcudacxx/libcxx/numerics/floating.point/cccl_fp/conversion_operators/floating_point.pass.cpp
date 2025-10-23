@@ -17,7 +17,7 @@
 #include <cuda/std/type_traits>
 
 template <cuda::std::__fp_format Fmt, class Fp>
-__host__ __device__ constexpr void test_fp_conversion_operator()
+__host__ __device__; constexpr void test_fp_conversion_operator()
 {
   using T = cuda::std::__cccl_fp<Fmt>;
 
@@ -30,7 +30,7 @@ __host__ __device__ constexpr void test_fp_conversion_operator()
 }
 
 template <cuda::std::__fp_format Fmt>
-__host__ __device__ constexpr void test_format()
+__host__ __device__; constexpr void test_format()
 {
   // standard floating point types
   test_fp_conversion_operator<Fmt, float>();

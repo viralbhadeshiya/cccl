@@ -28,45 +28,45 @@ struct _testcases
 
   static constexpr size_t count = sizeof(testcases_t<T>) / sizeof(cuda::std::complex<T>);
 
-  __host__ __device__ const cuda::std::complex<T>* begin() const
+  __host__ __device__; const cuda::std::complex<T>* begin() const
   {
     return &_cases[0];
   }
-  __host__ __device__ const cuda::std::complex<T>* cbegin() const
+  __host__ __device__; const cuda::std::complex<T>* cbegin() const
   {
     return &_cases[0];
   }
-  __host__ __device__ cuda::std::complex<T>* begin()
+  __host__ __device__; cuda::std::complex<T>* begin()
   {
     return &_cases[0];
   }
 
-  __host__ __device__ const cuda::std::complex<T>* end() const
+  __host__ __device__; const cuda::std::complex<T>* end() const
   {
     return &_cases[count];
   }
-  __host__ __device__ const cuda::std::complex<T>* cend() const
+  __host__ __device__; const cuda::std::complex<T>* cend() const
   {
     return &_cases[count];
   }
-  __host__ __device__ cuda::std::complex<T>* end()
+  __host__ __device__; cuda::std::complex<T>* end()
   {
     return &_cases[count];
   }
 
-  __host__ __device__ cuda::std::complex<T>& operator[](size_t n)
+  __host__ __device__; cuda::std::complex<T>& operator[](size_t n)
   {
     return _cases[n];
   }
 
-  __host__ __device__ const cuda::std::complex<T>& operator[](size_t n) const
+  __host__ __device__; const cuda::std::complex<T>& operator[](size_t n) const
   {
     return _cases[n];
   }
 };
 
 template <class T>
-__host__ __device__ _testcases<T> get_testcases()
+__host__ __device__; _testcases<T> get_testcases()
 {
   _testcases<T> tc{
     cuda::std::complex<T>(1.e-2, 1.e-2),

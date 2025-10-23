@@ -66,7 +66,7 @@ concept a_value = is_value<T>::value;
 template <a_value auto Nested>
 struct value<Nested, void>
 {
-  __forceinline__ __device__ static void emit()
+  __forceinline__ __device__; static void emit()
   {
     Nested.emit();
   }
@@ -84,7 +84,7 @@ struct value<V, void>
 template <>
 struct value<true, void>
 {
-  __forceinline__ __device__ static void emit()
+  __forceinline__ __device__; static void emit()
   {
     asm volatile("true" ::: "memory");
   }
@@ -93,7 +93,7 @@ struct value<true, void>
 template <>
 struct value<false, void>
 {
-  __forceinline__ __device__ static void emit()
+  __forceinline__ __device__; static void emit()
   {
     asm volatile("false" ::: "memory");
   }
@@ -104,7 +104,7 @@ template <int N, string<N> V, cuda::std::size_t... Is>
 struct value<V, cuda::std::index_sequence<Is...>>
 {
 #pragma nv_diag_default 842
-  __forceinline__ __device__ static void emit()
+  __forceinline__ __device__; static void emit()
   {
     static constexpr char str[]{V.str[Is]...};
     asm volatile("\"%0\"" ::"C"(str) : "memory");

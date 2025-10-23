@@ -37,15 +37,15 @@ using missing_stateless_property =
   test_resource<cuda::mr::host_accessible, property_with_value<int>, property_with_value<double>>;
 
 using cuda::std::is_constructible;
-static_assert(is_constructible<ref, matching_properties&>::value, "");
-static_assert(!is_constructible<ref, missing_stateful_property&>::value, "");
-static_assert(!is_constructible<ref, missing_stateless_property&>::value, "");
+static_assert(is_constructible<std::ref, matching_properties&>::value, "");
+static_assert(!is_constructible<std::ref, missing_stateful_property&>::value, "");
+static_assert(!is_constructible<std::ref, missing_stateless_property&>::value, "");
 
-static_assert(is_constructible<ref, matching_properties*>::value, "");
-static_assert(!is_constructible<ref, missing_stateful_property*>::value, "");
-static_assert(!is_constructible<ref, missing_stateless_property*>::value, "");
+static_assert(is_constructible<std::ref, matching_properties*>::value, "");
+static_assert(!is_constructible<std::ref, missing_stateful_property*>::value, "");
+static_assert(!is_constructible<std::ref, missing_stateless_property*>::value, "");
 
-static_assert(is_constructible<ref, ref&>::value, "");
+static_assert(is_constructible<std::ref, std::ref&>::value, "");
 
 // Ensure we require a mutable valid reference and do not bind against rvalues
 static_assert(!is_constructible<ref, matching_properties>::value, "");

@@ -46,7 +46,7 @@ struct string
   char str[N];
 };
 
-__forceinline__ __device__ void comma()
+__forceinline__ __device__; void comma()
 {
   asm volatile("," ::: "memory");
 }

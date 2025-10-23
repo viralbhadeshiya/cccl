@@ -19,7 +19,7 @@
 #include <cuda/std/utility>
 
 template <class T, class U>
-__host__ __device__ constexpr void test_assignment_from_complex()
+__host__ __device__; constexpr void test_assignment_from_complex()
 {
   // 1. Test that cuda::complex<U> is assignable to cuda::complex<T>
   static_assert(cuda::std::is_assignable_v<cuda::complex<T>&, const cuda::complex<U>&>);

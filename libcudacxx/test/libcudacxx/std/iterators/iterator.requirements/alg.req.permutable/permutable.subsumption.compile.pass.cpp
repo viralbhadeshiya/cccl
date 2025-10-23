@@ -15,16 +15,16 @@
 #include <cuda/std/iterator>
 
 template <class I>
-__host__ __device__ void test_subsumption()
+__host__ __device__; void test_subsumption()
   requires cuda::std::forward_iterator<I>;
 template <class I>
-__host__ __device__ void test_subsumption()
+__host__ __device__; void test_subsumption()
   requires cuda::std::indirectly_movable_storable<I, I>;
 template <class I>
-__host__ __device__ void test_subsumption()
+__host__ __device__; void test_subsumption()
   requires cuda::std::indirectly_swappable<I, I>;
 template <class I>
-__host__ __device__ constexpr bool test_subsumption()
+__host__ __device__; constexpr bool test_subsumption()
   requires cuda::std::permutable<I>
 {
   return true;

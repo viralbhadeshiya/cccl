@@ -11,7 +11,7 @@
 #include <cuda/std/cassert>
 
 template <class T>
-__host__ __device__ constexpr void test_strcmp(const T* lhs, const T* rhs, int expected)
+__host__ __device__; constexpr void test_strcmp(const T* lhs, const T* rhs, int expected)
 {
   const auto ret = cuda::std::__cccl_strcmp(lhs, rhs);
 
@@ -29,7 +29,7 @@ __host__ __device__ constexpr void test_strcmp(const T* lhs, const T* rhs, int e
   }
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
   test_strcmp<char>("", "", 0);

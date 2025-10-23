@@ -35,7 +35,7 @@ struct Derived5 : Derived4
 {};
 
 template <typename From, typename To>
-__host__ __device__ constexpr void CheckNotDerivedFromPointer()
+__host__ __device__; constexpr void CheckNotDerivedFromPointer()
 {
   { // From as pointer
     static_assert(!derived_from<From*, To>, "");

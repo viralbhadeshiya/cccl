@@ -14,13 +14,13 @@
 #include <cuda/std/type_traits>
 
 template <class T, class U>
-__host__ __device__ constexpr void test_uabs(T input, U ref)
+__host__ __device__; constexpr void test_uabs(T input, U ref)
 {
   assert(cuda::uabs(input) == ref);
 }
 
 template <class T>
-__host__ __device__ constexpr void test_type()
+__host__ __device__; constexpr void test_type()
 {
   using U = cuda::std::make_unsigned_t<T>;
 

@@ -32,10 +32,9 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace random
-{
 
-namespace detail
+
+namespace random::detail
 {
 
 template <typename UIntType, UIntType a, unsigned long long c, UIntType m>
@@ -97,8 +96,8 @@ struct linear_congruential_engine_discard
   }
 }; // end linear_congruential_engine_discard
 
-} // namespace detail
+} // namespace random::detail
 
-} // namespace random
+
 
 THRUST_NAMESPACE_END

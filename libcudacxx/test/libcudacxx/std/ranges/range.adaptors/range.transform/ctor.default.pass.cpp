@@ -19,7 +19,7 @@ constexpr int buff[] = {1, 2, 3};
 
 struct DefaultConstructibleView : cuda::std::ranges::view_base
 {
-  __host__ __device__ constexpr DefaultConstructibleView() noexcept
+  __host__ __device__; constexpr DefaultConstructibleView() noexcept
       : begin_(buff)
       , end_(buff + 3)
   {}
@@ -40,7 +40,7 @@ private:
 struct DefaultConstructibleFunction
 {
   int state_;
-  __host__ __device__ constexpr DefaultConstructibleFunction() noexcept
+  __host__ __device__; constexpr DefaultConstructibleFunction() noexcept
       : state_(100)
   {}
   __host__ __device__ constexpr int operator()(int i) const
@@ -52,20 +52,20 @@ struct DefaultConstructibleFunction
 struct NoDefaultCtrView : cuda::std::ranges::view_base
 {
   NoDefaultCtrView() = delete;
-  __host__ __device__ int* begin() const;
-  __host__ __device__ int* end() const;
+  __host__ __device__; int* begin() const;
+  __host__ __device__; int* end() const;
 };
 
 struct NoDefaultFunction
 {
   NoDefaultFunction() = delete;
-  __host__ __device__ constexpr int operator()(int i) const
+  __host__ __device__; constexpr int operator()(int i) const
   {
     return i;
   };
 };
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   {
     cuda::std::ranges::transform_view<DefaultConstructibleView, DefaultConstructibleFunction> view{};

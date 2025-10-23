@@ -19,7 +19,7 @@
 #include <cuda/std/utility>
 
 template <class T>
-__host__ __device__ constexpr void test_copy_constructor()
+__host__ __device__; constexpr void test_copy_constructor()
 {
   using C = cuda::complex<T>;
 

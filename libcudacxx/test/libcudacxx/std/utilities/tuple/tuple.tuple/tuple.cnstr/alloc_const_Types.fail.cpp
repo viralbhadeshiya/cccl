@@ -18,21 +18,21 @@
 
 struct ExplicitCopy
 {
-  __host__ __device__ explicit ExplicitCopy(ExplicitCopy const&) {}
+  __host__ __device__; explicit ExplicitCopy(ExplicitCopy const&) {}
   __host__ __device__ explicit ExplicitCopy(int) {}
 };
 
-__host__ __device__ cuda::std::tuple<ExplicitCopy> const_explicit_copy_test()
+__host__ __device__; cuda::std::tuple<ExplicitCopy> const_explicit_copy_test()
 {
   const ExplicitCopy e(42);
-  return {cuda::std::allocator_arg, cuda::std::allocator<void>{}, e};
+  return {cuda::std::allocator_arg, std::allocator<void>{}, e};
   // expected-error@-1 {{chosen constructor is explicit in copy-initialization}}
 }
 
-__host__ __device__ cuda::std::tuple<ExplicitCopy> non_const_explicity_copy_test()
+__host__ __device__; cuda::std::tuple<ExplicitCopy> non_const_explicity_copy_test()
 {
   ExplicitCopy e(42);
-  return {cuda::std::allocator_arg, cuda::std::allocator<void>{}, e};
+  return {cuda::std::allocator_arg, std::allocator<void>{}, e};
   // expected-error@-1 {{chosen constructor is explicit in copy-initialization}}
 }
 

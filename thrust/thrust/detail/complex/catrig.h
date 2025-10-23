@@ -58,9 +58,8 @@
 #include <cuda/std/limits>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 using thrust::complex;
@@ -768,9 +767,9 @@ _CCCL_HOST_DEVICE inline complex<double> catan(complex<double> z)
   return (complex<double>(w.imag(), w.real()));
 }
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 template <typename ValueType>
 _CCCL_HOST_DEVICE inline complex<ValueType> acos(const complex<ValueType>& z)

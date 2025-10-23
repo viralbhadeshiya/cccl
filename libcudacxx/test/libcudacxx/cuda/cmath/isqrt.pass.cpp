@@ -15,7 +15,7 @@
 #include <cuda/std/utility>
 
 template <class T, class In, class Ref>
-__host__ __device__ constexpr void test_isqrt(In input, Ref ref)
+__host__ __device__; constexpr void test_isqrt(In input, Ref ref)
 {
   if (cuda::std::in_range<T>(input))
   {
@@ -24,7 +24,7 @@ __host__ __device__ constexpr void test_isqrt(In input, Ref ref)
 }
 
 template <class T>
-__host__ __device__ constexpr void test_type()
+__host__ __device__; constexpr void test_type()
 {
   static_assert(cuda::std::is_same_v<decltype(cuda::isqrt(T{})), T>);
   static_assert(noexcept(cuda::isqrt(T{})));

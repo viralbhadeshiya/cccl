@@ -17,7 +17,7 @@
 class not_incrementable
 {};
 
-__host__ __device__ void proper_constraints()
+__host__ __device__; void proper_constraints()
 {
   not_incrementable p{};
   cuda::std::ranges::advance(p, 5); // expected-error {{no matching function for call}}

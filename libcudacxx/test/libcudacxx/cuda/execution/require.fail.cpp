@@ -14,7 +14,7 @@
 {
 } query{};
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   // not every environment is a requirement
   cuda::std::execution::prop p{query, 42};

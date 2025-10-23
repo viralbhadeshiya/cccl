@@ -12,7 +12,7 @@
 #include <cuda/std/ratio>
 
 template <long long N, long long D, long long eN, long long eD>
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   static_assert((cuda::std::ratio<N, D>::num == eN), "");
   static_assert((cuda::std::ratio<N, D>::den == eD), "");

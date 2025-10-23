@@ -10,7 +10,7 @@
 #include <cuda/std/__string_>
 #include <cuda/std/cassert>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   assert(cuda::std::char_traits<char16_t>::to_char_type(u'a') == u'a');
   assert(cuda::std::char_traits<char16_t>::to_char_type(u'A') == u'A');

@@ -23,7 +23,7 @@
 #endif // !_CCCL_COMPILER(NVRTC)
 
 template <class T>
-__host__ __device__ void test_deduction()
+__host__ __device__; void test_deduction()
 {
   // 1. Test cuda::complex(T)
   {
@@ -77,7 +77,7 @@ __host__ __device__ void test_deduction()
 #endif // _CCCL_STD_VER >= 2020
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_deduction<float>();
   test_deduction<double>();

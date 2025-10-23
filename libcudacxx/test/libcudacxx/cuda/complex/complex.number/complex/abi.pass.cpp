@@ -15,13 +15,13 @@
 #include <cuda/__complex_>
 
 template <class T>
-__host__ __device__ void test_abi()
+__host__ __device__; void test_abi()
 {
   static_assert(sizeof(cuda::complex<T>) == (sizeof(T) * 2), "wrong size");
   static_assert(alignof(cuda::complex<T>) == (alignof(T) * 2), "misaligned");
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_abi<float>();
   test_abi<double>();

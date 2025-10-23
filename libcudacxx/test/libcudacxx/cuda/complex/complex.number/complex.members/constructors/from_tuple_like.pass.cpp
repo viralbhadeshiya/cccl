@@ -37,7 +37,7 @@ struct MyPair
 };
 
 template <cuda::std::size_t I, class A, class B>
-[[nodiscard]] __host__ __device__ constexpr auto& get(MyPair<A, B>& p)
+[[nodiscard]] __host__ __device__; constexpr auto& get(MyPair<A, B>& p)
 {
   if constexpr (I == 0)
   {
@@ -50,7 +50,7 @@ template <cuda::std::size_t I, class A, class B>
 }
 
 template <cuda::std::size_t I, class A, class B>
-[[nodiscard]] __host__ __device__ constexpr auto&& get(MyPair<A, B>&& p)
+[[nodiscard]] __host__ __device__; constexpr auto&& get(MyPair<A, B>&& p)
 {
   if constexpr (I == 0)
   {
@@ -63,7 +63,7 @@ template <cuda::std::size_t I, class A, class B>
 }
 
 template <cuda::std::size_t I, class A, class B>
-[[nodiscard]] __host__ __device__ constexpr const auto& get(const MyPair<A, B>& p)
+[[nodiscard]] __host__ __device__; constexpr const auto& get(const MyPair<A, B>& p)
 {
   if constexpr (I == 0)
   {
@@ -76,7 +76,7 @@ template <cuda::std::size_t I, class A, class B>
 }
 
 template <cuda::std::size_t I, class A, class B>
-[[nodiscard]] __host__ __device__ constexpr const auto&& get(const MyPair<A, B>&& p)
+[[nodiscard]] __host__ __device__; constexpr const auto&& get(const MyPair<A, B>&& p)
 {
   if constexpr (I == 0)
   {

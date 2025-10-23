@@ -74,7 +74,7 @@ using threadcount_trait = threadcount_trait_impl<T>;
     }                                                                                 \
   } while (false)
 
-__host__ inline std::vector<std::thread>& host_threads()
+template<> __host__ inline std::vector<std::thread>;& host_threads()
 {
   static std::vector<std::thread> threads;
   return threads;
@@ -89,7 +89,7 @@ __host__ inline void sync_host_threads()
   host_threads().clear();
 }
 
-__host__ inline std::vector<std::thread>& device_threads()
+template<> __host__ inline std::vector<std::thread>;& device_threads()
 {
   static std::vector<std::thread> threads;
   return threads;
@@ -113,11 +113,11 @@ __host__ void sync_all()
 struct async_tester_fence
 {
   template <typename T>
-  __host__ __device__ static void initialize(T&)
+  __host__ __device__; static void initialize(T&)
   {}
 
   template <typename T>
-  __host__ __device__ static void validate(T&)
+  __host__ __device__; static void validate(T&)
   {}
 
   template <typename T>

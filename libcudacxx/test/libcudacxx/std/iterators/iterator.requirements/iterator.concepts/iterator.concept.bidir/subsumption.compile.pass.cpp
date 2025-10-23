@@ -17,14 +17,14 @@
 #include <cuda/std/concepts>
 #include <cuda/std/iterator>
 
-template <cuda::std::forward_iterator I>
-__host__ __device__ constexpr bool check_subsumption()
+template <cuda::std::forward_iterator_tag I>
+__host__ __device__; constexpr bool check_subsumption()
 {
   return false;
 }
 
-template <cuda::std::bidirectional_iterator>
-__host__ __device__ constexpr bool check_subsumption()
+template <cuda::std::bidirectional_iterator_tag>
+__host__ __device__; constexpr bool check_subsumption()
 {
   return true;
 }

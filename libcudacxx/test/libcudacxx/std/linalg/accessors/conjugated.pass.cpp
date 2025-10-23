@@ -12,7 +12,7 @@
 #include <cuda/std/linalg>
 #include <cuda/std/type_traits>
 
-__host__ __device__ void constexpr_test()
+__host__ __device__; void constexpr_test()
 {
   using E = cuda::std::extents<size_t, 2>;
   // operator() arithmetic type
@@ -57,7 +57,7 @@ __host__ __device__ void constexpr_test()
   }
 }
 
-__host__ __device__ void runtime_test()
+__host__ __device__; void runtime_test()
 {
   using E = cuda::std::extents<size_t, 2>;
   // operator() float value

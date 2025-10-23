@@ -13,7 +13,7 @@
 constexpr int not_found = -1;
 
 template <class T>
-__host__ __device__ constexpr void test_memchr(const T* ptr, T c, size_t n, int expected_pos)
+__host__ __device__; constexpr void test_memchr(const T* ptr, T c, size_t n, int expected_pos)
 {
   const T* ret = cuda::std::__cccl_memchr<const T>(ptr, c, n);
 
@@ -28,7 +28,7 @@ __host__ __device__ constexpr void test_memchr(const T* ptr, T c, size_t n, int 
   }
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
   test_memchr<char>("abcde", '\0', 6, 5);

@@ -18,7 +18,7 @@
 
 #include <cuda/std/cassert>
 
-__host__ __device__ inline bool failed_on_host()
+__host__ __device__; inline bool failed_on_host()
 {
   NV_IF_ELSE_TARGET(NV_IS_DEVICE, return true;, return false;)
 }

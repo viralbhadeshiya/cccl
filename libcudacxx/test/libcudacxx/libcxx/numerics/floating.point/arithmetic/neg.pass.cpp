@@ -16,7 +16,7 @@
 #include <cuda/std/type_traits>
 
 template <class T>
-__host__ __device__ constexpr void test_fp_neg()
+__host__ __device__; constexpr void test_fp_neg()
 {
   static_assert(cuda::std::is_same_v<decltype(cuda::std::__fp_neg(T{})), T>);
   static_assert(noexcept(cuda::std::__fp_neg(T{})));
@@ -24,7 +24,7 @@ __host__ __device__ constexpr void test_fp_neg()
   // todo: implement test once __fp_cast is implemented
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // standard floating point types
   test_fp_neg<float>();

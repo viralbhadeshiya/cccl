@@ -10,7 +10,7 @@
 #include <cuda/std/__string_>
 #include <cuda/std/cassert>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   char16_t c = u'\0';
   cuda::std::char_traits<char16_t>::assign(c, u'a');

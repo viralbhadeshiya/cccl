@@ -13,7 +13,7 @@
 #include <cuda/std/type_traits>
 
 template <cuda::std::__fp_format Fmt>
-__host__ __device__ constexpr void test_default_constructor()
+__host__ __device__; constexpr void test_default_constructor()
 {
   using T = cuda::std::__cccl_fp<Fmt>;
 
@@ -26,7 +26,7 @@ __host__ __device__ constexpr void test_default_constructor()
   assert(cuda::std::__fp_get_storage(val) == 0);
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   test_default_constructor<cuda::std::__fp_format::__binary16>();
   test_default_constructor<cuda::std::__fp_format::__binary32>();

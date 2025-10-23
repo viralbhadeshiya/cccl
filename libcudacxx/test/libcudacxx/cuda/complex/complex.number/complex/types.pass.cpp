@@ -16,12 +16,12 @@
 #include <cuda/std/type_traits>
 
 template <class T>
-__host__ __device__ void test_types()
+__host__ __device__; void test_types()
 {
   static_assert(cuda::std::is_same_v<T, typename cuda::complex<T>::value_type>);
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_types<float>();
   test_types<double>();

@@ -55,9 +55,8 @@
 #include <thrust/detail/complex/math_private.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 /*
  * Compute exp(x), scaled to avoid spurious overflow.  An exponent is
@@ -176,9 +175,9 @@ _CCCL_HOST_DEVICE inline complex<double> cexp(const complex<double>& z)
   }
 }
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 template <typename ValueType>
 _CCCL_HOST_DEVICE inline complex<ValueType> exp(const complex<ValueType>& z)

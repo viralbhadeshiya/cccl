@@ -13,12 +13,12 @@
 // Test that we SFINAE away iota_view<bool>.
 
 template <class T>
-__host__ __device__ cuda::std::ranges::iota_view<T> f(int);
+__host__ __device__; cuda::std::ranges::iota_view<T> f(int);
 template <class T>
-__host__ __device__ void f(...)
+__host__ __device__; void f(...)
 {}
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   f<bool>(42);
 }

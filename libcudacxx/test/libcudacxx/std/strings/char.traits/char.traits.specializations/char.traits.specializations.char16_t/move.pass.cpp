@@ -10,7 +10,7 @@
 #include <cuda/std/__string_>
 #include <cuda/std/cassert>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   char16_t s1[] = {1, 2, 3};
   assert(cuda::std::char_traits<char16_t>::move(s1, s1 + 1, 2) == s1);

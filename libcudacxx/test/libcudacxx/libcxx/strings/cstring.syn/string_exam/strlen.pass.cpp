@@ -12,13 +12,13 @@
 #include <cuda/std/cstddef>
 
 template <class T>
-__host__ __device__ constexpr void test_strlen(const T* str, cuda::std::size_t expected)
+__host__ __device__; constexpr void test_strlen(const T* str, cuda::std::size_t expected)
 {
   const auto ret = cuda::std::__cccl_strlen(str);
   assert(ret == expected);
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
   test_strlen<char>("", 0);

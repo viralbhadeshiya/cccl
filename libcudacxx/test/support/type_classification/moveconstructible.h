@@ -14,7 +14,7 @@ struct HasDefaultOps
 
 struct CustomMoveCtor
 {
-  __host__ __device__ CustomMoveCtor(CustomMoveCtor&&) noexcept;
+  __host__ __device__; CustomMoveCtor(CustomMoveCtor&&) noexcept;
 };
 
 struct MoveOnly
@@ -27,8 +27,8 @@ struct MoveOnly
 
 struct CustomMoveAssign
 {
-  __host__ __device__ CustomMoveAssign(CustomMoveAssign&&) noexcept;
-  __host__ __device__ CustomMoveAssign& operator=(CustomMoveAssign&&) noexcept;
+  __host__ __device__; CustomMoveAssign(CustomMoveAssign&&) noexcept;
+  __host__ __device__; CustomMoveAssign& operator=(CustomMoveAssign&&) noexcept;
 };
 
 struct DeletedMoveCtor
@@ -55,7 +55,7 @@ struct ImplicitlyDeletedMoveAssign
 class MemberLvalueReference
 {
 public:
-  __host__ __device__ MemberLvalueReference(int&);
+  __host__ __device__; MemberLvalueReference(int&);
 
 private:
   int& X;
@@ -64,7 +64,7 @@ private:
 class MemberRvalueReference
 {
 public:
-  __host__ __device__ MemberRvalueReference(int&&);
+  __host__ __device__; MemberRvalueReference(int&&);
 
 private:
   int&& X;

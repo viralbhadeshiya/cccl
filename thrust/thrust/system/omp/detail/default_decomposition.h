@@ -32,19 +32,17 @@
 #include <thrust/system/detail/internal/decompose.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
-namespace detail
+
+
+namespace system::omp::detail
 {
 
 template <typename IndexType>
 thrust::system::detail::internal::uniform_decomposition<IndexType> default_decomposition(IndexType n);
 
 } // end namespace detail
-} // end namespace omp
-} // end namespace system
+// end namespace omp
+// end namespace system
 THRUST_NAMESPACE_END
 
 #include <thrust/system/omp/detail/default_decomposition.inl>

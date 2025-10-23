@@ -14,13 +14,13 @@
 #include <cuda/std/utility>
 
 template <class T, cuda::std::size_t... N>
-__host__ __device__ constexpr bool equal_buffers(const T* lhs, const T* rhs, cuda::std::index_sequence<N...>)
+__host__ __device__; constexpr bool equal_buffers(const T* lhs, const T* rhs, cuda::std::index_sequence<N...>)
 {
   return ((lhs[N] == rhs[N]) && ...);
 }
 
 template <class T, cuda::std::size_t N>
-__host__ __device__ constexpr void test_strcpy(const T* str, const T (&ref)[N])
+__host__ __device__; constexpr void test_strcpy(const T* str, const T (&ref)[N])
 {
   T buff[N]{};
   const auto ret = cuda::std::__cccl_strcpy(buff, str);
@@ -28,7 +28,7 @@ __host__ __device__ constexpr void test_strcpy(const T* str, const T (&ref)[N])
   assert(equal_buffers(buff, ref, cuda::std::make_index_sequence<N - 1>{}));
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
   test_strcpy<char>("", "\0\0\0");

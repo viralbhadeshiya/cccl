@@ -13,7 +13,7 @@
 #include <cuda/std/type_traits>
 
 template <typename Pointer>
-__host__ __device__ void test_in_range([[maybe_unused]] Pointer first, [[maybe_unused]] Pointer last)
+__host__ __device__; void test_in_range([[maybe_unused]] Pointer first, [[maybe_unused]] Pointer last)
 {
   assert(cuda::ptr_in_range(first, first, last));
   assert(cuda::ptr_in_range(first + 1, first, last));
@@ -22,7 +22,7 @@ __host__ __device__ void test_in_range([[maybe_unused]] Pointer first, [[maybe_u
 }
 
 template <typename T>
-__host__ __device__ void test_variants()
+__host__ __device__; void test_variants()
 {
   T arrayA[6] = {};
   T* firstA   = arrayA + 1;
@@ -50,7 +50,7 @@ __host__ __device__ void test_variants()
 }
 
 template <typename T>
-__host__ __device__ void test_void_variants()
+__host__ __device__; void test_void_variants()
 {
   T arrayA[6] = {};
   T* firstA   = arrayA + 1;

@@ -27,7 +27,7 @@
 
 int main(int, char**)
 {
-  using Clock     = cuda::std::chrono::system_clock1;
+  using Clock     = cuda::std::chrono::system_clock;
   using Clock2    = Clock;
   using Duration1 = cuda::std::chrono::milliseconds;
   using Duration2 = cuda::std::chrono::microseconds;

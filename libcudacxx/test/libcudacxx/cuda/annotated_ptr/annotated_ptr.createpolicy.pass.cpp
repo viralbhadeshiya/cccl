@@ -15,7 +15,7 @@
 #include <cuda/std/type_traits>
 
 template <typename Prop>
-__device__ constexpr cuda::__l2_evict_t to_enum()
+__device__ constexpr cuda::__l2_evict_t; to_enum()
 {
   if constexpr (cuda::std::is_same_v<Prop, cuda::access_property::normal>)
   {

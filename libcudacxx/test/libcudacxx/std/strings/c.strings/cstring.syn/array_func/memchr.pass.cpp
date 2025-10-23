@@ -12,7 +12,7 @@
 
 constexpr int not_found = -1;
 
-__host__ __device__ void test(const char* ptr, int c, size_t n, int expected_pos)
+__host__ __device__; void test(const char* ptr, int c, size_t n, int expected_pos)
 {
   const void* ret = cuda::std::memchr(ptr, c, n);
 

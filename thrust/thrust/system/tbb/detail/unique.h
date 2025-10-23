@@ -29,11 +29,9 @@
 #include <thrust/system/tbb/detail/execution_policy.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace tbb
-{
-namespace detail
+
+
+namespace system::tbb::detail
 {
 
 template <typename ExecutionPolicy, typename ForwardIterator, typename BinaryPredicate>
@@ -53,8 +51,8 @@ thrust::detail::it_difference_t<ForwardIterator> unique_count(
   execution_policy<DerivedPolicy>& exec, ForwardIterator first, ForwardIterator last, BinaryPredicate binary_pred);
 
 } // end namespace detail
-} // end namespace tbb
-} // end namespace system
+// end namespace tbb
+// end namespace system
 THRUST_NAMESPACE_END
 
 #include <thrust/system/tbb/detail/unique.inl>

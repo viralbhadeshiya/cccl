@@ -37,7 +37,7 @@
 
 static_assert(TIME_UTC != 0);
 
-__host__ __device__ bool test()
+__host__ __device__; bool test()
 {
   // struct timespec
 

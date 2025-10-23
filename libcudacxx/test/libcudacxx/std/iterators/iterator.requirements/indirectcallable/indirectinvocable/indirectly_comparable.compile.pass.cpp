@@ -18,7 +18,7 @@
 
 struct Deref
 {
-  __host__ __device__ int operator()(int*) const;
+  __host__ __device__; int operator()(int*) const;
 };
 
 static_assert(!cuda::std::indirectly_comparable<int, int, cuda::std::less<int>>, ""); // not dereferenceable

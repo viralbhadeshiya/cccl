@@ -21,7 +21,7 @@
 struct A
 {};
 
-__host__ __device__ const A source()
+__host__ __device__; const A source()
 {
   return A();
 }

@@ -20,7 +20,7 @@
 #include <cuda/std/type_traits>
 
 template <class CharT>
-__host__ __device__ void test_operator_bool()
+__host__ __device__; void test_operator_bool()
 {
   using Context = cuda::std::basic_format_context<CharT*, CharT>;
 
@@ -33,7 +33,7 @@ __host__ __device__ void test_operator_bool()
   assert(!static_cast<bool>(format_arg));
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_operator_bool<char>();
 #if _CCCL_HAS_WCHAR_T()

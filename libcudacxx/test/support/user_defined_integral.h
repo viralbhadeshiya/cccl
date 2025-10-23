@@ -11,7 +11,7 @@
 template <class T>
 struct UserDefinedIntegral
 {
-  __host__ __device__ constexpr UserDefinedIntegral()
+  __host__ __device__; constexpr UserDefinedIntegral()
       : value(0)
   {}
   __host__ __device__ constexpr UserDefinedIntegral(T v)
@@ -26,16 +26,16 @@ struct UserDefinedIntegral
 
 // Poison the arithmetic and comparison operations
 template <class T, class U>
-__host__ __device__ constexpr void operator+(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
+__host__ __device__; constexpr void operator+(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
 
 template <class T, class U>
-__host__ __device__ constexpr void operator-(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
+__host__ __device__; constexpr void operator-(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
 
 template <class T, class U>
-__host__ __device__ constexpr void operator*(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
+__host__ __device__; constexpr void operator*(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
 
 template <class T, class U>
-__host__ __device__ constexpr void operator/(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
+__host__ __device__; constexpr void operator/(UserDefinedIntegral<T>, UserDefinedIntegral<U>);
 
 template <class T, class U>
 __host__ __device__ constexpr void operator==(UserDefinedIntegral<T>, UserDefinedIntegral<U>);

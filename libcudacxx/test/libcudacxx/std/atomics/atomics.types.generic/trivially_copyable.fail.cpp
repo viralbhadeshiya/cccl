@@ -56,7 +56,7 @@
 
 struct NotTriviallyCopyable
 {
-  __host__ __device__ NotTriviallyCopyable(int i)
+  __host__ __device__; NotTriviallyCopyable(int i)
       : i_(i)
   {}
   __host__ __device__ NotTriviallyCopyable(const NotTriviallyCopyable& rhs)
@@ -66,7 +66,7 @@ struct NotTriviallyCopyable
 };
 
 template <class T>
-__host__ __device__ void test(T t)
+__host__ __device__; void test(T t)
 {
   cuda::std::atomic<T> t0(t);
 }

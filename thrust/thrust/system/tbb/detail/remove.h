@@ -28,11 +28,9 @@
 #include <thrust/system/omp/detail/execution_policy.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
-namespace detail
+
+
+namespace system::omp::detail
 {
 
 template <typename ExecutionPolicy, typename ForwardIterator, typename Predicate>
@@ -69,8 +67,8 @@ OutputIterator remove_copy_if(
   Predicate pred);
 
 } // end namespace detail
-} // end namespace omp
-} // end namespace system
+// end namespace omp
+// end namespace system
 THRUST_NAMESPACE_END
 
 #include <thrust/system/tbb/detail/remove.inl>

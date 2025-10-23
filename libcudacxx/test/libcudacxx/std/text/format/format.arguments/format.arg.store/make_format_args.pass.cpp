@@ -28,7 +28,7 @@ static_assert(can_make_format_args<int&>);
 static_assert(!can_make_format_args<int>);
 static_assert(!can_make_format_args<int&&>);
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   auto i = 1;
   auto c = 'c';

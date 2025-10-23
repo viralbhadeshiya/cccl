@@ -15,7 +15,7 @@
 
 struct test_resource
 {
-  __host__ __device__ void* allocate_sync(std::size_t, std::size_t)
+  __host__ __device__; void* allocate_sync(std::size_t, std::size_t)
   {
     return nullptr;
   }
@@ -49,14 +49,14 @@ struct test_resource
   int _val = 0;
 };
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   { // Can call get_memory_resource on a type with a get_memory_resource method that returns a const lvalue
     struct with_get_resource_const_lvalue
     {
       test_resource res_{};
 
-      __host__ __device__ const test_resource& get_memory_resource() const noexcept
+      __host__ __device__; const test_resource& get_memory_resource() const noexcept
       {
         return res_;
       }
@@ -72,7 +72,7 @@ __host__ __device__ void test()
     {
       test_resource res_{};
 
-      __host__ __device__ test_resource get_memory_resource() const noexcept
+      __host__ __device__; test_resource get_memory_resource() const noexcept
       {
         return res_;
       }
@@ -88,7 +88,7 @@ __host__ __device__ void test()
     {
       test_resource res_{};
 
-      __host__ __device__ test_resource get_memory_resource() noexcept
+      __host__ __device__; test_resource get_memory_resource() noexcept
       {
         return res_;
       }
@@ -101,7 +101,7 @@ __host__ __device__ void test()
     {
       test_resource res_{};
 
-      __host__ __device__ const test_resource& query(::cuda::mr::get_memory_resource_t) const noexcept
+      __host__ __device__; const test_resource& query(::cuda::mr::get_memory_resource_t) const noexcept
       {
         return res_;
       }
@@ -117,7 +117,7 @@ __host__ __device__ void test()
     {
       test_resource res_{};
 
-      __host__ __device__ test_resource query(::cuda::mr::get_memory_resource_t) const noexcept
+      __host__ __device__; test_resource query(::cuda::mr::get_memory_resource_t) const noexcept
       {
         return res_;
       }

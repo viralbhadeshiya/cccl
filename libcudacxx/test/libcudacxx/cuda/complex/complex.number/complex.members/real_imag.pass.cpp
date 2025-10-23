@@ -18,7 +18,7 @@
 #include <cuda/std/utility>
 
 template <class T>
-__host__ __device__ constexpr void test_real_and_imag()
+__host__ __device__; constexpr void test_real_and_imag()
 {
   using C = cuda::complex<T>;
 

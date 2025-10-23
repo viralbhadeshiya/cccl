@@ -11,14 +11,14 @@
 #include <cuda/std/cassert>
 
 template <class T>
-__host__ __device__ constexpr void test_strchr(T* str, T c, T* expected_ret)
+__host__ __device__; constexpr void test_strchr(T* str, T c, T* expected_ret)
 {
   const auto ret = cuda::std::__cccl_strchr(str, c);
   assert(ret == expected_ret);
 }
 
 template <class T>
-__host__ __device__ constexpr void test_type();
+__host__ __device__; constexpr void test_type();
 
 #define TEST_SPECIALIZATION(T, P)                   \
   template <>                                       \

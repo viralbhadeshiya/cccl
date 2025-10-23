@@ -37,7 +37,7 @@
 #include <cuda/std/type_traits>
 
 template <class Traits>
-__host__ __device__ constexpr void test_type()
+__host__ __device__; constexpr void test_type()
 {
   using SV = cuda::std::basic_string_view<typename Traits::char_type, Traits>;
 

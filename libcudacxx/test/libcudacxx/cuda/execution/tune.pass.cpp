@@ -60,7 +60,7 @@ struct scan_tuning
   };
 };
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   constexpr int nominal_block_threads = 256;
   constexpr int block_threads         = nominal_block_threads / sizeof(int);

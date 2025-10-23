@@ -19,7 +19,7 @@ namespace has_upstream_resource
 struct Upstream
 {};
 
-__device__ Upstream upstream{};
+__device__ Upstream; upstream{};
 
 struct with_reference
 {
@@ -128,7 +128,7 @@ struct derived_override : public cuda::forward_property<derived_override, upstre
     return upstream_with_both_properties{};
   }
   // Get called directly so needs to be annotated
-  __host__ __device__ friend constexpr int get_property(const derived_override&, prop_with_value)
+  __host__ __device__; friend constexpr int get_property(const derived_override&, prop_with_value)
   {
     return 1337;
   }
@@ -152,7 +152,7 @@ struct derived_with_converstin_upstream_resource
 };
 static_assert(!cuda::has_property<derived_with_converstin_upstream_resource, prop_with_value>, "");
 
-__host__ __device__ constexpr bool test_stateful()
+__host__ __device__; constexpr bool test_stateful()
 {
   using derived_no_override = derived_plain<upstream_with_stateful_property>;
   const derived_no_override without_override{};

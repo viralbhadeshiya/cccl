@@ -16,7 +16,7 @@
 #include <cuda/std/ranges>
 
 template <class Range, class Expected>
-__host__ __device__ constexpr bool equal(Range&& range, Expected&& expected)
+__host__ __device__; constexpr bool equal(Range&& range, Expected&& expected)
 {
   auto irange    = range.begin();
   auto iexpected = cuda::std::begin(expected);

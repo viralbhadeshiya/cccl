@@ -16,15 +16,15 @@
 #include <cuda/std/iterator>
 
 template <class I, class R, class P>
-__host__ __device__ void test_subsumption()
+__host__ __device__; void test_subsumption()
   requires cuda::std::permutable<I>;
 
 template <class I, class R, class P>
-__host__ __device__ void test_subsumption()
+__host__ __device__; void test_subsumption()
   requires cuda::std::indirect_strict_weak_order<R, cuda::std::projected<I, P>>;
 
 template <class I, class R, class P>
-__host__ __device__ constexpr bool test_subsumption()
+__host__ __device__; constexpr bool test_subsumption()
   requires cuda::std::sortable<I, R, P>
 {
   return true;

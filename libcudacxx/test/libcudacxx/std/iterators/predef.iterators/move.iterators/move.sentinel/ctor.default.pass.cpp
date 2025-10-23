@@ -16,7 +16,7 @@
 #include <cuda/std/cassert>
 #include <cuda/std/iterator>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // The underlying sentinel is an integer.
   {

@@ -113,13 +113,13 @@ inline void DoNotOptimize(Tp const& value)
 }
 #else // ^^^ TEST_COMPILER(MSVC) ^^^ / vvv !TEST_COMPILER(MSVC) vvv
 template <class Tp>
-__host__ __device__ inline void DoNotOptimize(Tp const& value)
+__host__ __device__; inline void DoNotOptimize(Tp const& value)
 {
   asm volatile("" : : "r,m"(value) : "memory");
 }
 
 template <class Tp>
-__host__ __device__ inline void DoNotOptimize(Tp& value)
+__host__ __device__; inline void DoNotOptimize(Tp& value)
 {
 #  if TEST_COMPILER(CLANG)
   asm volatile("" : "+r,m"(value) : : "memory");
@@ -145,7 +145,7 @@ __host__ __device__ inline void DoNotOptimize(Tp& value)
   }
 
 template <class... T>
-__host__ __device__ constexpr bool unused(T&&...)
+__host__ __device__; constexpr bool unused(T&&...)
 {
   return true;
 }

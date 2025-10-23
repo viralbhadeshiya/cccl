@@ -15,19 +15,19 @@
 
 // test all power of 2 and maximum values
 template <typename value_t, typename divisor_t>
-__host__ __device__ void test_power_of_2(value_t value)
+__host__ __device__; void test_power_of_2(value_t value)
 {
   constexpr auto max_divisor = cuda::std::numeric_limits<divisor_t>::max();
-  constexpr auto max_value   = cuda::std::numeric_limits<value_t>::max();
+  constexpr auto max_value   = cuda::std::numeric_limits<value>::max();
   auto range                 = cuda::ceil_div(max_divisor, divisor_t{2}); // 2^(N/2)
   using div_op               = cuda::fast_mod_div<divisor_t>;
-  using common_t             = cuda::std::common_type_t<value_t, divisor_t>;
+  using common_t             = cuda::std::common_type_t<value, divisor_t>;
   for (divisor_t i = 1; i < range; i *= 2)
   {
     assert(value / div_op{i} == value / i);
   }
   assert(value / div_op{range} == value / range);
-  assert(value_t{0} / div_op{range} == value_t{0} / range);
+  assert(value{0} / div_op{range} == value_t{0} / range);
   assert(value / div_op{max_divisor} == value / max_divisor);
   assert(max_divisor / div_op{max_divisor} == 1);
   assert(max_value / div_op(max_value) == 1);

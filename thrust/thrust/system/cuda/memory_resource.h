@@ -39,13 +39,11 @@
 
 THRUST_NAMESPACE_BEGIN
 
-namespace system
-{
-namespace cuda
-{
+
+
 
 //! \cond
-namespace detail
+namespace system::cuda::detail
 {
 
 using allocation_fn   = cudaError_t (*)(void**, std::size_t);
@@ -91,7 +89,7 @@ using managed_memory_resource =
 using pinned_memory_resource =
   detail::cuda_memory_resource<cudaMallocHost, cudaFreeHost, thrust::cuda::universal_host_pinned_pointer<void>>;
 
-} // namespace detail
+} // namespace system::cuda::detail
 //! \endcond
 
 /*! The memory resource for the CUDA system. Uses <tt>cudaMalloc</tt> and wraps
@@ -109,8 +107,8 @@ using universal_memory_resource = detail::managed_memory_resource;
  */
 using universal_host_pinned_memory_resource = detail::pinned_memory_resource;
 
-} // namespace cuda
-} // namespace system
+
+
 
 namespace cuda
 {

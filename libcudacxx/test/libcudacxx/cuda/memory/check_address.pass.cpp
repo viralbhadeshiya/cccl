@@ -27,7 +27,7 @@ __device__ void device_test()
   assert(!cuda::device::__is_smem_valid_address_range(&var, cuda::std::numeric_limits<size_t>::max()));
 }
 
-__host__ __device__ void host_device_test()
+__host__ __device__; void host_device_test()
 {
   int var = 0;
   assert(cuda::__is_valid_address_range(&var, sizeof(var)));
@@ -38,7 +38,7 @@ __host__ __device__ void host_device_test()
   assert(!cuda::__is_valid_address_range(ptr2, 4));
 }
 
-__host__ __device__ bool test()
+__host__ __device__; bool test()
 {
   NV_IF_TARGET(NV_IS_DEVICE, (device_test();))
   return true;

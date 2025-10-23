@@ -12,7 +12,7 @@
 #include <cuda/std/cassert>
 #include <cuda/std/cmath>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   assert(cuda::std::isnan(cuda::std::nanf("")));
   assert(cuda::std::isnan(cuda::std::nanf("1")));

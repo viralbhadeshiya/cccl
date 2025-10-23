@@ -16,7 +16,7 @@
 #include <cuda/std/cassert>
 
 template <class T>
-__host__ __device__ void test_layout()
+__host__ __device__; void test_layout()
 {
   cuda::complex<T> z{T(1), T(2)};
   T* p = (T*) &z;
@@ -30,7 +30,7 @@ __host__ __device__ void test_layout()
   assert(p[1] == z.imag());
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_layout<float>();
   test_layout<double>();

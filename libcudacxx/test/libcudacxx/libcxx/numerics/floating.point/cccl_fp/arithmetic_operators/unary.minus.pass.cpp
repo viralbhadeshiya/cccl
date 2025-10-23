@@ -21,7 +21,7 @@ struct has_unary_minus<T, cuda::std::void_t<decltype(-T{})>> : cuda::std::true_t
 {};
 
 template <cuda::std::__fp_format Fmt>
-__host__ __device__ constexpr void test_fp_unary_minus()
+__host__ __device__; constexpr void test_fp_unary_minus()
 {
   using T = cuda::std::__cccl_fp<Fmt>;
 
@@ -38,7 +38,7 @@ __host__ __device__ constexpr void test_fp_unary_minus()
   }
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   test_fp_unary_minus<cuda::std::__fp_format::__binary16>();
   test_fp_unary_minus<cuda::std::__fp_format::__binary32>();

@@ -34,19 +34,17 @@
 #include <thrust/system/omp/pointer.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
+
+
 
 //! \cond
-namespace detail
+namespace system::omp::detail
 {
 using native_resource = thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::omp::pointer<void>>;
 
 using universal_native_resource =
   thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::omp::universal_pointer<void>>;
-} // namespace detail
+} // namespace system::omp::detail
 //! \endcond
 
 /*! \addtogroup memory_resources Memory Resources
@@ -69,7 +67,7 @@ using universal_host_pinned_memory_resource = universal_memory_resource;
 /*! \}
  */
 
-} // namespace omp
-} // namespace system
+
+
 
 THRUST_NAMESPACE_END

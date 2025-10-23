@@ -27,7 +27,7 @@
 #include <cuda/std/cassert>
 
 template <typename T>
-struct atomic_test : public cuda::std::__atomic_base<T>
+struct atomic_test : public std::__atomic_base<T>
 {
   atomic_test()
   {

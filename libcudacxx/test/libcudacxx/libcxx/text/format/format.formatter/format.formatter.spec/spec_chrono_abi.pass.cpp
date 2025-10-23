@@ -27,7 +27,7 @@ struct TestSpecChronoValues
   bool month_name;
 };
 
-__host__ __device__ TestSpecChronoValues make_test_spec_chrono_values() noexcept
+__host__ __device__; TestSpecChronoValues make_test_spec_chrono_values() noexcept
 {
   TestSpecChronoValues value{};
   value.alignment            = cuda::std::__fmt_spec_alignment::__center;
@@ -41,7 +41,7 @@ __host__ __device__ TestSpecChronoValues make_test_spec_chrono_values() noexcept
   return value;
 }
 
-__host__ __device__ void verify_spec_chrono(const cuda::std::__fmt_spec_chrono& value) noexcept
+__host__ __device__; void verify_spec_chrono(const cuda::std::__fmt_spec_chrono& value) noexcept
 {
   const auto ref = make_test_spec_chrono_values();
   assert(value.__alignment_ == cuda::std::to_underlying(ref.alignment));
@@ -54,7 +54,7 @@ __host__ __device__ void verify_spec_chrono(const cuda::std::__fmt_spec_chrono& 
   assert(value.__month_name_ == ref.month_name);
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   static_assert(sizeof(cuda::std::__fmt_spec_chrono) == 2);
 

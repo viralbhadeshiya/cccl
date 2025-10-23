@@ -16,13 +16,13 @@
 #include <cuda/std/ranges>
 
 template <cuda::std::ranges::range R>
-__host__ __device__ consteval bool check_subsumption()
+__host__ __device__; consteval bool check_subsumption()
 {
   return false;
 }
 
 template <cuda::std::ranges::sized_range R>
-__host__ __device__ consteval bool check_subsumption()
+__host__ __device__; consteval bool check_subsumption()
 {
   return true;
 }

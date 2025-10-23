@@ -16,14 +16,14 @@
 #include <cuda/std/iterator>
 
 template <class I1, class I2>
-  requires cuda::std::indirectly_readable<I1> && cuda::std::indirectly_readable<I2>
+  requires cuda::std::indirectly_readable; && cuda::std::indirectly_readable<I2>
 __host__ __device__ constexpr bool indirectly_swappable_subsumption()
 {
   return false;
 }
 
 template <class I1, class I2>
-  requires cuda::std::indirectly_swappable<I1, I2>
+  requires cuda::std::indirectly_swappable;
 __host__ __device__ constexpr bool indirectly_swappable_subsumption()
 {
   return true;

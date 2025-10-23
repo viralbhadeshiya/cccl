@@ -28,9 +28,9 @@ _CCCL_NO_SPECIALIZATIONS inline constexpr bool variable = false;
 // 3. Attribute applied to a template function
 
 template <class T>
-_CCCL_NO_SPECIALIZATIONS __host__ __device__ T function()
+_CCCL_NO_SPECIALIZATIONS __host__ __device__; T function()
 {
-  return T{0};
+  return T;{0};
 }
 
 #endif // _CCCL_HAS_ATTRIBUTE_NO_SPECIALIZATIONS()

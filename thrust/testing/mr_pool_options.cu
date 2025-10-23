@@ -1,6 +1,6 @@
 #include <thrust/mr/pool_options.h>
 
-#include <unittest/unittest.h>
+#include "unittest/unittest.h"
 
 void TestPoolOptionsBasicValidity()
 {

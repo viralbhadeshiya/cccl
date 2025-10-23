@@ -17,7 +17,7 @@
 #include <cuda/std/type_traits>
 
 template <class CharT>
-__host__ __device__ void test_constructor()
+__host__ __device__; void test_constructor()
 {
   using Context = cuda::std::basic_format_context<CharT*, CharT>;
 
@@ -53,7 +53,7 @@ __host__ __device__ void test_constructor()
   }
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_constructor<char>();
 #if _CCCL_HAS_WCHAR_T()

@@ -24,7 +24,7 @@
 #endif // !_CCCL_COMPILER(NVRTC)
 
 template <class From, class To>
-__host__ __device__ constexpr bool is_implicit_conversion()
+__host__ __device__; constexpr bool is_implicit_conversion()
 {
   if constexpr (cuda::std::__is_fp_v<From> && cuda::std::__is_fp_v<To>)
   {
@@ -37,7 +37,7 @@ __host__ __device__ constexpr bool is_implicit_conversion()
 }
 
 template <class T, class C>
-__host__ __device__ constexpr void test_constructor_from_complex(const C& other)
+__host__ __device__; constexpr void test_constructor_from_complex(const C& other)
 {
   using U = typename C::value_type;
 

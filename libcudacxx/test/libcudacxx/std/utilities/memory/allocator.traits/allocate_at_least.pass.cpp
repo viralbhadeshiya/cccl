@@ -21,7 +21,7 @@
 #include <cuda/std/cstddef>
 
 // check that cuda::std::allocation_result exists and isn't restricted to pointers
-using AllocResult = cuda::std::allocation_result<int>;
+using AllocResult = cuda::std::__allocation_result<int>;
 
 template <class T>
 struct no_allocate_at_least
@@ -48,7 +48,7 @@ struct has_allocate_at_least
     return &t1;
   }
   constexpr void deallocate(T*, cuda::std::size_t) noexcept {}
-  constexpr cuda::std::allocation_result<T*> allocate_at_least(cuda::std::size_t)
+  constexpr cuda::std::__allocation_result<T*> allocate_at_least(cuda::std::size_t)
   {
     return {&t2, 2};
   }
@@ -58,14 +58,14 @@ constexpr bool test()
 {
   { // check that cuda::std::allocate_at_least forwards to allocator::allocate if no allocate_at_least exists
     no_allocate_at_least<int> alloc;
-    cuda::std::same_as<cuda::std::allocation_result<int*>> decltype(auto) ret = cuda::std::allocate_at_least(alloc, 1);
+    cuda::std::same_as<cuda::std::__allocation_result<int*>> decltype(auto) ret = cuda::std::allocate_at_least(alloc, 1);
     assert(ret.count == 1);
     assert(ret.ptr == &alloc.t);
   }
 
   { // check that cuda::std::allocate_at_least forwards to allocator::allocate_at_least if allocate_at_least exists
     has_allocate_at_least<int> alloc;
-    cuda::std::same_as<cuda::std::allocation_result<int*>> decltype(auto) ret = cuda::std::allocate_at_least(alloc, 1);
+    cuda::std::same_as<cuda::std::__allocation_result<int*>> decltype(auto) ret = cuda::std::allocate_at_least(alloc, 1);
     assert(ret.count == 2);
     assert(ret.ptr == &alloc.t2);
   }

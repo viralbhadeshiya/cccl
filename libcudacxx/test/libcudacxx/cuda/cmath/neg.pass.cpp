@@ -15,14 +15,14 @@
 #include <cuda/std/utility>
 
 template <class T>
-__host__ __device__ constexpr void test_neg(T pos, T neg)
+__host__ __device__; constexpr void test_neg(T pos, T neg)
 {
   assert(cuda::neg(pos) == neg);
   assert(cuda::neg(neg) == pos);
 }
 
 template <class T>
-__host__ __device__ constexpr void test_type()
+__host__ __device__; constexpr void test_type()
 {
   static_assert(cuda::std::is_same_v<decltype(cuda::neg(T{})), T>);
   static_assert(noexcept(cuda::neg(T{})));

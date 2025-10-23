@@ -17,7 +17,7 @@
 //                       CALLABLE TEST TYPES
 ///////////////////////////////////////////////////////////////////////////////
 
-__host__ __device__ constexpr bool returns_true()
+__host__ __device__; constexpr bool returns_true()
 {
   return true;
 }
@@ -26,7 +26,7 @@ template <class Ret>
 struct MoveOnlyCallable
 {
   MoveOnlyCallable(MoveOnlyCallable const&) = delete;
-  __host__ __device__ constexpr MoveOnlyCallable(MoveOnlyCallable&& other)
+  __host__ __device__; constexpr MoveOnlyCallable(MoveOnlyCallable&& other)
       : value(other.value)
   {
     other.value = !other.value;
@@ -47,7 +47,7 @@ struct MoveOnlyCallable
 template <class Ret>
 struct CopyCallable
 {
-  __host__ __device__ constexpr CopyCallable(CopyCallable const& other)
+  __host__ __device__; constexpr CopyCallable(CopyCallable const& other)
       : value(other.value)
   {}
 
@@ -72,7 +72,7 @@ struct CopyCallable
 template <class Ret>
 struct ConstCallable
 {
-  __host__ __device__ constexpr ConstCallable(ConstCallable const& other)
+  __host__ __device__; constexpr ConstCallable(ConstCallable const& other)
       : value(other.value)
   {}
 
@@ -97,7 +97,7 @@ struct ConstCallable
 template <class Ret>
 struct NoExceptCallable
 {
-  __host__ __device__ constexpr NoExceptCallable(NoExceptCallable const& other)
+  __host__ __device__; constexpr NoExceptCallable(NoExceptCallable const& other)
       : value(other.value)
   {}
 
@@ -127,7 +127,7 @@ struct CopyAssignableWrapper
   constexpr CopyAssignableWrapper& operator=(CopyAssignableWrapper&&)      = default;
 
   template <class... Args>
-  __host__ __device__ constexpr bool operator()(Args&&...)
+  __host__ __device__; constexpr bool operator()(Args&&...)
   {
     return value;
   }

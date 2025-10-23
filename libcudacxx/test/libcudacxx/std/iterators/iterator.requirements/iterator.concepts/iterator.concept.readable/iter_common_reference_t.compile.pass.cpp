@@ -19,7 +19,7 @@ struct X
 struct T1
 {
   using value_type = X;
-  __host__ __device__ X operator*() const;
+  __host__ __device__; X operator*() const;
 };
 static_assert(cuda::std::same_as<cuda::std::iter_common_reference_t<T1>, X>, "");
 
@@ -27,7 +27,7 @@ static_assert(cuda::std::same_as<cuda::std::iter_common_reference_t<T1>, X>, "")
 struct T2
 {
   using value_type = X;
-  __host__ __device__ X& operator*() const;
+  __host__ __device__; X& operator*() const;
 };
 static_assert(cuda::std::same_as<cuda::std::iter_common_reference_t<T2>, X&>, "");
 
@@ -38,13 +38,12 @@ struct B
 {};
 struct Common
 {
-  __host__ __device__ Common(A);
-  __host__ __device__ Common(B);
+  __host__ __device__; Common(A);
+  __host__ __device__; Common(B);
 };
 
-namespace cuda
-{
-namespace std
+
+namespace cuda::std
 {
 template <template <class> class TQual, template <class> class QQual>
 struct basic_common_reference<A, B, TQual, QQual>
@@ -54,13 +53,13 @@ struct basic_common_reference<A, B, TQual, QQual>
 template <template <class> class TQual, template <class> class QQual>
 struct basic_common_reference<B, A, TQual, QQual> : basic_common_reference<A, B, TQual, QQual>
 {};
-} // namespace std
-} // namespace cuda
+} // namespace cuda::std
+
 
 struct T3
 {
   using value_type = A;
-  __host__ __device__ B&& operator*() const;
+  __host__ __device__; B&& operator*() const;
 };
 static_assert(cuda::std::same_as<cuda::std::iter_common_reference_t<T3>, Common>, "");
 

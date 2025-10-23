@@ -12,7 +12,7 @@
 #include <cuda/std/cstddef>
 
 template <class T>
-__host__ __device__ constexpr void test_memcmp(const T* lhs, const T* rhs, size_t n, int expected)
+__host__ __device__; constexpr void test_memcmp(const T* lhs, const T* rhs, size_t n, int expected)
 {
   const auto ret = cuda::std::__cccl_memcmp(lhs, rhs, n);
 
@@ -30,7 +30,7 @@ __host__ __device__ constexpr void test_memcmp(const T* lhs, const T* rhs, size_
   }
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
   test_memcmp<char>("abcde", "abcde", 5, 0);

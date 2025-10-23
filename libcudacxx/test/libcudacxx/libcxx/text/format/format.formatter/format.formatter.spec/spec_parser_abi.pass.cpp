@@ -43,7 +43,7 @@ struct TestSpecParserValues
 };
 
 template <class CharT>
-__host__ __device__ TestSpecParserValues<CharT> make_test_spec_parser_values() noexcept
+__host__ __device__; TestSpecParserValues<CharT> make_test_spec_parser_values() noexcept
 {
   TestSpecParserValues<CharT> value{};
   value.alignment            = cuda::std::__fmt_spec_alignment::__center;
@@ -68,7 +68,7 @@ __host__ __device__ TestSpecParserValues<CharT> make_test_spec_parser_values() n
 }
 
 template <class CharT>
-__host__ __device__ void verify_spec_parser(const cuda::std::__fmt_spec_parser<CharT>& value)
+__host__ __device__; void verify_spec_parser(const cuda::std::__fmt_spec_parser<CharT>& value)
 {
   const auto ref = make_test_spec_parser_values<CharT>();
   assert(value.__alignment_ == cuda::std::to_underlying(ref.alignment));
@@ -92,7 +92,7 @@ __host__ __device__ void verify_spec_parser(const cuda::std::__fmt_spec_parser<C
 }
 
 template <class CharT>
-__host__ __device__ void test_type()
+__host__ __device__; void test_type()
 {
   static_assert(sizeof(cuda::std::__fmt_spec_parser<CharT>) == 16);
   assert(offsetof(cuda::std::__fmt_spec_parser<CharT>, __type_) == 1);

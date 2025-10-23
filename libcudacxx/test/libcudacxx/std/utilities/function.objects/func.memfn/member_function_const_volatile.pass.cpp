@@ -16,7 +16,7 @@
 
 struct A
 {
-  __host__ __device__ char test0() const volatile
+  __host__ __device__; char test0() const volatile
   {
     return 'a';
   }
@@ -31,7 +31,7 @@ struct A
 };
 
 template <class F>
-__host__ __device__ void test0(F f)
+__host__ __device__; void test0(F f)
 {
   {
     A a;
@@ -46,7 +46,7 @@ __host__ __device__ void test0(F f)
 }
 
 template <class F>
-__host__ __device__ void test1(F f)
+__host__ __device__; void test1(F f)
 {
   {
     A a;
@@ -61,7 +61,7 @@ __host__ __device__ void test1(F f)
 }
 
 template <class F>
-__host__ __device__ void test2(F f)
+__host__ __device__; void test2(F f)
 {
   {
     A a;

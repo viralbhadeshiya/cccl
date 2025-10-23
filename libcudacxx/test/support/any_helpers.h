@@ -13,12 +13,10 @@
 #include <type_traits>
 #include <typeinfo>
 
-namespace std
-{
-namespace experimental
-{
-}
-} // namespace std
+
+
+
+
 
 #include "test_macros.h"
 #include "type_id.h"

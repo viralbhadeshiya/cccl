@@ -12,7 +12,7 @@
 
 #include <cuda/std/__algorithm_>
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   auto a = cuda::std::get_temporary_buffer<int>(1); // expected-warning {{'get_temporary_buffer<int>' is deprecated}}
   cuda::std::return_temporary_buffer(a.first); // expected-warning {{'return_temporary_buffer<int>' is deprecated}}

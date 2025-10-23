@@ -1,6 +1,6 @@
 #include <thrust/system/detail/internal/decompose.h>
 
-#include <unittest/unittest.h>
+#include "unittest/unittest.h"
 
 using thrust::system::detail::internal::uniform_decomposition;
 

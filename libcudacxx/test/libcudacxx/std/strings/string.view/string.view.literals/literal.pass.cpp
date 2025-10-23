@@ -32,7 +32,7 @@ using u8string_view = cuda::std::u8string_view;
 using u8string_view = cuda::std::string_view;
 #endif // ^^^ !_CCCL_HAS_CHAR8_T() ^^^
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // char
 

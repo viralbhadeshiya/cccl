@@ -14,7 +14,7 @@
 #include <cuda/std/utility>
 
 template <class B, class E, class In1, class In2, class Ref>
-__host__ __device__ constexpr void test_ipow(In1 base, In2 exp, Ref ref)
+__host__ __device__; constexpr void test_ipow(In1 base, In2 exp, Ref ref)
 {
   if (cuda::std::in_range<B>(base) && cuda::std::in_range<E>(exp) && cuda::std::in_range<B>(ref))
   {
@@ -23,7 +23,7 @@ __host__ __device__ constexpr void test_ipow(In1 base, In2 exp, Ref ref)
 }
 
 template <class B, class E>
-__host__ __device__ constexpr void test_type()
+__host__ __device__; constexpr void test_type()
 {
   static_assert(cuda::std::is_same_v<decltype(cuda::ipow(B{}, E{})), B>);
   static_assert(noexcept(cuda::ipow(B{}, E{})));

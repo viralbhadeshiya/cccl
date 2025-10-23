@@ -25,7 +25,7 @@ struct Semiregular
 
 struct NotSemiregular
 {
-  __host__ __device__ NotSemiregular(int);
+  __host__ __device__; NotSemiregular(int);
 };
 
 static_assert(HasMoveSentinel<int>);

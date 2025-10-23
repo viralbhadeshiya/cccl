@@ -15,14 +15,14 @@
 #include <cuda/std/iterator>
 
 template <class I, class O>
-  requires cuda::std::indirectly_copyable<I, O>
+  requires cuda::std::indirectly_copyable;
 __host__ __device__ constexpr bool indirectly_copyable_storable_subsumption()
 {
   return false;
 }
 
 template <class I, class O>
-  requires cuda::std::indirectly_copyable_storable<I, O>
+  requires cuda::std::indirectly_copyable_storable;
 __host__ __device__ constexpr bool indirectly_copyable_storable_subsumption()
 {
   return true;

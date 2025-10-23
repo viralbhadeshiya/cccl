@@ -55,9 +55,8 @@
 #include <thrust/detail/complex/math_private.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 _CCCL_HOST_DEVICE inline float frexp_expf(float x, int* expt)
@@ -160,9 +159,9 @@ _CCCL_HOST_DEVICE inline complex<float> cexpf(const complex<float>& z)
   }
 }
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 template <>
 _CCCL_HOST_DEVICE inline complex<float> exp(const complex<float>& z)

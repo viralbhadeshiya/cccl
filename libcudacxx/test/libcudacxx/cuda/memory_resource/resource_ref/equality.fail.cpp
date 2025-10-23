@@ -41,8 +41,8 @@ void test_equality()
   res with_different_value{1337};
 
   // Requires matching properties
-  assert(ref{input} == different_properties{with_equal_value});
-  assert(ref{input} != different_properties{with_different_value});
+  assert(res{input} == different_properties{with_equal_value});
+  assert(res{input} != different_properties{with_different_value});
 }
 
 int main(int, char**)

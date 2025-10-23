@@ -11,10 +11,10 @@
 #include <cuda/std/cassert>
 
 template <class T>
-__host__ __device__ constexpr bool test_out_of_place();
+__host__ __device__; constexpr bool test_out_of_place();
 
 template <class T>
-__host__ __device__ constexpr bool test_in_place();
+__host__ __device__; constexpr bool test_in_place();
 
 #define TEST_SPECIALIZATION(T, P)                                          \
   template <>                                                              \

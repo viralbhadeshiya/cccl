@@ -5,7 +5,7 @@
 
 #include <cuda/__cccl_config>
 
-#include <unittest/unittest.h>
+#include "unittest/unittest.h"
 
 #if THRUST_DEVICE_SYSTEM == THRUST_DEVICE_SYSTEM_CUDA
 #  include <thrust/system/cuda/detail/execution_policy.h>

@@ -26,7 +26,7 @@ struct TestSpecStdValues
   cuda::std::__fmt_spec_type type;
 };
 
-__host__ __device__ TestSpecStdValues make_test_spec_std_values() noexcept
+__host__ __device__; TestSpecStdValues make_test_spec_std_values() noexcept
 {
   TestSpecStdValues value{};
   value.alignment            = cuda::std::__fmt_spec_alignment::__center;
@@ -38,7 +38,7 @@ __host__ __device__ TestSpecStdValues make_test_spec_std_values() noexcept
   return value;
 }
 
-__host__ __device__ void verify_spec_std(const cuda::std::__fmt_spec_std& value) noexcept
+__host__ __device__; void verify_spec_std(const cuda::std::__fmt_spec_std& value) noexcept
 {
   const auto ref = make_test_spec_std_values();
   assert(value.__alignment_ == cuda::std::to_underlying(ref.alignment));
@@ -49,7 +49,7 @@ __host__ __device__ void verify_spec_std(const cuda::std::__fmt_spec_std& value)
   assert(value.__type_ == ref.type);
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   static_assert(sizeof(cuda::std::__fmt_spec_std) == 2);
   assert(offsetof(cuda::std::__fmt_spec_std, __type_) == 1);

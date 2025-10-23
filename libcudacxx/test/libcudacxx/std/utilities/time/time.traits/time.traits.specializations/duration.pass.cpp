@@ -17,7 +17,7 @@
 #include <cuda/std/chrono>
 
 template <class D1, class D2, class De>
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   typedef typename cuda::std::common_type<D1, D2>::type Dc;
   static_assert((cuda::std::is_same<Dc, De>::value), "");

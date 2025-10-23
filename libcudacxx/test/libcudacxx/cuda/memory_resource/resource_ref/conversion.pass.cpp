@@ -44,7 +44,7 @@ void test_conversion_from_resource_ref()
 
     // Ensure we are deallocating properly
     int expected_after_deallocate = 1337;
-    ref.deallocate_sync(static_cast<void*>(&expected_after_deallocate), 0, 0);
+    std::ref.deallocate_sync(static_cast<void*>(&expected_after_deallocate), 0, 0);
     assert(input._val == expected_after_deallocate);
   }
 
@@ -63,7 +63,7 @@ void test_conversion_from_resource_ref()
 
     // Ensure we are deallocating properly
     int expected_after_deallocate = 1337;
-    ref.deallocate_sync(static_cast<void*>(&expected_after_deallocate), 0, 0);
+    std::ref.deallocate_sync(static_cast<void*>(&expected_after_deallocate), 0, 0);
     assert(input._val == expected_after_deallocate);
   }
 }

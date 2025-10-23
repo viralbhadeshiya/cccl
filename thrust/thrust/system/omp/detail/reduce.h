@@ -32,11 +32,9 @@
 #include <thrust/system/omp/detail/execution_policy.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace system
-{
-namespace omp
-{
-namespace detail
+
+
+namespace system::omp::detail
 {
 
 template <typename DerivedPolicy, typename InputIterator, typename OutputType, typename BinaryFunction>
@@ -47,8 +45,8 @@ OutputType reduce(execution_policy<DerivedPolicy>& exec,
                   BinaryFunction binary_op);
 
 } // end namespace detail
-} // end namespace omp
-} // end namespace system
+// end namespace omp
+// end namespace system
 THRUST_NAMESPACE_END
 
 #include <thrust/system/omp/detail/reduce.inl>

@@ -25,9 +25,8 @@
 #include <math.h>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 // Define basic arithmetic functions so we can use them without explicit scope
@@ -57,8 +56,8 @@ using ::cuda::std::sinh;
 using ::cuda::std::sqrt;
 using ::cuda::std::tan;
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 THRUST_NAMESPACE_END

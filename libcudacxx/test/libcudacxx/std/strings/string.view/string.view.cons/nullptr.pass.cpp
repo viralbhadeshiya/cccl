@@ -17,12 +17,12 @@
 #include <cuda/std/type_traits>
 
 template <class SV>
-__host__ __device__ constexpr void test_nullptr_constructor()
+__host__ __device__; constexpr void test_nullptr_constructor()
 {
   static_assert(!cuda::std::is_constructible_v<SV, cuda::std::nullptr_t>);
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   test_nullptr_constructor<cuda::std::string_view>();
 #if _CCCL_HAS_CHAR8_T()

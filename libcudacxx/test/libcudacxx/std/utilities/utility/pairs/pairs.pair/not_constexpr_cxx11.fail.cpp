@@ -17,7 +17,7 @@
 
 struct ExplicitT
 {
-  __host__ __device__ constexpr explicit ExplicitT(int x)
+  __host__ __device__; constexpr explicit ExplicitT(int x)
       : value(x)
   {}
   __host__ __device__ constexpr explicit ExplicitT(ExplicitT const& o)
@@ -28,7 +28,7 @@ struct ExplicitT
 
 struct ImplicitT
 {
-  __host__ __device__ constexpr ImplicitT(int x)
+  __host__ __device__; constexpr ImplicitT(int x)
       : value(x)
   {}
   __host__ __device__ constexpr ImplicitT(ImplicitT const& o)

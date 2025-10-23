@@ -18,9 +18,9 @@ struct View : cuda::std::ranges::view_base
 {
   int i = 0;
   template <bool defaultInitable2 = defaultInitable, cuda::std::enable_if_t<defaultInitable2, int> = 0>
-  __host__ __device__ constexpr explicit View() noexcept {};
-  __host__ __device__ int* begin() const;
-  __host__ __device__ int* end() const;
+  __host__ __device__; constexpr explicit View() noexcept {};
+  __host__ __device__; int* begin() const;
+  __host__ __device__; int* end() const;
 };
 
 template <bool defaultInitable>
@@ -28,8 +28,8 @@ struct Pred
 {
   int i = 0;
   template <bool defaultInitable2 = defaultInitable, cuda::std::enable_if_t<defaultInitable2, int> = 0>
-  __host__ __device__ constexpr explicit Pred() noexcept {};
-  __host__ __device__ bool operator()(int) const;
+  __host__ __device__; constexpr explicit Pred() noexcept {};
+  __host__ __device__; bool operator()(int) const;
 };
 
 // clang-format off

@@ -13,7 +13,7 @@
 #include <cuda/std/cstdint>
 
 template <typename T, typename U>
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   uintptr_t ptr_int = 10;
   auto ptr          = reinterpret_cast<T>(ptr_int);
@@ -26,7 +26,7 @@ __host__ __device__ void test()
   assert(cuda::align_up(ptr2, 8) == reinterpret_cast<U>(16));
 }
 
-__host__ __device__ bool test()
+__host__ __device__; bool test()
 {
   test<char*, int*>();
   test<const char*, const int*>();

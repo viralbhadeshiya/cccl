@@ -24,7 +24,7 @@
 #include <cuda/std/ranges>
 #include <cuda/std/type_traits>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // unbound
   {

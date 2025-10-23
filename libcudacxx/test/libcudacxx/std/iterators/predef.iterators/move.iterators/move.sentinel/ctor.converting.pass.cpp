@@ -21,15 +21,15 @@
 
 struct NonConvertible
 {
-  __host__ __device__ explicit NonConvertible();
-  __host__ __device__ NonConvertible(int i);
-  __host__ __device__ explicit NonConvertible(long i) = delete;
+  __host__ __device__; explicit NonConvertible();
+  __host__ __device__; NonConvertible(int i);
+  __host__ __device__; explicit NonConvertible(long i) = delete;
 };
 static_assert(cuda::std::semiregular<NonConvertible>);
 static_assert(cuda::std::is_convertible_v<long, NonConvertible>);
 static_assert(!cuda::std::convertible_to<long, NonConvertible>);
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   // Constructing from an lvalue.
   {

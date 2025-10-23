@@ -38,9 +38,8 @@
 #include <cuda/std/cstdint>
 
 THRUST_NAMESPACE_BEGIN
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 using thrust::complex;
@@ -129,9 +128,9 @@ _CCCL_HOST_DEVICE inline void extract_words(int32_t& ix0, int32_t& ix1, double d
   (ix1)      = ew_u.parts.lsw;
 }
 
-} // namespace complex
+} // namespace detail::complex
 
-} // namespace detail
+
 
 THRUST_NAMESPACE_END
 

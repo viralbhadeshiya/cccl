@@ -11,7 +11,7 @@
 #include <cuda/std/cassert>
 #include <cuda/std/type_traits>
 
-__host__ __device__ constexpr void test_members()
+__host__ __device__; constexpr void test_members()
 {
   cuda::std::from_chars_result x{nullptr, cuda::std::errc{}};
 
@@ -24,7 +24,7 @@ __host__ __device__ constexpr void test_members()
   assert(ec == x.ec);
 }
 
-__host__ __device__ constexpr void test_operator_bool()
+__host__ __device__; constexpr void test_operator_bool()
 {
   static_assert(!cuda::std::is_convertible_v<cuda::std::from_chars_result, bool>);
   static_assert(cuda::std::is_constructible_v<bool, cuda::std::from_chars_result>);
@@ -41,7 +41,7 @@ __host__ __device__ constexpr void test_operator_bool()
   }
 }
 
-__host__ __device__ constexpr void test_operator_eq_and_neq()
+__host__ __device__; constexpr void test_operator_eq_and_neq()
 {
   const char a[]{'a'};
   const char b[]{'b'};
@@ -72,7 +72,7 @@ __host__ __device__ constexpr void test_operator_eq_and_neq()
   }
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   test_members();
   test_operator_bool();

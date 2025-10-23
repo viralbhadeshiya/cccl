@@ -13,7 +13,7 @@
 #include <cuda/__memcpy_async/check_preconditions.h>
 #include <cuda/std/cstddef>
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   using T = int;
 

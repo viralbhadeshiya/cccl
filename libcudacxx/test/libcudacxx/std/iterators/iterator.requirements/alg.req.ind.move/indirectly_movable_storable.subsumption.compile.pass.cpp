@@ -15,14 +15,14 @@
 #include <cuda/std/iterator>
 
 template <class I, class O>
-  requires cuda::std::indirectly_movable<I, O>
+  requires cuda::std::indirectly_movable;
 __host__ __device__ constexpr bool indirectly_movable_storable_subsumption()
 {
   return false;
 }
 
 template <class I, class O>
-  requires cuda::std::indirectly_movable_storable<I, O>
+  requires cuda::std::indirectly_movable_storable;
 __host__ __device__ constexpr bool indirectly_movable_storable_subsumption()
 {
   return true;

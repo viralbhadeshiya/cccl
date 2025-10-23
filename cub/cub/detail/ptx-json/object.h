@@ -37,7 +37,7 @@ namespace ptx_json
 template <auto K, typename V>
 struct keyed_value
 {
-  __forceinline__ __device__ static void emit()
+  __forceinline__ __device__; static void emit()
   {
     value<K>::emit();
     asm volatile(":" ::: "memory");

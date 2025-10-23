@@ -155,9 +155,8 @@ _CCCL_HOST_DEVICE T abs(const complex<T>& z)
 }
 
 // XXX Why are we specializing here?
-namespace detail
-{
-namespace complex
+
+namespace detail::complex
 {
 
 _CCCL_HOST_DEVICE inline float abs(const thrust::complex<float>& z)
@@ -171,7 +170,7 @@ _CCCL_HOST_DEVICE inline double abs(const thrust::complex<double>& z)
 }
 
 } // end namespace complex
-} // end namespace detail
+// end namespace detail
 
 template <>
 _CCCL_HOST_DEVICE inline float abs(const complex<float>& z)

@@ -48,17 +48,17 @@ void test_equality()
   assert(input == with_equal_value);
   assert(input != with_different_value);
 
-  assert(ref{input} == ref{with_equal_value});
-  assert(ref{input} != ref{with_different_value});
+  assert(res{input} == ref{with_equal_value});
+  assert(res{input} != ref{with_different_value});
 
   // Should ignore pertubed properties
-  assert(ref{input} == pertubed_properties{with_equal_value});
-  assert(ref{input} != pertubed_properties{with_different_value});
+  assert(res{input} == pertubed_properties{with_equal_value});
+  assert(res{input} != pertubed_properties{with_different_value});
 
   // Should reject different resources
   other_res other_with_matching_value{42};
   other_res other_with_different_value{1337};
-  assert(ref{input} != ref{other_with_matching_value});
+  assert(res{input} != ref{other_with_matching_value});
   assert(ref{input} != ref{other_with_different_value});
 
   assert(ref{input} != pertubed_properties{other_with_matching_value});

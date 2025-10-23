@@ -21,13 +21,13 @@ struct DefaultInt42
 
 struct Int
 {
-  __host__ __device__ Int(int) {}
+  __host__ __device__; Int(int) {}
 };
 
 static_assert(cuda::std::default_initializable<cuda::std::ranges::repeat_view<DefaultInt42>>);
 static_assert(!cuda::std::default_initializable<cuda::std::ranges::repeat_view<Int>>);
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   cuda::std::ranges::repeat_view<DefaultInt42> rv;
   assert((*rv.begin()).value == 42);

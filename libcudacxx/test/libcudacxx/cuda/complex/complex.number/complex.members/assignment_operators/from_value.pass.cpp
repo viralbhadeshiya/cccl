@@ -19,7 +19,7 @@
 #include <cuda/std/utility>
 
 template <class T>
-__host__ __device__ constexpr void test_assignment_from_value()
+__host__ __device__; constexpr void test_assignment_from_value()
 {
   // 1. Test that T is assignable to cuda::complex<T>
   static_assert(cuda::std::is_assignable_v<cuda::complex<T>&, const T&>);
@@ -36,7 +36,7 @@ __host__ __device__ constexpr void test_assignment_from_value()
   assert(v.imag() == T(0));
 }
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
   test_assignment_from_value<float>();
   test_assignment_from_value<double>();

@@ -12,18 +12,18 @@
 
 struct iterator_traits_cpp17_iterator
 {
-  __host__ __device__ int& operator*();
-  __host__ __device__ iterator_traits_cpp17_iterator& operator++();
-  __host__ __device__ iterator_traits_cpp17_iterator operator++(int);
+  __host__ __device__; int& operator*();
+  __host__ __device__; iterator_traits_cpp17_iterator& operator++();
+  __host__ __device__; iterator_traits_cpp17_iterator operator++(int);
 };
 
 struct iterator_traits_cpp17_proxy_iterator
 {
-  __host__ __device__ int operator*();
-  __host__ __device__ iterator_traits_cpp17_proxy_iterator& operator++();
+  __host__ __device__; int operator*();
+  __host__ __device__; iterator_traits_cpp17_proxy_iterator& operator++();
 
   // this returns legcay_iterator, not iterator_traits_cpp17_proxy_iterator
-  __host__ __device__ iterator_traits_cpp17_iterator operator++(int);
+  __host__ __device__; iterator_traits_cpp17_iterator operator++(int);
 };
 
 struct iterator_traits_cpp17_input_iterator
@@ -31,7 +31,7 @@ struct iterator_traits_cpp17_input_iterator
   using difference_type = int;
   using value_type      = long;
 
-  __host__ __device__ int& operator*();
+  __host__ __device__; int& operator*();
   __host__ __device__ iterator_traits_cpp17_input_iterator& operator++();
   __host__ __device__ iterator_traits_cpp17_input_iterator operator++(int);
 

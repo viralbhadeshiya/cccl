@@ -30,7 +30,7 @@
 #include <cuda/std/__memory_>
 
 template <typename T>
-__host__ __device__ void check()
+__host__ __device__; void check()
 {
   typedef typename cuda::std::allocator<T>::pointer AP; // expected-error 3 {{no type named 'pointer'}}
   typedef typename cuda::std::allocator<T>::const_pointer ACP; // expected-error 3 {{no type named 'const_pointer'}}
@@ -40,7 +40,7 @@ __host__ __device__ void check()
                                                                              // 'rebind'}}
 }
 
-__host__ __device__ void f()
+__host__ __device__; void f()
 {
   check<char>();
   check<char const>();

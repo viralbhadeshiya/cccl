@@ -14,7 +14,7 @@
 #include <cuda/std/type_traits>
 
 template <cuda::std::__fp_format Fmt, class Int>
-__host__ __device__ constexpr void test_int_constructor()
+__host__ __device__; constexpr void test_int_constructor()
 {
   using T = cuda::std::__cccl_fp<Fmt>;
 
@@ -22,14 +22,14 @@ __host__ __device__ constexpr void test_int_constructor()
   static_assert(cuda::std::is_nothrow_constructible_v<T, Int>);
 
   // Construction from an integral type is always implicit
-  static_assert(cuda::std::is_convertible_v<Int, T>);
+  static_assert(cuda::std::is_convertible_v<int, T>);
 
   // TODO: check construction from an integral type
   [[maybe_unused]] T val{Int{}};
 }
 
 template <cuda::std::__fp_format Fmt>
-__host__ __device__ constexpr void test_format()
+__host__ __device__; constexpr void test_format()
 {
   test_int_constructor<Fmt, bool>();
 

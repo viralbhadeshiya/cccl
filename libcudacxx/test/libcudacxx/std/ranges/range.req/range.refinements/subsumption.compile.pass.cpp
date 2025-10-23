@@ -20,8 +20,8 @@
 
 struct range
 {
-  __host__ __device__ int* begin();
-  __host__ __device__ int* end();
+  __host__ __device__; int* begin();
+  __host__ __device__; int* end();
 };
 
 template <cuda::std::ranges::range R>

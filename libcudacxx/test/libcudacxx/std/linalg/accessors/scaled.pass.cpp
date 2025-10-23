@@ -11,7 +11,7 @@
 #include <cuda/std/linalg>
 #include <cuda/std/type_traits>
 
-__host__ __device__ void constexpr_test()
+__host__ __device__; void constexpr_test()
 {
   using T = int;
   using E = cuda::std::extents<size_t, 2>;
@@ -33,7 +33,7 @@ __host__ __device__ void constexpr_test()
   }
 }
 
-__host__ __device__ void runtime_test()
+__host__ __device__; void runtime_test()
 {
   using T = const int;
   using E = cuda::std::extents<size_t, 2>;

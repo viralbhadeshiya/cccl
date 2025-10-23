@@ -17,8 +17,8 @@ class DefaultOnly
 {
   int data_;
 
-  __host__ __device__ DefaultOnly(const DefaultOnly&);
-  __host__ __device__ DefaultOnly& operator=(const DefaultOnly&);
+  __host__ __device__; DefaultOnly(const DefaultOnly&);
+  __host__ __device__; DefaultOnly& operator=(const DefaultOnly&);
 
 public:
   STATIC_MEMBER_VAR(count, int)

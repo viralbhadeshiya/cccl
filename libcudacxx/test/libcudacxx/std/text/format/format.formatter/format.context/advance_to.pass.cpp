@@ -19,7 +19,7 @@
 #include <cuda/std/utility>
 
 template <class CharT>
-__host__ __device__ void test_advance_to()
+__host__ __device__; void test_advance_to()
 {
   using Container = cuda::std::inplace_vector<CharT, 3>;
   using OutIt     = cuda::std::__back_insert_iterator<Container>;
@@ -59,7 +59,7 @@ __host__ __device__ void test_advance_to()
   }
 }
 
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   test_advance_to<char>();
 #if _CCCL_HAS_CHAR8_T()

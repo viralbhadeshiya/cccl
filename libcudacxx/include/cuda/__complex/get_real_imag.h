@@ -69,13 +69,13 @@ template <class _Tp>
 }
 #  else // ^^^ __CUDACC_RELAXED_CONSTEXPR__ ^^^ / vvv !__CUDACC_RELAXED_CONSTEXPR__ vvv
 template <class _Tp>
-[[nodiscard]] _CCCL_API _Tp __get_real(const ::std::complex<_Tp>& __c) noexcept
+[[nodiscard]] _CCCL_API _Tp __get_real(const std::complex<_Tp>& __c) noexcept
 {
   return reinterpret_cast<const _Tp(&)[2]>(__c)[0];
 }
 
 template <class _Tp>
-[[nodiscard]] _CCCL_API _Tp __get_imag(const ::std::complex<_Tp>& __c) noexcept
+[[nodiscard]] _CCCL_API _Tp __get_imag(const std::complex<_Tp>& __c) noexcept
 {
   return reinterpret_cast<const _Tp(&)[2]>(__c)[1];
 }

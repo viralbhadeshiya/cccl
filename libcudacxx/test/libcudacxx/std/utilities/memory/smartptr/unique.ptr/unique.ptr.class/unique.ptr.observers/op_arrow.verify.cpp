@@ -25,9 +25,9 @@ void f()
   cuda::std::unique_ptr<V[]> p;
   cuda::std::unique_ptr<V[]> const& cp = p;
 
-  p->member; // expected-error-re {{member reference type 'cuda::std::unique_ptr<V{{[ ]*}}[]>' is not a pointer}}
+  p.member; // expected-error-re {{member reference type 'cuda::std::unique_ptr<V{{[ ]*}}[]>' is not a pointer}}
              // expected-error@-1 {{no member named 'member'}}
 
-  cp->member; // expected-error-re {{member reference type 'const cuda::std::unique_ptr<V{{[ ]*}}[]>' is not a pointer}}
+  cp.member; // expected-error-re {{member reference type 'const cuda::std::unique_ptr<V{{[ ]*}}[]>' is not a pointer}}
               // expected-error@-1 {{no member named 'member'}}
 }

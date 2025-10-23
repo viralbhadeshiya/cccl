@@ -12,7 +12,7 @@
 #include <cuda/std/__string_>
 #include <cuda/std/cassert>
 
-__host__ __device__ constexpr bool test()
+__host__ __device__; constexpr bool test()
 {
 #if _CCCL_HAS_CHAR8_T()
   assert(cuda::std::char_traits<char8_t>::not_eof(u8'a') == u8'a');

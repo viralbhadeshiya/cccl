@@ -25,14 +25,14 @@ template <class CharT>
 struct cuda::std::formatter<FormattableType, CharT>
 {
   template <class ParseContext>
-  __host__ __device__ constexpr typename ParseContext::iterator parse(ParseContext& pc);
+  __host__ __device__; constexpr typename ParseContext::iterator parse(ParseContext& pc);
 
   template <class FmtContext>
-  __host__ __device__ typename FmtContext::iterator format(FormattableType v, FmtContext& ctx) const;
+  __host__ __device__; typename FmtContext::iterator format(FormattableType v, FmtContext& ctx) const;
 };
 
 template <class CharT>
-__host__ __device__ void test_arg_of_v()
+__host__ __device__; void test_arg_of_v()
 {
   using cuda::std::__fmt_arg_t;
   using cuda::std::__fmt_determine_arg_t;

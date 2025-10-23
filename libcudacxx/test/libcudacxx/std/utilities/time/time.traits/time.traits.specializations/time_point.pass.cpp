@@ -17,7 +17,7 @@
 #include <cuda/std/chrono>
 
 template <class D1, class D2, class De>
-__host__ __device__ void test()
+__host__ __device__; void test()
 {
   typedef cuda::std::chrono::system_clock C;
   typedef cuda::std::chrono::time_point<C, D1> T1;

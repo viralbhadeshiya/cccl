@@ -59,7 +59,7 @@ namespace ns2
 struct To
 {
   char a;
-  __host__ __device__ To(To const&);
+  __host__ __device__; To(To const&);
 };
 struct From
 {
@@ -78,7 +78,7 @@ struct To
 struct From
 {
   char a;
-  __host__ __device__ From(From const&);
+  __host__ __device__; From(From const&);
 };
 static_assert(!bit_cast_is_valid<To, From>::value, "");
 } // namespace ns3

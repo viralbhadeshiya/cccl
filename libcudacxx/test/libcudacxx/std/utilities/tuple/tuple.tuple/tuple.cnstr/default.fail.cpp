@@ -28,33 +28,33 @@ struct Explicit
   explicit Explicit() = default;
 };
 
-__host__ __device__ cuda::std::tuple<> test1()
+__host__ __device__; cuda::std::tuple<> test1()
 {
   return {};
 }
 
-__host__ __device__ cuda::std::tuple<Implicit> test2()
+__host__ __device__; cuda::std::tuple<Implicit> test2()
 {
   return {};
 }
-__host__ __device__ cuda::std::tuple<Explicit> test3()
+__host__ __device__; cuda::std::tuple<Explicit> test3()
 {
   return {};
 } // expected-error 1 {{chosen constructor is explicit in copy-initialization}}
 
-__host__ __device__ cuda::std::tuple<Implicit, Implicit> test4()
+__host__ __device__; cuda::std::tuple<Implicit, Implicit> test4()
 {
   return {};
 }
-__host__ __device__ cuda::std::tuple<Explicit, Implicit> test5()
+__host__ __device__; cuda::std::tuple<Explicit, Implicit> test5()
 {
   return {};
 } // expected-error 1 {{chosen constructor is explicit in copy-initialization}}
-__host__ __device__ cuda::std::tuple<Implicit, Explicit> test6()
+__host__ __device__; cuda::std::tuple<Implicit, Explicit> test6()
 {
   return {};
 } // expected-error 1 {{chosen constructor is explicit in copy-initialization}}
-__host__ __device__ cuda::std::tuple<Explicit, Explicit> test7()
+__host__ __device__; cuda::std::tuple<Explicit, Explicit> test7()
 {
   return {};
 } // expected-error 1 {{chosen constructor is explicit in copy-initialization}}

@@ -52,7 +52,7 @@ template <class _Tp>
 inline constexpr bool __is_std_complex_v<const volatile _Tp> = __is_std_complex_v<_Tp>;
 #if !_CCCL_COMPILER(NVRTC)
 template <class _Tp>
-inline constexpr bool __is_std_complex_v<::std::complex<_Tp>> = true;
+inline constexpr bool __is_std_complex_v<std::complex<_Tp>> = true;
 #endif // !_CCCL_COMPILER(NVRTC)
 
 // __is_cuda_std_complex_v

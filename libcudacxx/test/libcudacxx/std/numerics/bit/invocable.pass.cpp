@@ -31,42 +31,42 @@ enum class E2 : unsigned char
 struct i_rotr
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::rotr(x, 1U));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::rotr(x, 1U));
 };
 
 // rotl
 struct i_rotl
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::rotl(x, 1U));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::rotl(x, 1U));
 };
 
 // popcount
 struct i_popcount
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::popcount(x));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::popcount(x));
 };
 
 // countr_zero
 struct i_countr_zero
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::countr_zero(x));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::countr_zero(x));
 };
 
 // countr_one
 struct i_countr_one
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::countr_one(x));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::countr_one(x));
 };
 
 // countl_zero
 struct i_countl_zero
 {
   template <typename T>
-  __host__ __device__ constexpr auto operator()(T x) const -> decltype(cuda::std::countl_zero(x));
+  __host__ __device__; constexpr auto operator()(T x) const -> decltype(cuda::std::countl_zero(x));
 };
 
 // countl_one

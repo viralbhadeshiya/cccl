@@ -19,9 +19,9 @@ private:
     char lxx;
   };
   template <class U>
-  __host__ __device__ static two test(...);
+  __host__ __device__; static two test(...);
   template <class U>
-  __host__ __device__ static char test(typename U::is_transparent* = 0);
+  __host__ __device__; static char test(typename U::is_transparent* = 0);
 
 public:
   static const bool value = sizeof(test<T>(0)) == 1;

@@ -19,7 +19,7 @@
 #include <cuda/std/utility>
 
 template <class T>
-__host__ __device__ constexpr void test_constructor_from_values()
+__host__ __device__; constexpr void test_constructor_from_values()
 {
   // 1. Test that cuda::complex<T> constructible from T and T T
   static_assert(cuda::std::is_constructible_v<cuda::complex<T>, const T&>);
