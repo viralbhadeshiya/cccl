@@ -25,12 +25,12 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
-#include <thrust/system/omp/detail/execution_policy.h>
+#include <thrust/system/tbb/detail/execution_policy.h>
 
 THRUST_NAMESPACE_BEGIN
 
 
-namespace system::omp::detail
+namespace system::tbb::detail
 {
 
 template <typename ExecutionPolicy, typename ForwardIterator, typename Predicate>
@@ -67,7 +67,7 @@ OutputIterator remove_copy_if(
   Predicate pred);
 
 } // end namespace detail
-// end namespace omp
+// end namespace tbb
 // end namespace system
 THRUST_NAMESPACE_END
 
